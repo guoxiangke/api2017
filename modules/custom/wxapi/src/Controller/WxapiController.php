@@ -141,7 +141,7 @@ class WxapiController extends ControllerBase {
 		if ($statistics) {
 			$counts = $statistics['totalcount'];
 		}
-		return new JsonResponse($statistics);
+		return new JsonResponse($counts);
 	}
 
 
