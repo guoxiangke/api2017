@@ -1,0 +1,12 @@
+name: xcjbook
+description: drupal 8 theme like http://hycstatics.haoyoucai.net/hkis/chapter-1/
+type: theme
+core: 8.x
+screenshot: QQ20161228-0@2x.png
+base theme: bartik
+libraries:
+  - xcjbook/global-css
+  - xcjbook/global-js
+
+# stylesheets-remove:
+#   - core/themes/stable/css/system/components/js.module.css

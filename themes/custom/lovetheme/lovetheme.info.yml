@@ -1,0 +1,11 @@
+name: lovetheme
+description: drupal 8 theme for love site
+type: theme
+core: 8.x
+
+libraries:
+  - lovetheme/global-css
+  - lovetheme/global-js
+
+# stylesheets-remove:
+#   - core/themes/stable/css/system/components/js.module.css

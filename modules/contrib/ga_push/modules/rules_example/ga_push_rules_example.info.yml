@@ -1,0 +1,17 @@
+name: Google Analytics Rules Example
+description:  Google Analytics module that pushes events when a comment is made (example module).
+package: Statistics
+type: module
+# version: VERSION
+# core: 8.x
+
+dependencies:
+  - ga_push
+  - rules
+
+  
+# Information added by Drupal.org packaging script on 2016-04-17
+version: '8.x-1.0-alpha1'
+core: '8.x'
+project: 'ga_push'
+datestamp: 1460915340

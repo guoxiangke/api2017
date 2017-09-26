@@ -1,0 +1,95 @@
+<?php
+use Drupal\comment\CommentInterface;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Prepares variables for comment templates.
+ *
+ * Default template: comment.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the comment and entity objects.
+ *     Array keys: #comment, #commented_entity.
+ * @see template_preprocess_comment()
+ */
+function xcjbook_preprocess_comment(&$variables) {
+	/** @var \Drupal\comment\CommentInterface $comment */
+	$comment = $variables['elements']['#comment'];
+	if($variables['parent']){
+		$variables['created'] = \Drupal::service('date.formatter')->format($comment->getCreatedTime(),'html_time');
+	}else{
+		$variables['created'] = \Drupal::service('date.formatter')->format($comment->getCreatedTime(),'short');
+	}
+}
+
+
+
+/**
+ * Prepares variables for view templates.
+ *
+ * Default template: views-view.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - view: The ViewExecutable object.
+ * 良友评论节目页不显示相关term节点内容
+ * @see template_preprocess_field()
+ * @see comment_preprocess_field()
+ */
+function xcjbook_preprocess_views_view(&$variables) {
+	if($variables['id'] == 'taxonomy_term') {
+//		ksm($variables);
+		$path = \Drupal::request()->getpathInfo();
+		$arg  = explode('/',$path);
+		$tid = $arg[3];//$variables['view_array']['#arguments'][0];//arg(2)=> /taxonomy/term/12/
+		/* @var $term Term*/
+		$term = Term::load(13);
+		$vid ='lylist';
+		if($term->getVocabularyId() == $vid){
+			$variables['rows'] ='';
+			$variables['pager'] ='';
+			$variables['feed_icons'] ='';
+		}
+	}
+}
+/**
+ * Implements hook_preprocess_HOOK() for node.html.twig.
+ * @see bartik_preprocess_node
+ * @see template_preprocess_node
+ */
+function xcjbook_preprocess_node(&$variables) {
+	$variables['node'] = $variables['elements']['#node'];
+	/** @var \Drupal\node\NodeInterface $node */
+	$node = $variables['node'];
+	if($node->bundle()=='lymeta'){
+//		dpm($node->getType());
+		$tid = $node->get('field_lymeta_tid')->getString();
+		$term = Term::load($tid);//		entity_load()
+		$code = $term->get('field_term_lylist_code')->getString();//ee
+		$date = date('ymd',$node->getCreatedTime());//20170421
+
+		$https = 'http://';
+		$cdnlink = $https . 'lywxaudio.yongbuzhixi.com';
+		$tmp_path = '/' . date('Y',time()) . '/' . $code . '/' . $code;
+		$path = $tmp_path . $date . '.mp3';// /2016/rt/rt161127.mp3
+		$musicurl = $cdnlink . $path . upyun_get_token($path);//depends on lyapi.module
+		$variables['audio'] = $musicurl;
+	}
+	//fix bug todo: delete!!!
+	if($node->bundle()=='article'){
+		$vid = $node->get('field_article_video')->getString();
+		if(stripos($vid,'vid') !== false){
+    		$node->set('field_article_video', '');
+    		$node->save();
+		}
+	}
+}
+
+function xcjbook_preprocess_taxonomy_term(&$variables) {
+	$variables['term'] = $variables['elements']['#taxonomy_term'];
+	/** @var \Drupal\taxonomy\TermInterface $term */
+	$term = $variables['term'];
+	$variables['tid'] = $term->id();
+	$variables['attributes']['class'][]= 'vocabulary-lylist';
+}

@@ -1,0 +1,398 @@
+/*article css begin*/
+.page-title{
+    font-size: 24px;
+    line-height: 1.41666667;
+    text-align: center;
+    letter-spacing: .5px;
+}
+@media (max-width: 1023px) {
+
+}
+.field--name-body{
+    width: 100%;
+    padding-bottom: 1em;
+    font-size: 16px;
+    line-height: 28px
+}
+.region-header {
+    display: none;
+}
+article p strong {
+    color: #bf9f4d;
+    font-weight: 400;
+}
+article p span strong {
+    color: #bf9f4d;
+    font-weight: 600;
+}
+#page,
+#main-wrapper,
+.region-primary-menu .menu-item a.is-active,
+.region-primary-menu .menu-item--active-trail a {
+  background: #f7f7f7;
+}
+
+.field--name-body ul>li::before {
+    content: "※";
+    left: -1.5em;
+    font-family: "PingFang SC","Hiragino Sans GB","Heiti SC","Microsoft YaHei UI","Microsoft YaHei","Source Han Sans",sans-serif
+}
+.page-node-type-article .field--name-body h2 {
+    margin: 112px 22px;
+    color: #d9ae4c;
+    font-size: 26px;
+    line-height: 34px
+}
+.page-node-type-article .field--name-body h1,
+.page-node-type-article .field--name-body h2 {
+    margin-left: 22px;
+    margin-right: 22px;
+    color: #d9ae4c;
+    font-size: 26px;
+    line-height: 34px
+}
+
+.page-node-type-article .field--name-body h2::before {
+    content: "";
+    display: block;
+    width: 2em;
+    height: 0;
+    border-bottom: 1px solid;
+    margin-bottom: 28px
+}
+
+.comment__content:after {
+    border-right: 8px solid #b2e281;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+
+}
+.comment__content:before {
+    border-right: 8px solid #b2e281;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+
+}
+.comment__content{
+    padding: 5;
+    background-color: #b2e281;
+    text-align: left;
+    font-size: 14px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.comment{
+    font-size: 12px;
+}
+.comment__meta {
+    padding: 0 15px 0 0;
+     font-size: 1em;
+}
+
+
+.main-content h2{
+    font-size: 16px;
+}
+.view-taxonomy-term .field--name-body{
+    padding-bottom: 0em;
+}
+.vocabulary-lylist .field--name-description{
+    line-height: 1.5em;
+}
+.vocabulary-lylist .comment .field--name-comment-body{
+    height: 35px;
+    overflow: hidden;
+}
+.vocabulary-lylist article .field--name-comment-body:before {
+    content: "➤";
+    color: #fff;
+    display: inline-flex;
+}
+.vocabulary-lylist article .collspan:before {
+    content: "▼";
+}
+.vocabulary-lylist article .nobefore:before{
+     display: none;
+ }
+.vocabulary-lylist .comment .field--name-comment-body.collspan{
+    height: auto !important;
+}
+.vocabulary-lylist .field--name-description {
+    padding-bottom: 20px;
+}
+.vocabulary-lylist .indented .comment-reply,
+.vocabulary-lylist .comment-forbidden {
+    display: none;
+}
+.vocabulary-lylist .comment__meta .comment__time{
+    display: none;
+}
+.vocabulary-lylist .indented  .comment__meta .comment__time{
+    display: block;
+}
+.vocabulary-lylist .comment--unpublished{
+    background: #ffc0a0;
+}
+.toogleshowcomments{
+    padding-bottom: 70px;
+}
+
+.path-comment .comment-lylist-comments-form{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.path-comment #sidebar-first,
+.path-comment #header,
+.path-comment #block-xcjbook-page-title,
+.path-comment .region-breadcrumb{
+    display: none;
+}
+#edit-comment-body-0-format{
+    display: none;
+}
+/*article css end*/
+
+
+.view-frontpage .views-row{
+    margin-bottom: 30px;
+}
+#video_top{
+    width: 100%;
+    height: 250px;
+}
+iframe #mod_player .mod_tenvideo_video_player_0{
+    width: 100%;
+}
+.wechat-user-pic,
+.wechat-account-pic,
+.vocabulary-lylist .field--name-user-picture img{
+    max-width: 35px;
+    border-radius: 50%;
+}
+.comment__meta .profile{
+    width: 35px;
+}
+
+
+
+
+
+
+.field--name-body h3 {
+    margin: 56px 22px 14px;
+    color: #d9ae4c;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.63636364
+}
+
+.field--name-body h4 {
+    margin: 28px 22px;
+    font-size: 20px;
+    font-size: 1em
+}
+
+.field--name-body p {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: justify;
+}
+
+.field--name-body ol,.field--name-body ul {
+    padding-left: 2em;
+    counter-reset: olNum
+}
+
+.field--name-body ol li,.field--name-body ul li {
+    position: relative;
+    margin: 14px 22px;
+    text-align: justify
+}
+
+.field--name-body ol li::before,.field--name-body ul li::before {
+    position: absolute;
+    top: 0;
+    display: inline-block;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+
+
+.field--name-body ol>li::before {
+    content: counter(olNum) "）";
+    counter-increment: olNum;
+    left: -1.5em
+}
+
+.field--name-body a {
+    border-bottom: 1px solid;
+    -webkit-transition: border-color .15s ease-out,background-color .15s ease-out,color .15s ease-out,fill .15s ease-out,opacity .15s ease-out;
+    transition: border-color .15s ease-out,background-color .15s ease-out,color .15s ease-out,fill .15s ease-out,opacity .15s ease-out;
+    will-change: border-color,background-color,color,fill,opacity
+}
+
+.field--name-body a:hover {
+    color: #e62233
+}
+
+.field--name-body a+a {
+    margin-left: 2px
+}
+
+.field--name-body em {
+    padding-bottom: 2px;
+    border-bottom: 1px dashed;
+    font-style: normal
+}
+
+.field--name-body small {
+    font-size: 14px
+}
+
+.field--name-body sup {
+    font-size: 12px
+}
+
+.field--name-body figure {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    margin-bottom: 14px
+}
+
+.field--name-body figure img {
+    display: block;
+    width: 100%;
+    margin: 0;
+    opacity: .99
+}
+
+.field--name-body figcaption {
+    width: auto;
+    margin: 14px 22px 0;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.83333333
+}
+
+.field--name-body figcaption::after {
+    content: "";
+    display: block;
+    width: 6em;
+    height: 0;
+    border-bottom: 1px solid #d9ae4c;
+    margin: .5em auto 28px
+}
+
+.field--name-body table {
+    width: 100%;
+    border-top: 3px solid;
+    border-bottom: 3px solid;
+    border-left: 20px solid #f7f7f7;
+    border-right: 20px solid #f7f7f7;
+    margin-top: 28px;
+    margin-bottom: 28px;
+    font-size: 12px;
+    text-align: left;
+    line-height: 1.5
+}
+
+.field--name-body tbody {
+    border-bottom: 2px solid
+}
+
+.field--name-body td,.field--name-body th {
+    padding-top: .75em;
+    padding-bottom: .75em;
+    padding-left: 2px;
+    padding-right: 1.5em;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    vertical-align: top
+}
+
+.field--name-body td:last-of-type,.field--name-body th:last-of-type {
+    padding-right: 2px
+}
+
+.field--name-body th {
+    font-weight: 600;
+    border-bottom: 2px solid
+}
+
+.article-foot {
+    padding-bottom: 112px;
+    margin: 0 22px;
+    font-size: 14px;
+    line-height: 1.85714286
+}
+
+.article-foot::before {
+    content: "";
+    display: block;
+    width: 2em;
+    height: 0;
+    border-bottom: 1px solid #d9ae4c;
+    margin-bottom: 1em
+}
+
+.article-foot p {
+    margin-bottom: 1em;
+    text-align: justify
+}
+
+.article-head {
+    width: 100%;
+    padding-bottom: 112px
+}
+
+.field--name-body h4,
+.field--name-body h5 {
+    margin: 0 22px 28px;
+    color: #aaa;
+    font-size: 1em;
+    font-weight: 400
+}
+
+.field--name-body h4 {
+    margin-top: 112px
+}
+
+
+
+.article-head p {
+    margin: 112px 22px 0
+}
+
+.field--name-body footer {
+    font-size: .77777778em
+}
+
+@media (max-width: 1023px) {
+    .field--name-body footer {
+        display:block;
+        font-size: 14px;
+        line-height: 1.57142857;
+        text-align: center
+    }
+}
+
+.article-cover {
+    width: 100%
+}
+
+.article-cover img {
+    display: block;
+    width: 100%
+}
+
+.comment-form .field--name-subject,
+.comment-form .field--name-comment-body label{
+    display: none;
+}

@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_article_audio
+    - node.type.article
+id: node.article.field_article_audio
+field_name: field_article_audio
+entity_type: node
+bundle: article
+label: 音频链接
+description: 最多有一个音频，总是在页面最上面
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

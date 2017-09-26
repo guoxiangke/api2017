@@ -1,0 +1,17 @@
+name: Google Analytics Push
+description: 'Google Analytics module to attach push events'
+package: Statistics
+type: module
+# version: VERSION
+# core: 8.x
+configure: ga_push.settings
+
+dependencies:
+  - google_analytics
+  - libraries
+
+# Information added by Drupal.org packaging script on 2016-04-17
+version: '8.x-1.0-alpha1'
+core: '8.x'
+project: 'ga_push'
+datestamp: 1460915340
