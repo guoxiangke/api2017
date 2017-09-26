@@ -14,6 +14,7 @@
 namespace Drupal\wxapi\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -127,14 +128,20 @@ class WxapiController extends ControllerBase {
     $response['data'] = $data;
     return new JsonResponse($response);
 	}
-	// @see statistics_get()
-	public function getNodeStatistics($nid){
-		$statistics = statistics_get($nid);
+  /**
+   * @param $id == nid == node->id()
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   * @see statistics.php &statistics_get()
+   */
+	public function getNodeStatistics($id){
+		\Drupal::service('statistics.storage.node')->recordView($id); //+1
+		$statistics = statistics_get($id);
 		$counts = 0;
 		if ($statistics) {
 			$counts = $statistics['totalcount'];
 		}
-		return new JsonResponse($counts);
+		return new JsonResponse($statistics);
 	}
 
 
