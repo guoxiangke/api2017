@@ -127,12 +127,14 @@ class WxapiController extends ControllerBase {
     $response['data'] = $data;
     return new JsonResponse($response);
 	}
-
+	// @see statistics_get()
 	public function getNodeStatistics($nid){
-    \Drupal::logger('nid')->notice($nid);
-		// $statistics = \Drupal::service('statistics.storage.node')->fetchView($nid);
 		$statistics = statistics_get($nid);
-		return new JsonResponse($statistics);
+		$counts = 0;
+		if ($statistics) {
+			$counts = $statistics['totalcount'];
+		}
+		return new JsonResponse($counts);
 	}
 
 
