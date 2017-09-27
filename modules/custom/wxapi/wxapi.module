@@ -56,7 +56,7 @@ function wxapi_cron() {
         $profile = \Drupal::entityTypeManager()->getStorage('profile')
             ->loadByUser($user, $profile_type);
         if ($profile && $profile->get('field_wxuser_headimgurl')->value!=$user->get('field_user_picture_url')->value) {
-            \Drupal::logger('wxapi_cron')->notice($uid);
+            // \Drupal::logger('wxapi_cron')->notice($uid);
             $user->set('field_user_picture_url', $profile->get('field_wxuser_headimgurl')->value);
             $user->save();
         }
