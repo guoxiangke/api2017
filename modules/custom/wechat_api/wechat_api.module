@@ -659,6 +659,7 @@ function wechat_api_user_view(array &$build, UserInterface $account, EntityViewD
         /* @var $profile Profile */
         $profile = \Drupal::entityTypeManager()->getStorage('profile')
             ->loadByUser($account, $profile_type);
+        if(!$profile) return;
         $headimgurl = $profile->get('field_wxuser_headimgurl')->value;
         $build['user_picture_wechat'] = [
             '#type'   => 'item',
