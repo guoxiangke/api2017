@@ -47,20 +47,19 @@ function wxapi_cron() {
     $query->addField('t', 'entity_id');
     $query->condition('t.bundle', 'user');
     $query->condition('t.entity_id', $subquery_result, 'NOT IN');
-    $query->range(0, 50);
+    $query->range(0, 100);
     $uids = array_keys($query->execute()->fetchAllAssoc('entity_id'));
     foreach ($uids as $uid) {
         $user = User::load($uid);
-
         $profile_type = 'wechat_user_data';
         /* @var $profile Profile */
         $profile = \Drupal::entityTypeManager()->getStorage('profile')
             ->loadByUser($user, $profile_type);
-        if ($profile) {
+        if ($profile && $profile->get('field_wxuser_headimgurl')->value!=$user->get('field_user_picture_url')->value) {
+            \Drupal::logger('wxapi_cron')->notice($uid);
             $user->set('field_user_picture_url', $profile->get('field_wxuser_headimgurl')->value);
             $user->save();
         }
     }
-    \Drupal::logger('wxapi_cron')->notice(var_dump($uids,1));
     // return $uids; 
 }
