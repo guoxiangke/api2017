@@ -107,7 +107,7 @@ devel.field_info_page:
     _permission: 'access devel information'
 
 devel.execute_php:
-  path: '/devel/php'
+  path: '/devel/phpexe'
   defaults:
     _form: '\Drupal\devel\Form\ExecutePHP'
     _title: 'Execute PHP code'

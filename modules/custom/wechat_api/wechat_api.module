@@ -524,6 +524,7 @@ function wechat_api_save_account($user_info,$role='wechat_user')
         ['value' => $name],
     ];
     $user->set('field_user_openids', $openids);
+    $user->set('field_user_picture_url', $user_info['headimgurl']);
     // $user->save();
 	// set('roles', array_unique($roles));
     $user->activate();

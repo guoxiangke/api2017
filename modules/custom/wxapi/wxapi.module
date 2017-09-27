@@ -5,6 +5,8 @@
  * Date: 11/25/16
  * Time: 4:10 PM
  */
+use Drupal\user\Entity\User;
+use Drupal\profile\Entity\Profile;
 
 // [
 // 	'field_fytv_video_id'=>45053,
@@ -31,4 +33,34 @@ function wxapi_get_nid($fields,$bundle='grace'){
     } else {
         return NULL;
     }
+}
+
+//cron set new user pic url field then delete!!!
+function wxapi_cron() {
+    // https://api.drupal.org/api/drupal/core!includes!database.inc/function/db_select/8.2.x
+    $query = \Drupal::database()->select('user__field_user_picture_url', 't');
+    $query->addField('t', 'entity_id');
+    $query->condition('t.bundle', 'user');
+    $subquery_result = array_keys($query->execute()->fetchAllAssoc('entity_id'));
+    if(empty($subquery_result)) $subquery_result=[0];
+    $query = \Drupal::database()->select('user__field_user_openids', 't');
+    $query->addField('t', 'entity_id');
+    $query->condition('t.bundle', 'user');
+    $query->condition('t.entity_id', $subquery_result, 'NOT IN');
+    $query->range(0, 50);
+    $uids = array_keys($query->execute()->fetchAllAssoc('entity_id'));
+    foreach ($uids as $uid) {
+        $user = User::load($uid);
+
+        $profile_type = 'wechat_user_data';
+        /* @var $profile Profile */
+        $profile = \Drupal::entityTypeManager()->getStorage('profile')
+            ->loadByUser($user, $profile_type);
+        if ($profile) {
+            $user->set('field_user_picture_url', profile->get('field_wxuser_headimgurl')->value);
+            $user->save();
+        }
+    }
+    \Drupal::logger('wxapi_cron')->notice(var_dump($uids,1));
+    // return $uids; 
 }
