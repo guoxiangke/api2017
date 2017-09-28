@@ -53,24 +53,24 @@ class WxapiController extends ControllerBase {
     $res=[];
     $count=0;
     foreach($html->find('.am-padding-top-xs') as $element) { //init!!!
-    	// if($count<200) continue;
+    	$count ++; if($count<(date('z')-5)) continue;
     // $element = $html->find('.am-padding-top-xs',-1);
     // {
-       $title = $element->find('.am-text-truncate',0)->plaintext;//第02天 20170102单独来面对神
-       $href = $element->find('a',0)->href;// /movie/player/movid/2784/urlid/45054.html
-       preg_match_all('/\d+/', $title,$matches);
-       $date = $matches[0][1]; //20170102
-       preg_match_all('/\d+/', $href,$matches);
-       $video_id = $matches[0][1];// 45054
-       //save node!!!
-			 preg_match_all('/第\d+天 \d+(\S+)/',$title,$matches);
-       $title = $matches[1][0];// 45054
-			 $time_str = implode('-',[substr($date, 0,4),substr($date, 4,2),substr($date, 6,2) ]) . ' 00:00:00';
-       $created = strtotime($time_str);
+				$title = $element->find('.am-text-truncate',0)->plaintext;//第02天 20170102单独来面对神
+				$href = $element->find('a',0)->href;// /movie/player/movid/2784/urlid/45054.html
+				preg_match_all('/\d+/', $title,$matches);
+				$date = $matches[0][1]; //20170102
+				preg_match_all('/\d+/', $href,$matches);
+				$video_id = $matches[0][1];// 45054
+				//save node!!!
+				preg_match_all('/第\d+天 \d+(\S+)/',$title,$matches);
+				$title = $matches[1][0];// 45054
+				$time_str = implode('-',[substr($date, 0,4),substr($date, 4,2),substr($date, 6,2) ]) . ' 00:00:00';
+				$created = strtotime($time_str);
 
 				$fields = ['status'=>1,'created'=>$created];
 				$nid = wxapi_get_nid($fields,'grace');
-				$count ++;
+				
 				if($nid) {
 					$node = Node::load($nid);
 					if($node->getTitle() !== $title){
@@ -79,27 +79,31 @@ class WxapiController extends ControllerBase {
 						$node->save();
 			 			\Drupal::logger('title udpated')->notice($title);
 					}
-					continue;
-				}
-			 \Drupal::logger('title created')->notice($title);
-       	$newNode = [
-          'type'             => 'grace',
-          'created'          => $created,
-          'changed'          => $created,
-          'uid'              => 46, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
-          'title'            => $title,
-          // An array with taxonomy terms.
-          'field_fytv_video_id' => [$video_id],
-          'body'             => [
-              'summary' => '这里是经文',
-              'value'   => '内容待填充',
-              'format'  => 'full_html',
-          ],
-        ];
-        $node = Node::create($newNode);
-        $node->save();
-        \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/grace/$date", "und");
-				$res[] = $node->id();
+			 		// \Drupal::logger($nid.$time_str)->notice($title);
+					if($time_str === date("Y-m-d 00:00:00")){//today!!!
+						$res[] = $node->id();
+					}
+				}else {
+				 \Drupal::logger('title created')->notice($title);
+	       	$newNode = [
+	          'type'             => 'grace',
+	          'created'          => $created,
+	          'changed'          => $created,
+	          'uid'              => 46, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
+	          'title'            => $title,
+	          // An array with taxonomy terms.
+	          'field_fytv_video_id' => [$video_id],
+	          'body'             => [
+	              'summary' => '这里是经文',
+	              'value'   => '内容待填充',
+	              'format'  => 'full_html',
+	          ],
+	        ];
+	        $node = Node::create($newNode);
+	        $node->save();
+	        \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/grace/$date", "und");
+					$res[] = $node->id();
+			}
     }
 		return new JsonResponse($res);
 	}
