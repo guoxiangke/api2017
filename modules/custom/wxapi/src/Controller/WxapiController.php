@@ -116,7 +116,7 @@ class WxapiController extends ControllerBase {
 		foreach ($str->data as $key => $item) {
 			$time_str = $item->ShowTime; //2017-09-23 00:00:00
 			$created = strtotime($time_str);
-			$date = data('Ymd',$created);
+			$date = date('Ymd',$created);
 			$fields = ['status'=>1,'created'=>$created];
 			$nid = wxapi_get_nid($fields,'grace');
 			if($nid){// load set save
