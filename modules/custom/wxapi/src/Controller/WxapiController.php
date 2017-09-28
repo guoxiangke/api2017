@@ -120,31 +120,31 @@ class WxapiController extends ControllerBase {
 			$nid = wxapi_get_nid($fields,'grace');
 			if($nid){// load set save
 				$node = Node::load($nid);
-				if($node->body->summary !==$str->data[0]->Description){
-					$node->body->value = $str->data[0]->ContentNoHTML;
-					$node->body->summary = $str->data[0]->Description;
+				if($node->body->summary !==$item->Description){
+					$node->body->value = $item->ContentNoHTML;
+					$node->body->summary = $item->Description;
 					$node->save();
-					$res[] = $node->id();
 				}
 			}else{//create the node!!!
-					$newNode = [
+				$newNode = [
           'type'             => 'grace',
           'created'          => $created,
           'changed'          => $created,
           'uid'              => 46, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
-          'title'            => $str->data[0]->Title,
+          'title'            => $item->Title,
           // An array with taxonomy terms.
           // 'field_fytv_video_id' => [$video_id],
           'body'             => [
-              'summary' => $str->data[0]->Description,
-              'value'   => $str->data[0]->ContentNoHTML,
+              'summary' => $item->Description,
+              'value'   => $item->ContentNoHTML,
               'format'  => 'full_html',
           ],
         ];
         $node = Node::create($newNode);
-        $node->save();
-				//
+				$node->save();
 			}
+
+			$res[] = $node->id();
 		}
 		return new JsonResponse($res);
 	}
