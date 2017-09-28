@@ -8,3 +8,4 @@ cd newdrupal/
 git checkout .
 
 THEN cp oldsitefiles2newdrupal!!!
+cp ../api/sites/default/* sites/default/ -rf

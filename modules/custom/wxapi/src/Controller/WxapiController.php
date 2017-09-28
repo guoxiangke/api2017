@@ -142,6 +142,8 @@ class WxapiController extends ControllerBase {
         ];
         $node = Node::create($newNode);
 				$node->save();
+	      \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/grace/$date", "und");
+					
 			}
 
 			$res[] = $node->id();

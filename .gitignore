@@ -49,7 +49,7 @@ core/phpunit.xml
 .eslintignore
 .eslintrc.json
 .gitattributes
-.gitignore
+#.gitignore
 .htaccess
 LICENSE.txt
 README.txt
