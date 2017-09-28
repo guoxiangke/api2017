@@ -57,7 +57,6 @@ class WxapiController extends ControllerBase {
     // $element = $html->find('.am-padding-top-xs',-1);
     // {
        $title = $element->find('.am-text-truncate',0)->plaintext;//第02天 20170102单独来面对神
-			 \Drupal::logger('title')->notice($title);
        $href = $element->find('a',0)->href;// /movie/player/movid/2784/urlid/45054.html
        preg_match_all('/\d+/', $title,$matches);
        $date = $matches[0][1]; //20170102
@@ -72,20 +71,30 @@ class WxapiController extends ControllerBase {
 				$fields = ['status'=>1,'created'=>$created];
 				$nid = wxapi_get_nid($fields,'grace');
 				$count ++;
-				if($nid) continue;
-       $newNode = [
-            'type'             => 'grace',
-            'created'          => $created,
-            'changed'          => $created,
-            'uid'              => 46, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
-            'title'            => $title,
-            // An array with taxonomy terms.
-            'field_fytv_video_id' => [$video_id],
-            'body'             => [
-                'summary' => '这里是经文',
-                'value'   => '内容待填充',
-                'format'  => 'full_html',
-            ],
+				if($nid) {
+					$node = Node::load($nid);
+					if($node->getTitle() !== $title){
+						$node->set('title',$title);
+						$node->set('field_fytv_video_id',$video_id);
+						$node->save();
+			 			\Drupal::logger('title udpated')->notice($title);
+					}
+					continue;
+				}
+			 \Drupal::logger('title created')->notice($title);
+       	$newNode = [
+          'type'             => 'grace',
+          'created'          => $created,
+          'changed'          => $created,
+          'uid'              => 46, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
+          'title'            => $title,
+          // An array with taxonomy terms.
+          'field_fytv_video_id' => [$video_id],
+          'body'             => [
+              'summary' => '这里是经文',
+              'value'   => '内容待填充',
+              'format'  => 'full_html',
+          ],
         ];
         $node = Node::create($newNode);
         $node->save();
@@ -113,6 +122,24 @@ class WxapiController extends ControllerBase {
 					$node->save();
 					$res[] = $node->id();
 				}
+			}else{//create the node!!!
+					$newNode = [
+          'type'             => 'grace',
+          'created'          => $created,
+          'changed'          => $created,
+          'uid'              => 46, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
+          'title'            => $str->data[0]->Title,
+          // An array with taxonomy terms.
+          // 'field_fytv_video_id' => [$video_id],
+          'body'             => [
+              'summary' => $str->data[0]->Description,
+              'value'   => $str->data[0]->ContentNoHTML,
+              'format'  => 'full_html',
+          ],
+        ];
+        $node = Node::create($newNode);
+        $node->save();
+				//
 			}
 		}
 		return new JsonResponse($res);
