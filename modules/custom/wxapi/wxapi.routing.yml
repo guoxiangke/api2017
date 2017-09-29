@@ -40,3 +40,11 @@ wxapi.getnodestatistics:
     _title: 'get getNodeStatistics'
   requirements:
     _access: 'TRUE'
+wxapi.postcomment:
+  path: '/wxapi/postcomment'
+  methods: [POST]
+  defaults:
+    _controller: '\Drupal\wxapi\Controller\WxapiController::postComment'
+    _title: 'get USER'
+  requirements:
+    _access: 'TRUE'

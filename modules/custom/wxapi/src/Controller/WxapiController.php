@@ -19,6 +19,9 @@ use Drupal\user\Entity\User;
 use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\comment\CommentInterface;
+use Drupal\comment\Entity\Comment;
+use Drupal\Component\Utility\Unicode;
 
 class WxapiController extends ControllerBase {
 	public function getUid(Request $request) {
@@ -127,12 +130,18 @@ class WxapiController extends ControllerBase {
 					$node->save();
 				}
 			}else{//create the node!!!
+				$new_title = explode('》', $item->Title);
+				if(isset($new_title[1])) {
+					$new_title=$new_title[1];
+				}else{
+					$new_title=$item->Title;
+				}
 				$newNode = [
           'type'             => 'grace',
           'created'          => $created,
           'changed'          => $created,
           'uid'              => 46, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
-          'title'            => $item->Title,
+          'title'            => $new_title,
           // An array with taxonomy terms.
           // 'field_fytv_video_id' => [$video_id],
           'body'             => [
@@ -178,6 +187,32 @@ class WxapiController extends ControllerBase {
 		return new JsonResponse($counts);
 	}
 
+	public function postComment(Request $request){
+		$data = array();
+    if ( 0 === strpos( $request->headers->get( 'Content-Type' ), 'application/json' ) ) {
+      $data = json_decode( $request->getContent(), TRUE );
+      $comment = Comment::create([
+                'uid'          => $data['uid'],
+                'field_name'   => isset($data['field_name'])?$data['field_name']:'comment' ,// 'field_wechat_comments',
+                'entity_type'  => isset($data['entity_type'])?$data['entity_type']:'node' ,//node
+                'entity_id'    => $data['entity_id'],//nid
+                'subject'      => Unicode::truncate( $data['comment_body'], '100', TRUE, TRUE),
+                'comment_body' => array(
+                    'value'  => $data['comment_body'],
+                    'format' => 'plain_text',
+                ),
+                'status'       => CommentInterface::PUBLISHED,
+            ]
+        );
+        $comment->save();
+        \Drupal::logger(__FUNCTION__)->notice('comment->save:' . $comment->id());
+        // $url = $comment->toUrl('canonical', array('absolute' => true))->toString();
+      // $link = $data['link'];// http://mp.weixin.qq.com/s/NjVh2b8woG5Fng5lckJdgw
+      // $data = mp_getwxcontent($link);
 
+    	return new JsonResponse($comment->id());
+    }
+    return new JsonResponse($response);
+	}
 
 }
