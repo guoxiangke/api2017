@@ -160,7 +160,6 @@ class WxapiController extends ControllerBase {
 		}
 		return new JsonResponse($res);
 	}
-
 	public function getWxPost(Request $request){
 		$data = array();
     if ( 0 === strpos( $request->headers->get( 'Content-Type' ), 'application/json' ) ) {

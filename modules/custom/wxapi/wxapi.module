@@ -7,6 +7,8 @@
  */
 use Drupal\user\Entity\User;
 use Drupal\profile\Entity\Profile;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 
 // [
 // 	'field_fytv_video_id'=>45053,
@@ -62,4 +64,80 @@ function wxapi_cron() {
         }
     }
     // return $uids; 
+}
+
+function wxapi_entity_presave(Drupal\Core\Entity\EntityInterface $node){
+    if(!$node->id()){ //for insert or udpate!
+        $uri = FALSE;
+        if($node->bundle()=='album' && $node->hasField('field_from_url') && !$node->get('field_from_url')->isEmpty()){
+            $field_from_url = $node->get('field_from_url')->getValue();
+            $uri = $field_from_url[0]['uri'];
+        }
+        if (strpos($uri, 'youtube.com/') !== FALSE ) {
+            $target_ids = wxapi_graceYoutube($uri);
+            foreach($target_ids as $target_id){
+                // $node->field_nodes_references[] = $target_id;
+              $node->field_nodes_reference->appendItem($target_id);
+            }
+            // \Drupal::logger('create_from_youtube_nids')->notice(print_r($target_ids,1));
+        }
+    }
+}
+
+
+
+
+function wxapi_graceYoutube($url='https://www.youtube.com/watch?v=y4KJegd8inI&list=PLgFvTLP0QRDsUhs2GrsWS6eRUi4GwZtGQ',$type="grace",$uid=46){
+    //1.get html from serverless : post url to 
+    $uri = 'https://0l877cx2g0.execute-api.us-east-1.amazonaws.com/dev/html/post';
+    try {
+      $response = \Drupal::httpClient()->post($uri,[
+        'json'=> [
+            'url'=>$url
+        ]
+      ]);
+      //array('headers' => array('Accept' => 'application/json'))
+      $data = (string) $response->getBody();
+      if (empty($data)) {
+        return FALSE;
+      }
+      $str_html = json_decode($data)->output;
+      $html = str_get_html($str_html);
+      $output=[];
+      foreach($html->find('.yt-uix-scroller-scroll-unit') as $element) {
+          if (isset($element->attr['data-video-id']) && isset($element->attr['data-video-title'])) {
+            $youtube_vid= $element->attr['data-video-id'];
+            $title= $element->attr['data-video-title'];
+            // $title = '20131116 恩典365 - 婚姻家庭系列 - 真愛要等待01 : 持守聖潔得著祝福';
+            preg_match('/\d{8}/', $title,$matches);
+            $date  = $matches[0];
+                $time_str = implode('-',[substr($date, 0,4),substr($date, 4,2),substr($date, 6,2) ]) . ' 00:00:00';
+            $created =  strtotime($time_str);
+            //youtube_vid
+                $newNode = [
+                      'type'             => $type,
+                      'created'          => $created,
+                      'changed'          => $created,
+                      'uid'              => $uid, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
+                      'title'            => $title,
+                      // An array with taxonomy terms.
+                      'field_youtube_vid' => [$youtube_vid],
+                      'body'             => [
+                          'summary' => '',
+                          'value'   => '',
+                          'format'  => 'full_html',
+                      ],
+                    ];
+                    $node = Node::create($newNode);
+                    $node->save();
+                    \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/grace/$date", "und");
+                    $output[]=$node->id();
+            }
+        }
+        return $output;
+    }
+    catch (RequestException $e) {
+      return FALSE;
+    }
+    // 2.str2html get dom
 }
