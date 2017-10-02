@@ -77,7 +77,7 @@ function wxjs_preprocess_page(&$variables)
                 $shareData['imgUrl'] = $headimgurl;
             }
             $body = $node->body->getValue();
-            $shareData['desc'] = $body[0]['summary'] ?: $shareData['desc'];
+            $shareData['desc'] = isset($body[0]['summary']) ?$body[0]['summary']: $shareData['desc'];
 
             \Drupal::cache()->set($cached_data_keyword, $shareData, -1);
         }
