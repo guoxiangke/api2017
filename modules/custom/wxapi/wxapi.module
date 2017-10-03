@@ -115,30 +115,36 @@ function wxapi_graceYoutube($url='https://www.youtube.com/watch?v=y4KJegd8inI&li
             $youtube_vid= $element->attr['data-video-id'];
             $title= $element->attr['data-video-title'];
             // $title = '20131116 恩典365 - 婚姻家庭系列 - 真愛要等待01 : 持守聖潔得著祝福';
-            preg_match('/\d{8}/', $title,$matches);
-            $date  = $matches[0];
-                $time_str = implode('-',[substr($date, 0,4),substr($date, 4,2),substr($date, 6,2) ]) . ' 00:00:00';
-            $created =  strtotime($time_str);
-            //youtube_vid
-                $newNode = [
-                      'type'             => $type,
-                      'created'          => $created,
-                      'changed'          => $created,
-                      'uid'              => $uid, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
-                      'title'            => $title,
-                      // An array with taxonomy terms.
-                      'field_youtube_vid' => [$youtube_vid],
-                      'body'             => [
-                          'summary' => '',
-                          'value'   => '',
-                          'format'  => 'full_html',
-                      ],
-                    ];
-                    $node = Node::create($newNode);
-                    $node->save();
-                    \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/grace/$date", "und");
-                    $output[]=$node->id();
+            $created = REQUEST_TIME;
+            if($type=='grace'){
+              preg_match('/\d{8}/', $title,$matches);
+              $date  = $matches[0];
+              $time_str = implode('-',[substr($date, 0,4),substr($date, 4,2),substr($date, 6,2) ]) . ' 00:00:00';
+              $created =  strtotime($time_str);
             }
+            //youtube_vid
+            $newNode = [
+                'type'             => $type,
+                'created'          => $created,
+                'changed'          => $created,
+                'uid'              => $uid, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
+                'title'            => $title,
+                // An array with taxonomy terms.
+                'field_youtube_vid' => [$youtube_vid],
+                'body'             => [
+                    'summary' => '',
+                    'value'   => '',
+                    'format'  => 'full_html',
+                ],
+              ];
+              $node = Node::create($newNode);
+              $node->save();
+              if($type=='grace'){//365
+                \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/$type/$date", "und");
+              }
+              $output[]=$node->id();
+            }
+
         }
         return $output;
     }
