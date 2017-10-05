@@ -734,7 +734,7 @@ function mp_getwxcontent($link, $weObj=NULL)
         $user->addRole('wechat_account');
         $user->activate();
         // Save user account.
-        $user->save();
+        // $user->save();
         //		\Drupal::logger('create mp account user')->notice($user->id() . ': ' . $user->getUsername());
         // $html = file_get_contents($html);
         // preg_match('/var fakeid   = "(\S+)"/',  $ori_html , $matchs);
@@ -751,6 +751,9 @@ function mp_getwxcontent($link, $weObj=NULL)
 
         preg_match('/ori_head_img_url = "(.+)"/', $ori_html, $matchs);
         $ori_head_img_url = $matchs[1];//http://wx.qlogo.cn/mmhead/Q3auHgzwzM61GZDBsZt7uZVk3iacQ5YUsWS2hTrSXs0Vul6NYU3Hh3A/0
+        $user->set('field_user_picture_url', $ori_head_img_url);
+        $user->save();
+        
         preg_match('/msg_link = "(.+)"/', $ori_html, $matchs);
         $msg_link = str_replace('\x26amp;','&',$matchs[1]);
         $qr_link =  str_replace('s?','mp/qrcode?scene=10000005&size=102&',$msg_link);
