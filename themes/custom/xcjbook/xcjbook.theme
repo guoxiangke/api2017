@@ -69,7 +69,7 @@ function xcjbook_preprocess_node(&$variables) {
 		$code = $term->get('field_term_lylist_code')->getString();//ee
 		$date = date('ymd',$node->getCreatedTime());//20170421
 
-		$https = 'http://';
+		$https = 'https://';
 		$cdnlink = $https . 'lywxaudio.yongbuzhixi.com';
 		$tmp_path = '/' . date('Y',time()) . '/' . $code . '/' . $code;
 		$path = $tmp_path . $date . '.mp3';// /2016/rt/rt161127.mp3
