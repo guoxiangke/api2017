@@ -97,7 +97,7 @@ view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
             </div>
         {% endif %}
     </header>
-    <iframe id='video_top_audio' frameborder="0" width="100%" height="80px" src="//ly.yongbuzhixi.com/waveplayer/play.php?url={{ audio }}&tiny=0&auto=0" allowfullscreen></iframe>
+    <iframe id='video_top_audio' frameborder="0" width="100%" height="80px" src="//waveplayer.cdn.bcebos.com/player.html?url={{ audio }}&tiny=0&auto=0" allowfullscreen></iframe>
 
     <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
         {{ content }}
