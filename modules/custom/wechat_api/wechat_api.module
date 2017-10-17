@@ -511,15 +511,15 @@ function _default_news($config,$uid=0){
     //显示底部！
     if($counts[2]!=0){
       $img = array(
-        'Title'=>isset($config['copyright_header'])?$config['copyright_header']:'技术支持：主内公众云 https://api.yongbuzhixi.com',
+        'Title'=>isset($config['copyright_header'])&&strlen($config['copyright_header']!=0)?$config['copyright_header']:'技术支持：主内公众云 https://api.yongbuzhixi.com',
         'Description'=>'',
         'PicUrl'=>'',
-        'Url'=> isset($config['config_focus_url'])?$config['config_focus_url']:'http://mp.weixin.qq.com/s/jTBC82SvhVpiBZcg0LnKOw',
+        'Url'=> isset($config['config_focus_url'])&&strlen($config['config_focus_url']!=0)?$config['config_focus_url']:'https://api.yongbuzhixi.com'
       );
       $news[] = $img;
     }
 
-    return $news;
+    return ['type'=>'news','obj'=>$news];
 }
 function _get_news($nids){
     $news=[];
