@@ -545,7 +545,7 @@ function save_lymeta($code, $tid, $title, $body, $date = NULL)
             'created'          => $created,
             'changed'          => REQUEST_TIME,
             // The user ID.
-            'uid'              => 1,
+            'uid'              => 268,//良友知音
             'title'            => $title . '-' . $code . $date,
             // An array with taxonomy terms.
 //			'field_tags' =>[2],
