@@ -38,7 +38,7 @@ class WechatConfigForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, UserInterface $user = NULL)
   {
-    $this->user = $user;
+    $this->user = $user?$user:\Drupal::currentUser();
 
     $config = $this->configFactory->get('wechat_api.settings');
     $config = $config->get('mpaccount_'.$this->user->id());

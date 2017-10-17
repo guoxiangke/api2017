@@ -2,7 +2,7 @@
 # TODO:关注时默认回复文本,默认单图文?
 # menu has role access
 wechat_api.admin:
-  path: '/admin/config/wechat/{user}/edit'
+  path: '/admin/config/wechat/{user}'
   defaults:
     _form: 'Drupal\wechat_api\Form\WechatConfigForm'
     _title: 'Account settings'
