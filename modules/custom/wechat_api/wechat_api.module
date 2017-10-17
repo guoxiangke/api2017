@@ -11,6 +11,8 @@ use Drupal\profile\Entity\ProfileType;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 use Drupal\wechat_api\Plugin\Wechat\Wechat;
+use Drupal\Core\Url;    
+
 
 /**
  * hook_rescources_info
@@ -465,6 +467,7 @@ function wechat_api_wxresources_default_alter(Wechat $weObj)
                 break;
             case 'news':
                 //TODO:: replay contents nodes
+                $resources = _default_news($config,43462);//$weObj->uid
                 break;
             case 'keyword':
                 $keyword = $config['default_message_keyword'];
@@ -477,7 +480,72 @@ function wechat_api_wxresources_default_alter(Wechat $weObj)
 
     return $resources;
 }
+function _default_news($config,$uid=0){
+    $news_reply_count = isset($config['news_reply_count'])?$config['news_reply_count']:'1:1:1';
+    $counts = explode(':', $news_reply_count );
+    $news = [];
+    //1 get latest count[0] news
+    // function wxapi_get_nid($fields,$bundle='grace',$uid=0,$count=1)
+    $query_fields=[
+     'status'=>1,
+     'sticky'=>0
+    ];
+    if($uid) {
+        $nids = wxapi_get_nid($query_fields,'article',$counts[0],$uid);
+    }else{
+        $nids = wxapi_get_nid($query_fields,'article',$counts[0]);
+    }
+    $news = array_merge(array_values($news), array_values(_get_news($nids))); 
+    //2.置顶文章count[1]个
+    $query_fields=[
+     'status'=>1,
+     'sticky'=>1
+    ];
+    if($uid) {
+        $nids = wxapi_get_nid($query_fields,'article',$counts[1],$uid);
+    }else{
+        $nids = wxapi_get_nid($query_fields,'article',$counts[1]);
+    }
+    $news = array_merge(array_values($news), array_values(_get_news($nids))); 
 
+    //显示底部！
+    if($counts[2]!=0){
+      $img = array(
+        'Title'=>isset($config['copyright_header'])?$config['copyright_header']:'技术支持：主内公众云 https://api.yongbuzhixi.com',
+        'Description'=>'',
+        'PicUrl'=>'',
+        'Url'=> isset($config['config_focus_url'])?$config['config_focus_url']:'http://mp.weixin.qq.com/s/jTBC82SvhVpiBZcg0LnKOw',
+      );
+      $news[] = $img;
+    }
+
+    return $news;
+}
+function _get_news($nids){
+    $news=[];
+    foreach ($nids as $key => $nid) {
+        $node = Node::load($nid);
+        $desc = $node->body->summary?:Unicode::truncate($node->body->value, '54', TRUE, TRUE);
+        if(!$desc) $desc="只有音频/视频";
+        $url = Url::fromRoute('entity.node.canonical', ['node' => $nid],['absolute' => TRUE])->toString();
+        if(!$node->field_image_url->isEmpty()) $picurl = $node->field_image_url->value;
+        if(!$node->field_image->isEmpty()) {
+            $fid = $node->field_image->getValue()[0]['target_id'];
+            // https://drupal.stackexchange.com/questions/200741/generate-image-url-from-fid
+            $file = \Drupal\file\Entity\File::load($fid);
+            $picurl = file_create_url($file->getFileUri());
+        }
+        if(!$picurl)  $picurl = 'http://mmbiz.qpic.cn/mmbiz_jpg/I2rbxqsBRK3W4pJUhm0Cj304u9fUsxPtkPZaiaZ23J5WDzcNfbQE0Szy3UMJzOz5coloCdh2JWN58BOic3E94cMw/0?wx_fmt=jpeg';
+        $img = array(
+          'Title'=> $node->getTitle(),
+          'Description'=>$desc,
+          'PicUrl'=> $picurl,//field_image_url($node->field_image['und'][0]['uri']),
+          'Url'=> $url,
+        );
+        $news[] = $img;
+    }
+    return $news;
+}
 /**
  * @param $user_info
  * @param string $role
