@@ -72,7 +72,7 @@ class WxapiController extends ControllerBase {
 				$created = strtotime($time_str);
 
 				$fields = ['status'=>1,'created'=>$created];
-				$nid = wxapi_get_nid($fields,'grace');
+				$nid = tools_wxapi_get_nid($fields,'grace');
 				
 				if($nid) {
 					$node = Node::load($nid);
@@ -121,7 +121,7 @@ class WxapiController extends ControllerBase {
 			$created = strtotime($time_str);
 			$date = date('Ymd',$created);
 			$fields = ['status'=>1,'created'=>$created];
-			$nid = wxapi_get_nid($fields,'grace');
+			$nid = tools_wxapi_get_nid($fields,'grace');
 			if($nid){// load set save
 				$node = Node::load($nid);
 				if($node->body->summary !==$item->Description){

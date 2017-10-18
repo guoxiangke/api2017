@@ -485,28 +485,28 @@ function _default_news($config,$uid=0){
     $counts = explode(':', $news_reply_count );
     $news = [];
     //1 get latest count[0] news
-    // function wxapi_get_nid($fields,$bundle='grace',$uid=0,$count=1)
+    // @see tools_wxapi_get_nid($fields,$bundle='grace',$count=1,$uid=0)
     $query_fields=[
      'status'=>1,
      'sticky'=>0
     ];
     if($uid) {
-        $nids = wxapi_get_nid($query_fields,'article',$counts[0],$uid);
+        $nids = tools_wxapi_get_nids($query_fields,'article',$counts[0],$uid);
     }else{
-        $nids = wxapi_get_nid($query_fields,'article',$counts[0]);
+        $nids = tools_wxapi_get_nids($query_fields,'article',$counts[0]);
     }
-    $news = array_merge(array_values($news), array_values(_get_news($nids))); 
+    $news = array_merge(array_values($news), array_values(tools_wechat_api_get_news($nids))); 
     //2.置顶文章count[1]个
     $query_fields=[
      'status'=>1,
      'sticky'=>1
     ];
     if($uid) {
-        $nids = wxapi_get_nid($query_fields,'article',$counts[1],$uid);
+        $nids = tools_wxapi_get_nids($query_fields,'article',$counts[1],$uid);
     }else{
-        $nids = wxapi_get_nid($query_fields,'article',$counts[1]);
+        $nids = tools_wxapi_get_nids($query_fields,'article',$counts[1]);
     }
-    $news = array_merge(array_values($news), array_values(_get_news($nids))); 
+    $news = array_merge(array_values($news), array_values(tools_wechat_api_get_news($nids))); 
 
     //显示底部！
     if($counts[2]!=0){
@@ -520,31 +520,6 @@ function _default_news($config,$uid=0){
     }
 
     return ['type'=>'news','obj'=>$news];
-}
-function _get_news($nids){
-    $news=[];
-    foreach ($nids as $key => $nid) {
-        $node = Node::load($nid);
-        $desc = $node->body->summary?:Unicode::truncate($node->body->value, '54', TRUE, TRUE);
-        if(!$desc) $desc="只有音频/视频";
-        $url = Url::fromRoute('entity.node.canonical', ['node' => $nid],['absolute' => TRUE])->toString();
-        if(!$node->field_image_url->isEmpty()) $picurl = $node->field_image_url->value;
-        if(!$node->field_image->isEmpty()) {
-            $fid = $node->field_image->getValue()[0]['target_id'];
-            // https://drupal.stackexchange.com/questions/200741/generate-image-url-from-fid
-            $file = \Drupal\file\Entity\File::load($fid);
-            $picurl = file_create_url($file->getFileUri());
-        }
-        if(!$picurl)  $picurl = 'http://mmbiz.qpic.cn/mmbiz_jpg/I2rbxqsBRK3W4pJUhm0Cj304u9fUsxPtkPZaiaZ23J5WDzcNfbQE0Szy3UMJzOz5coloCdh2JWN58BOic3E94cMw/0?wx_fmt=jpeg';
-        $img = array(
-          'Title'=> $node->getTitle(),
-          'Description'=>$desc,
-          'PicUrl'=> $picurl,//field_image_url($node->field_image['und'][0]['uri']),
-          'Url'=> $url,
-        );
-        $news[] = $img;
-    }
-    return $news;
 }
 /**
  * @param $user_info
@@ -921,7 +896,7 @@ function mp_getwxcontent($link, $weObj=NULL)
         $time_str = substr($date, 0,4).'-'.substr($date, 4,2).'-'.substr($date, 6,2)." 00:00:00";
         $created = strtotime($time_str);
         $fields = ['status'=>1,'created'=>$created];
-        $nid = wxapi_get_nid($fields,'grace');
+        $nid = tools_wxapi_get_nid($fields,'grace');
         if($nid){
             $node = Node::load($nid);
             $node->field_article_audio->value = $voice_url;
