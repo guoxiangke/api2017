@@ -25,7 +25,7 @@ wxapi.graceinit:
   requirements:
     _access: 'TRUE'
 wxapi.graceupdate:
-  path: 'cron/grace/content/tpehoc'
+  path: '/cron/grace/content/tpehoc'
   # methods: [GET, POST, PATCH]
   defaults:
     _controller: '\Drupal\wxapi\Controller\WxapiController::graceUpdate'

@@ -13,8 +13,8 @@ use Drupal\node\Entity\Node;
 // 	'field_lymeta_tid.entity.tid'=>$tid
 // ]
 function tools_wxapi_get_nid($fields,$bundle='grace',$count=1,$uid=0){
-	$nids = tools_wxapi_get_nids($fields,$bundle='grace',$count=1,$uid=0);
-	if($nids) $nids[0];
+	$nids = tools_wxapi_get_nids($fields,$bundle,$count,$uid);
+	if($nids) return $nids[0];
 	return NULL;
 }
 function tools_wxapi_get_nids($fields,$bundle='grace',$count=1,$uid=0){

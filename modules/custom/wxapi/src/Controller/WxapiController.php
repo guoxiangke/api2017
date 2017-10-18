@@ -48,7 +48,8 @@ class WxapiController extends ControllerBase {
 	}
 	//创建一个grace node from fuyin.tv 0点执行
 	public function graceInit(){
-		$html = file_get_html('https://m.fuyin.tv/movie/detail/movid/2784.html');
+		$url = 'https://m.fuyin.tv/movie/detail/movid/2784.html';
+		$html = str_get_html(file_get_contents($url));
     if (!$html) {
         \Drupal::logger(__FUNCTION__)->notice('error get m.fuyin.tv/');
         return new JsonResponse(['error get m.fuyin.tv']);
@@ -56,7 +57,7 @@ class WxapiController extends ControllerBase {
     $res=[];
     $count=0;
     foreach($html->find('.am-padding-top-xs') as $element) { //init!!!
-    	$count ++; if($count<(date('z')-5)) continue;
+    	$count ++; if($count<(date('z')-20)) continue;
     // $element = $html->find('.am-padding-top-xs',-1);
     // {
 				$title = $element->find('.am-text-truncate',0)->plaintext;//第02天 20170102单独来面对神
@@ -73,21 +74,19 @@ class WxapiController extends ControllerBase {
 
 				$fields = ['status'=>1,'created'=>$created];
 				$nid = tools_wxapi_get_nid($fields,'grace');
-				
 				if($nid) {
 					$node = Node::load($nid);
 					if($node->getTitle() !== $title){
 						$node->set('title',$title);
 						$node->set('field_fytv_video_id',$video_id);
 						$node->save();
-			 			\Drupal::logger('title udpated')->notice($title);
+						\Drupal::logger('wxapi_cron_init_fy')->notice('Grace %nid title udpated @title.',['%nid'=>$node->id(),'@title'=>$title]);
 					}
 			 		// \Drupal::logger($nid.$time_str)->notice($title);
 					if($time_str === date("Y-m-d 00:00:00")){//today!!!
 						$res[] = $node->id();
 					}
 				}else {
-				 \Drupal::logger('title created')->notice($title);
 	       	$newNode = [
 	          'type'             => 'grace',
 	          'created'          => $created,
@@ -105,6 +104,7 @@ class WxapiController extends ControllerBase {
 	        $node = Node::create($newNode);
 	        $node->save();
 	        \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/grace/$date", "und");
+				  \Drupal::logger('wxapi_cron_init_fy')->notice('Grace %nid created @title.',['%nid'=>$node->id(),'@title'=>$title]);
 					$res[] = $node->id();
 			}
     }
@@ -153,7 +153,7 @@ class WxapiController extends ControllerBase {
         $node = Node::create($newNode);
 				$node->save();
 	      \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/grace/$date", "und");
-					
+				\Drupal::logger('wxapi_cron_update_tp')->notice('Grace %nid created @title.',['%nid'=>$node->id(),'@title'=>$title]);
 			}
 
 			$res[] = $node->id();
