@@ -19,7 +19,7 @@ function resource_77_rescources_info(){
     );
     $rescources[] = array(
         'name' => '77_share',
-        'desc' => '接入共享自建音频资源【770】',
+        'desc' => '接入共享音频资源【770】',
     );
     return $rescources;
 }
