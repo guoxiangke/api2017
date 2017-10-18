@@ -1,9 +1,0 @@
-<?php
-/**
- * @param $keyword
- * @param Wechat|NULL $weObj
- * @return array
- */
-use Drupal\Component\Utility\Unicode;
-use Drupal\wechat_api\Plugin\Wechat\Wechat;
-
