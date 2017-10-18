@@ -360,23 +360,12 @@ function lyapi_get_meta_nid($tid, $date)
 {//空中辅导
     $bundle = 'lymeta';
     $created = strtotime($date . ' 08:00:00 AM');
-
-    $query = \Drupal::entityQuery('node');
-    $query->condition('status', 1);
-    $query->condition('type', $bundle)
-        ->condition('field_lymeta_tid.entity.tid', $tid)
-        ->condition('created', $created)
-        ->range(0, 1);
-//  https://www.sitepoint.com/drupal-8-version-entityfieldquery/
-//	https://lakshminp.com/using-entity-api-drupal-8
-//  ->condition('field_tags.entity.name', 'cats');
-    $entity_ids = $query->execute();
-    if (count($entity_ids)) {
-        return $entity_ids[array_keys($entity_ids)[0]];
-    } else {
-        return NULL;
-    }
-
+    $fields = [
+        'status'=>1,
+        'field_lymeta_tid.entity.tid'=> $tid,
+        'created'=> $created
+    ];
+    return tools_wxapi_get_nid($fields,$bundle);
 }
 
 
