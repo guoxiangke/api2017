@@ -14,17 +14,6 @@ use Drupal\wechat_api\Plugin\Wechat\Wechat;
 use Drupal\Core\Url;    
 
 
-/**
- * hook_rescources_info
- */
-function wechat_api_rescources_info()
-{
-    $rescources[] = array(
-        'name' => '700',
-        'desc' => '流行电台【700】',
-    );
-    return $rescources;
-}
 
 /**
  * @param $uid
