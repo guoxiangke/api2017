@@ -972,32 +972,6 @@ function mp_getwxcontent($link, $weObj=NULL)
     return $resources;
 }
 
-function _check_if_article_exsits($title = 'checktitle')
-{
-//	https://api.drupal.org/api/drupal/core!includes!database.inc/function/db_select/8.2.x
-    $query = \Drupal::database()->select('node__field_aticle_title', 't');
-    $query->addField('t', 'entity_id');
-    $query->condition('t.bundle', 'article');
-    $query->condition('t.field_aticle_title_value', $title);
-    $entity_id = $query->execute()->fetchField();
-    return $entity_id;
-}
-
-/**
- * @param $openid
- * @return $uid
- */
-function _check_if_wechat_user_exsits($openid)
-{
-//	https://api.drupal.org/api/drupal/core!includes!database.inc/function/db_select/8.2.x
-    $query = \Drupal::database()->select('user__field_user_openids', 't');
-    $query->addField('t', 'entity_id');
-    $query->condition('t.bundle', 'user');
-    $query->condition('t.field_user_openids_value', $openid);
-    $uid = $query->execute()->fetchField();
-    return $uid;
-}
-
 /**
  * @see wechat_api_user_view
  * @see hook_user_format_name_alter
