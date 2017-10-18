@@ -4,6 +4,7 @@
  * @param Wechat|NULL $weObj
  * @return array
  */
+use Drupal\node\Entity\Node;
 use Drupal\Component\Utility\Unicode;
 use Drupal\wechat_api\Plugin\Wechat\Wechat;
 use Drupal\node\NodeInterface;
@@ -42,19 +43,20 @@ function resource_77_wxresources_alter($keyword, Wechat $weObj = NULL) {
          // 'field_lymeta_tid.entity.tid'=>$tid
         ];
         if (in_array('77_share', $wechat_resources)){
+            $nids = tools_wxapi_get_nids($fields,'article',15);
+            $total = count(tools_wxapi_get_nids($fields,'article',-1));
+        }else{
             $uid = $weObj->uid;
             $uid = 43462;
             $nids = tools_wxapi_get_nids($fields,'article',15,$uid);
             $total = count(tools_wxapi_get_nids($fields,'article',-1,$uid));
-        }else{
-            $nids = tools_wxapi_get_nids($fields,'article',15);
-            $total = count(tools_wxapi_get_nids($fields,'article',-1));
         }
         $titles = tools_get_titles($nids);
-        $menu = '';
+        $menu = "－－－FM77－－－\n";
         foreach ($nids as $key => $nid) {
-           $menu .= '【' . $total-$list_count+$key . '】' . $titles[$key] . "\n";
+           $menu .= '【77' . ($total - $list_count + $key+1) . '】' . $titles[$key] . "\n";
         }
+        $menu .= "回复对于编号获取相应音频[强]";
         $resources = [
             'keyword' => $keyword,
             'type'    => 'text',
@@ -69,9 +71,47 @@ function resource_77_wxresources_alter($keyword, Wechat $weObj = NULL) {
         ];
         return $resources;
     }
+    if ($check_word == 77 && $index) {
+        if (in_array('77_share', $wechat_resources)){
+            $nids = tools_wxapi_get_nids($fields,'article',-1);
+        }else{
+            $uid = $weObj->uid;
+            $uid = 43462;
+            $nids = tools_wxapi_get_nids($fields,'article',-1,$uid);
+        }
+        $nid = $nids[$index-1];
+        $nid = 12122;
+        $node = Node::load($nid);
+        $expire = -1;
+        if(!$node->field_article_audio->isEmpty()){
+            $musicurl = $node->field_article_audio->value;    
+        }elseif(!$node->field_mp3->isEmpty()){
+            $fid = $node->field_mp3->getValue()[0]['target_id'];
+            $file = \Drupal\file\Entity\File::load($fid);
+            $musicurl = file_create_url($file->getFileUri());
+        }else{//todo upyun_path
+            $upyun_path = $node->field_upyun_path->value; 
+            $musicurl = $upyun_path;//default domain + token!!!
+            $expire = REQUEST_TIME - 43200;
+        }
 
-    if ($check_word == 77 && !$index) {
-
+        $resources = [
+            'keyword' => $keyword,
+            'type'    => 'music',
+            'expire'  => $expire,
+            'obj'     => [
+                'title'      => "【$keyword】".$node->getTitle(),
+                'desc'       => '点击▶️收听 '.$appname,
+                'musicurl'   => $musicurl,
+                'hgmusicurl' => $musicurl,
+            ],
+            'ga_data' => array(
+                'category' => '77',
+                'action'   => $node->getTitle(),
+            ),
+        ];
+    \Drupal::logger('resources')->notice(print_r($resources,1));
+        return $resources;
     }
     // 
 }

@@ -36,7 +36,7 @@ function tools_wxapi_get_nids($fields,$bundle='grace',$count=1,$uid=0){
     if (count($entity_ids)) {
       return array_values($entity_ids);
     } else {
-        return NULL;
+        return [];
     }
 }
 
@@ -47,6 +47,7 @@ function tools_wechat_api_get_news($nids){
         $desc = $node->body->summary?:Unicode::truncate($node->body->value, '54', TRUE, TRUE);
         if(!$desc) $desc="只有音频/视频";
         $url = Url::fromRoute('entity.node.canonical', ['node' => $nid],['absolute' => TRUE])->toString();
+        $picurl=null;
         if(!$node->field_image_url->isEmpty()) $picurl = $node->field_image_url->value;
         if(!$node->field_image->isEmpty()) {
             $fid = $node->field_image->getValue()[0]['target_id'];

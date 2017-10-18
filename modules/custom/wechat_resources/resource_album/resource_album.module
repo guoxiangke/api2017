@@ -71,7 +71,7 @@ function resource_album_wxresources_alter($keyword,Wechat $weObj=NULL){
 				$path = '/500/'.$check_word.'/'.str_pad($index,$str_pad,"0",STR_PAD_LEFT).'.mp3';
 			}
 			$url = $cdnlink.$path;//.upyun_get_token($path);
-			$desc = "点击►收听 ".$appname." 每日更新";
+			$desc = "点击▶️收听 ".$appname." 每日更新";
 			$resources = [
 				'keyword' => $keyword,
 				'type' => 'music',

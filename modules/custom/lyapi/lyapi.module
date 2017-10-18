@@ -158,7 +158,7 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
             $hgmusicurl = 'http://txly2.net' . $link;
             $title = '【' . $process_index . '】' . $title . ' ' . $lylist_name[$process_index];
             $date = date('ymd');
-            $desc = "点击►收听 " . $app_copy_name . ' ' . ($offset ? $date : ' 每日更新');
+            $desc = "点击▶️收听 " . $app_copy_name . ' ' . ($offset ? $date : ' 每日更新');
             $resources = [
                 'keyword'       => $keyword,
                 'type'          => 'music',
@@ -223,7 +223,7 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
 //        $hgmusicurl = 'http://txly2.net/ly/audio' . $path;
         $tmp_keyword_code = $ly_tmp_keyword_code?$ly_tmp_keyword_code:$process_index;
         $title = '【' . $tmp_keyword_code . '】' . $lylist_name[$process_index];
-        $desc = "点击►收听 " . $app_copy_name . ($offset ? $date : ' 每日更新');
+        $desc = "点击▶️收听 " . $app_copy_name . ($offset ? $date : ' 每日更新');
 
         $resources = [
             'keyword' => $keyword,
@@ -441,7 +441,7 @@ function ly_stream_menu()
   【646】晨曦讲座
   【647】良院专区
    回复【】内容[调皮]不带中括号
-   点击►收听[抱拳]';
+   点击▶️收听[抱拳]';
 }
 
 /**
