@@ -34,27 +34,30 @@ function resource_77_wxresources_alter($keyword, Wechat $weObj = NULL) {
 
     $check_word = substr($keyword, 0, 2);
     $index = (int)substr($keyword, 2);
+    $fields = [
+     'status'=>NodeInterface::PUBLISHED,  //1
+     'field_tags.entity.name'=>'FM77',
+     // 'field_lymeta_tid.entity.tid'=>$tid
+    ];
     if ($keyword == 770) {
         $list_count = 15;
         //1.get all fm77 nids&&titles of this account!!!or shared!!!
-        $fields = [
-         'status'=>NodeInterface::PUBLISHED,  //1
-         'field_tags.entity.name'=>'FM77',
-         // 'field_lymeta_tid.entity.tid'=>$tid
-        ];
         if (in_array('77_share', $wechat_resources)){
             $nids = tools_wxapi_get_nids($fields,'article',15);
             $total = count(tools_wxapi_get_nids($fields,'article',-1));
         }else{
             $uid = $weObj->uid;
-            $uid = 43462;
             $nids = tools_wxapi_get_nids($fields,'article',15,$uid);
             $total = count(tools_wxapi_get_nids($fields,'article',-1,$uid));
         }
-        $titles = tools_get_titles($nids);
         $menu = "－－－FM77－－－\n";
-        foreach ($nids as $key => $nid) {
-           $menu .= '【77' . ($total - $list_count + $key+1) . '】' . $titles[$key] . "\n";
+        if(empty($nids)) {
+            $menu .= "暂无添加标签为FM77的文章，请添加后再试\n或勾选☑️接入共享自建音频资源【770】\n";
+        }else{
+            $titles = tools_get_titles($nids);
+            foreach ($nids as $key => $nid) {
+               $menu .= '【77' . ($total - $key) . '】' . $titles[$key] . "\n";
+            }
         }
         $menu .= "回复对于编号获取相应音频[强]";
         $resources = [
@@ -76,11 +79,10 @@ function resource_77_wxresources_alter($keyword, Wechat $weObj = NULL) {
             $nids = tools_wxapi_get_nids($fields,'article',-1);
         }else{
             $uid = $weObj->uid;
-            $uid = 43462;
             $nids = tools_wxapi_get_nids($fields,'article',-1,$uid);
         }
-        $nid = $nids[$index-1];
-        $nid = 12122;
+        $index = count($nids)-$index;
+        $nid = $nids[$index];
         $node = Node::load($nid);
         $expire = -1;
         if(!$node->field_article_audio->isEmpty()){
@@ -100,7 +102,7 @@ function resource_77_wxresources_alter($keyword, Wechat $weObj = NULL) {
             'type'    => 'music',
             'expire'  => $expire,
             'obj'     => [
-                'title'      => "【$keyword】".$node->getTitle(),
+                'title'      => "【".$keyword."】".$node->getTitle(),
                 'desc'       => '点击▶️收听 '.$appname,
                 'musicurl'   => $musicurl,
                 'hgmusicurl' => $musicurl,
@@ -110,7 +112,6 @@ function resource_77_wxresources_alter($keyword, Wechat $weObj = NULL) {
                 'action'   => $node->getTitle(),
             ),
         ];
-    \Drupal::logger('resources')->notice(print_r($resources,1));
         return $resources;
     }
     // 
