@@ -145,3 +145,8 @@ function xcjbook_preprocess_taxonomy_term(&$variables) {
 
 
 }
+
+function xcjbook_preprocess(&$variables, $hook)
+{
+    $variables['base_path'] = base_path();
+}
