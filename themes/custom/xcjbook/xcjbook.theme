@@ -98,21 +98,21 @@ function _subtermhtml($vocabulary_id,$tid){
   	// dpm(__LINE__,$term->id());
 		// $parents = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadAllParents($term->id());
 		// $depth = count($parents);//2 3
-  	$html .= '<ul class="wcn-indent">'.$term->getName();
-  	$html .= _subtermhtml($vocabulary_id,$term->id());
   	//get all nodes title & nid in this tid!!!
 		$fields=[
 			'status'=> NodeInterface::PUBLISHED,
 			'field_article_wechat_term.entity.tid'=>$term->id()
 		];
   	$nids = tools_wxapi_get_nids($fields,'article',-1);
+    $html .= '<li class="wcn-indent-p">'.$term->getName();
   	if($nids){
     	$titles = tools_get_titles(array_values($nids));
     	foreach ($titles as $key => $title) {
-    		$html .= '<li class="wcn-indent"><a href="/node/'.$nids[$key].'">'.$title.'</a></li>';
+    		$html .= '<p class="wcn-indent"><a href="/node/'.$nids[$key].'">'.$title.'</a></p>';
     	}
     }
-    $html .= '</ul>';
+  	$html .= _subtermhtml($vocabulary_id,$term->id());
+    $html .= '</li>';
   }
   $html .= '</ul>';
   return $html;

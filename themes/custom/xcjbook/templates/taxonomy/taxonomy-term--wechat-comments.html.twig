@@ -31,6 +31,7 @@
     <h2><a href="{{ url }}">{{ name }}</a></h2>
   {% endif %}
   {{ title_suffix }}
-  {{ content }}
+  {{ content.description }}
   {{ list_nodes }}
+  {{ content|without('description') }}
 </div>
