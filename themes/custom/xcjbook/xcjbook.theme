@@ -1,6 +1,7 @@
 <?php
 use Drupal\comment\CommentInterface;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\node\NodeInterface;
 
 /**
  * Prepares variables for comment templates.
@@ -85,11 +86,62 @@ function xcjbook_preprocess_node(&$variables) {
 		}
 	}
 }
-
+//递归
+function _subtermhtml($vocabulary_id,$tid){
+	//get child terms!!
+	$html = '';
+	$children = \Drupal::entityManager()->getStorage('taxonomy_term')->loadTree($vocabulary_id, $tid, 1, TRUE);
+	if(!$children) return $html;
+  /* @var $term Term */
+  $html .= '<ul class="wechat_comments-indent">';
+  foreach ($children as $term) {//一级菜单
+  	// dpm(__LINE__,$term->id());
+		// $parents = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadAllParents($term->id());
+		// $depth = count($parents);//2 3
+  	$html .= '<ul class="wcn-indent">'.$term->getName();
+  	$html .= _subtermhtml($vocabulary_id,$term->id());
+  	//get all nodes title & nid in this tid!!!
+		$fields=[
+			'status'=> NodeInterface::PUBLISHED,
+			'field_article_wechat_term.entity.tid'=>$term->id()
+		];
+  	$nids = tools_wxapi_get_nids($fields,'article',-1);
+  	if($nids){
+    	$titles = tools_get_titles(array_values($nids));
+    	foreach ($titles as $key => $title) {
+    		$html .= '<li class="wcn-indent"><a href="/node/'.$nids[$key].'">'.$title.'</a></li>';
+    	}
+    }
+    $html .= '</ul>';
+  }
+  $html .= '</ul>';
+  return $html;
+}
 function xcjbook_preprocess_taxonomy_term(&$variables) {
 	$variables['term'] = $variables['elements']['#taxonomy_term'];
 	/** @var \Drupal\taxonomy\TermInterface $term */
 	$term = $variables['term'];
-	$variables['tid'] = $term->id();
-	$variables['attributes']['class'][]= 'vocabulary-lylist';
+	$tid = $term->id();
+	$vocabulary_id = $term->bundle();//== $term->getVocabularyId();
+	// dpm($term->label());
+	// dpm($term->getName());
+	if($vocabulary_id == 'lylist') {
+		$variables['tid'] = $tid;
+		$variables['attributes']['class'][]= 'vocabulary-lylist';
+	}
+	if($vocabulary_id == 'wechat_comments') {//思麦首页
+		$parent = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadParents($tid);
+		$parent = reset($parent);
+		$html = '';
+		// dvm($parent);//$term->label() $term->id()// dpm($term->getWeight() );
+		if(!$parent){//isRootTerm 
+			$html = _subtermhtml($vocabulary_id,$tid);
+		}
+		$variables['list_nodes'] = ['#markup'=>$html];
+	}
+	// $vid = $term->vid();//wechat_comments
+	//if pid == wechat-comments!!!
+	//list sub items node
+
+
 }
