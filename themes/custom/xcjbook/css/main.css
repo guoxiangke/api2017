@@ -396,3 +396,9 @@ iframe #mod_player .mod_tenvideo_video_player_0{
 .comment-form .field--name-comment-body label{
     display: none;
 }
+
+
+/* /mpaccounts */
+.view-mp-accounts img{
+    max-width: 50px;
+}
