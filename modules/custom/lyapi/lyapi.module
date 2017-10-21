@@ -493,7 +493,22 @@ function lyapi_get_meta()
         $html = file_get_html($url);
         if (!$html) {
             \Drupal::logger(__FUNCTION__)->notice('error get txly2/' . $code);
-            continue;
+            $uri = 'https://serverless.yongbuzhixi.com/html/post';
+            try {
+              $response = \Drupal::httpClient()->post($uri,[
+                'json'=> [
+                    'url'=>$url
+                ]
+              ]);
+              //array('headers' => array('Accept' => 'application/json'))
+              $html = (string) $response->getBody();
+              if (empty($html)) {
+                \Drupal::logger(__FUNCTION__)->notice('error2 serverless txly2/' . $code);
+                continue;
+              }
+          }catch (RequestException $e) {
+              continue;
+          }
         }
         if (!isset($html->find('.ss-title p', 0)->plaintext)) continue;
         $body = $html->find('.ss-title p', 0)->plaintext;
