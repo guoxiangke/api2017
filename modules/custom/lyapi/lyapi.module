@@ -505,6 +505,8 @@ function lyapi_get_meta()
               if (empty($html)) {
                 \Drupal::logger(__FUNCTION__)->notice('error2 serverless txly2/' . $code);
                 continue;
+              }else{
+                $html = str_get_html($html);
               }
           }catch (RequestException $e) {
               continue;
