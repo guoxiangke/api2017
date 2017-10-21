@@ -490,7 +490,9 @@ function lyapi_get_meta()
         if ($today_has_program && lyapi_get_meta_nid($tid, $date)) continue;
 
         $url = 'http://txly2.net/' . $code;
-        $html = file_get_html($url);
+        //https://github.com/sunra/php-simple-html-dom-parser/issues/41
+        //https://stackoverflow.com/questions/42685814/file-get-contents-stream-does-not-support-seeking-when-was-php-behavior-abo
+        $html = file_get_html($url,false,null,0);
         if (!$html) {
             \Drupal::logger(__FUNCTION__)->notice('error get txly2/' . $code);
             $uri = 'https://serverless.yongbuzhixi.com/html/post';
