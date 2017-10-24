@@ -73,6 +73,7 @@ function tools_get_titles($nids=[]){
     $query = \Drupal::database()->select('node_field_data', 't');
     $query->addField('t', 'title');
     $query->condition('t.nid', $nids, 'IN');
+    $query-> orderBy('t.nid', 'DESC');
     $titles = $query->execute()->fetchAllAssoc('title');
     return array_keys($titles);
 }
