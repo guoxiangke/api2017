@@ -27,6 +27,7 @@ function tools_wxapi_get_nids($fields,$bundle='grace',$count=1,$uid=0){
     foreach($fields as $key => $value) {
     	$query->condition($key, $value);
     }
+    $query->sort('nid', 'DESC');
     if($count>0) $query->range(0, $count);
 
 //  https://www.sitepoint.com/drupal-8-version-entityfieldquery/
