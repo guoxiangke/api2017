@@ -50,7 +50,7 @@ function resource_77_wxresources_alter($keyword, Wechat $weObj = NULL) {
             $nids = tools_wxapi_get_nids($fields,'article',-1,$uid);
         }
         $total = count($nids);
-        $nids = array_slice($nids,0,$list_count);
+        $nids = array_slice(array_reverse($nids),0,$list_count);
         $menu = "－－－FM77－－－\n";
         if(empty($nids)) {
             $menu .= "暂无添加标签为FM77的文章，请添加后再试\n或勾选☑️接入共享自建音频资源【770】\n";
