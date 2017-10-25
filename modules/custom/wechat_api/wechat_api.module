@@ -842,7 +842,7 @@ function mp_getwxcontent($link, $weObj=NULL)
     $body = preg_replace('/label="(.*?)"/', '', $body);
     $body = preg_replace('/data-id="(.*?)"/', '', $body);
     $body = str_replace('<p>&nbsp;</p>', '', $body);
-    $body = str_replace('data-src', 'src', $body);
+    // $body = str_replace('data-src', 'src', $body);
     $body = str_replace('<section>&nbsp;</section>', '', $body);
     $body = str_replace('<section></section>', '', $body);
     $body = str_replace('<section><section></section></section>', '', $body);
