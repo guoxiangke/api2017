@@ -505,7 +505,7 @@ function _default_news($config,$uid=0){
         'PicUrl'=>'',
         'Url'=> isset($config['config_focus_url'])&&strlen($config['config_focus_url']!=0)?$config['config_focus_url']:'https://api.yongbuzhixi.com'
       );
-      \Drupal::logger('img')->message('<pre>'.print_r($img,1));
+      \Drupal::logger('img')->notice('<pre>'.print_r($img,1));
       $news[] = $img;
     }
 
