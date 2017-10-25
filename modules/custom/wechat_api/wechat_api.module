@@ -836,15 +836,16 @@ function mp_getwxcontent($link, $weObj=NULL)
     }
 
     $body = $html->find('#js_content', 0)->outertext;
-    $body = strip_tags($body, '<span><p><ul><li><ol><br><section><img><iframe><a>');
+    $body = strip_tags($body, '<span><p><ul><li><ol><br><img><iframe><a>');
     $body = preg_replace('/style="(.*?)"/', '', $body);
     $body = preg_replace('/class="(.*?)"/', '', $body);
     $body = preg_replace('/label="(.*?)"/', '', $body);
     $body = preg_replace('/data-id="(.*?)"/', '', $body);
     $body = str_replace('<p>&nbsp;</p>', '', $body);
-    $body = str_replace('<section>&nbsp;</section>', '', $body);
-    $body = str_replace('<section></section>', '', $body);
-    $body = str_replace('<section><section></section></section>', '', $body);
+    $body = preg_replace('data-src', 'src', $body);
+    // $body = str_replace('<section>&nbsp;</section>', '', $body);
+    // $body = str_replace('<section></section>', '', $body);
+    // $body = str_replace('<section><section></section></section>', '', $body);
     $body = str_replace('<p><br /></p>', '', $body);
     $body = str_replace('&nbsp;', '', $body);
 
