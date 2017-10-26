@@ -146,7 +146,7 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
         if (!$is_lywx && $process_index >= 641 && $process_index <= 645) {//641-645
             $code = $lylist_code[$process_index];//ee      http://txly2.net/ltshdp2
             $url = 'http://txly2.net/' . $code;
-            $html = file_get_html($url);
+            $html = file_get_html($url,false,null,0);
             if (!$html) {
                 \Drupal::logger(__FUNCTION__)->notice('error get txly2/' . $code);
                 return;
