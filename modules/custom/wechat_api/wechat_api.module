@@ -826,7 +826,7 @@ function mp_getwxcontent($link, $weObj=NULL)
         return $resources;
     }
 
-    preg_match('/vid=\S[^"|^&|^vid|^+]+/', $ori_html, $matchs);//vid=s0354348eo8
+    preg_match('/vid=\S[^"|^&|^+]+/', $ori_html, $matchs);//vid=s0354348eo8
     if (isset($matchs[0])) {
         $video_url = str_replace('vid=', '', $matchs[0]);
     }
