@@ -91,7 +91,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 			'type' => 'text',
 			'expire' => -1,//-1 never expires.
 			'obj' => [
-				'text' =>  $text."【#100】★基础课程✿本科课程\n【#700】☆进深课程\n回复【#".$num."01】收听\n回复【#".$num."010】查看讲义！[ThumbsUp]\n".$appname,
+				'text' =>  $text."【#100】★起航课程✿本科课程\n【#700】☆进深课程\n回复【#".$num."01】收听\n回复【#".$num."010】查看讲义！[ThumbsUp]\n".$appname,
 			],
 			'ga_data'   =>  array(
 				'category'        => 'lts33',
@@ -153,7 +153,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 				'type' => 'text',
 				'expire' => REQUEST_TIME + 43200,//-1 never expires.
 				'obj' => [
-					'text' =>  '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课\n属于".$mav['level']."\n授课老师：".$mav['author']."\n回复【#".$index."1】到【#".$index.$total."】获取节目！\n每日获取同步【#".$index."】\n[大哭]本课程暂无讲义哦！",
+					'text' =>  '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课\n属于".($mav['level']=='基础课程'?'起航课程':$mav['level'])."\n授课老师：".$mav['author']."\n回复【#".$index."1】到【#".$index.$total."】获取节目！\n每日获取同步【#".$index."】\n[大哭]本课程暂无讲义哦！",
 				],
 				'ga_data'   =>  array(
 					'category'        => 'lts33',
