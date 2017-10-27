@@ -29,6 +29,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 	if($weObj){
 		$wechat_config = \Drupal::config('wechat_api.settings')->get('mpaccount_'.$weObj->uid);
 		$wechat_resources = $wechat_config['wechat_resources'];
+    $appname = "公众号:" . $wechat_config['appname'];
 		//IF enable ly_resouce 600
 		if(!in_array('lts',$wechat_resources)) return [];
 	}
@@ -206,7 +207,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 		'upyun_path' =>  $path,
 		'obj' => [
 			'title' =>  '【'.$keyword.'】'.$mav['title'].'-'.$rep,
-			'desc'  =>  "点击▶️收听".$update." 良院".str_replace('课程', '', ($level=='基础课程'?'起航':$level)),
+			'desc'  =>  "点击▶️收听".$update.$appname." 良院".str_replace('课程', '', ($level=='基础课程'?'起航':$level)),
 			'musicurl'  =>  $link,
 			'hgmusicurl'  => $link,
 		],
