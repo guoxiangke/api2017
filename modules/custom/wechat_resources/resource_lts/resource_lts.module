@@ -206,7 +206,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 		'upyun_path' =>  $path,
 		'obj' => [
 			'title' =>  '【'.$keyword.'】'.$mav['title'].'-'.$rep,
-			'desc'  =>  "点击▶️收听".$update." 良院".str_replace('课程', '', $level),
+			'desc'  =>  "点击▶️收听".$update." 良院".str_replace('课程', '', ($level=='基础'?'起航':$level)),
 			'musicurl'  =>  $link,
 			'hgmusicurl'  => $link,
 		],
