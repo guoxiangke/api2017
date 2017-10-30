@@ -6,3 +6,4 @@ dependencies:
   - field
   - taxonomy
   - user
+  - views
