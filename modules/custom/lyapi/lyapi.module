@@ -337,6 +337,7 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
             'PicUrl'=>'https://mmbiz.qlogo.cn/mmbiz/JkVibryc6qrY4zkXwy5SPZbur1Jd7HMRneGCr0xhsqEJFXyQ0XkTqZmG8xCPIadhCt4GJk0kibtevrUIJ2Wpw7ag/0?wx_fmt=jpeg',
             'Url'=>$url,
         );
+        \Drupal::logger('img')->notice('<pre>'.print_r($img,1));
         $news[] = $img;
         $resources = [
             'keyword' => $keyword,
