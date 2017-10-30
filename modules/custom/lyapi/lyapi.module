@@ -328,11 +328,14 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
         ];
         return $resources;
     }else{
+        $tid = 298;
+        $term = Term::load($tid);
+        $url = $term->get('field_wechat_menu_type')->value;
         $img = array(
             'Title'=>"收听节目代号",
             'Description'=>"欢迎收听我们的节目！知音‧牵手‧同行 ※ 为你送上精彩节目和活动！",
             'PicUrl'=>'https://mmbiz.qlogo.cn/mmbiz/JkVibryc6qrY4zkXwy5SPZbur1Jd7HMRneGCr0xhsqEJFXyQ0XkTqZmG8xCPIadhCt4GJk0kibtevrUIJ2Wpw7ag/0?wx_fmt=jpeg',
-            'Url'=>'https://mp.weixin.qq.com/s?__biz=MzI1MDE0NzM5Ng==&mid=2650220233&idx=3&sn=7cb651808a013e592e02e6bf5a5bab8b&chksm=f18521e2c6f2a8f4c6fd4adeecd030293e4eccbd3a0662c8c89c98c35b9b3a2c01ee02a32ac8#rd',
+            'Url'=>$url,
         );
         $news[] = $img;
         $resources = [
