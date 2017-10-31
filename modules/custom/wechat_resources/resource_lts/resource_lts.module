@@ -92,7 +92,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 			'type' => 'text',
 			'expire' => -1,//-1 never expires.
 			'obj' => [
-				'text' =>  $text."【#100】★起航课程✿本科课程\n【#700】☆进深课程\n回复【#".$num."01】收听\n回复【#".$num."010】查看讲义！[ThumbsUp]\n".$appname,
+				'text' =>  $text."【#100】★启航课程✿本科课程\n【#700】☆进深课程\n回复【#".$num."01】收听\n回复【#".$num."010】查看讲义！[ThumbsUp]\n".$appname,
 			],
 			'ga_data'   =>  array(
 				'category'        => 'lts33',
@@ -154,7 +154,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 				'type' => 'text',
 				'expire' => REQUEST_TIME + 43200,//-1 never expires.
 				'obj' => [
-					'text' =>  '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课\n属于".($mav['level']=='基础课程'?'起航课程':$mav['level'])."\n授课老师：".$mav['author']."\n回复【#".$index."1】到【#".$index.$total."】获取节目！\n每日获取同步【#".$index."】\n[大哭]本课程暂无讲义哦！",
+					'text' =>  '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课\n属于".($mav['level']=='基础课程'?'启航课程':$mav['level'])."\n授课老师：".$mav['author']."\n回复【#".$index."1】到【#".$index.$total."】获取节目！\n每日获取同步【#".$index."】\n[大哭]本课程暂无讲义哦！",
 				],
 				'ga_data'   =>  array(
 					'category'        => 'lts33',
@@ -168,7 +168,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 			'type' => 'text',
 			'expire' => REQUEST_TIME + 43200,//-1 never expires.
 			'obj' => [
-				'text' =>  '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课\n属于".($mav['level']=='基础课程'?'起航课程':$mav['level'])."\n授课老师：".$mav['author']."\n<a href='http://pdfviewer.cdn.bcebos.com/web/viewer.html?pdf=".$link."'>》点此查看讲义</a>\n每日获取同步【#".$index."】\n<a href='".$link."'>》备用讲义链接</a>",
+				'text' =>  '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课\n属于".($mav['level']=='基础课程'?'启航课程':$mav['level'])."\n授课老师：".$mav['author']."\n<a href='http://pdfviewer.cdn.bcebos.com/web/viewer.html?pdf=".$link."'>》点此查看讲义</a>\n每日获取同步【#".$index."】\n<a href='".$link."'>》备用讲义链接</a>",
 			],
 			'ga_data'   =>  array(
 				'category'        => 'lts33',
@@ -207,7 +207,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 		'upyun_path' =>  $path,
 		'obj' => [
 			'title' =>  '【'.$keyword.'】'.$mav['title'].'-'.$rep,
-			'desc'  =>  "点击▶️收听".$update.$appname." 良院".str_replace('课程', '', ($level=='基础课程'?'起航':$level)),
+			'desc'  =>  "点击▶️收听".$update.$appname." 良院".str_replace('课程', '', ($level=='基础课程'?'启航':$level)),
 			'musicurl'  =>  $link,
 			'hgmusicurl'  => $link,
 		],
