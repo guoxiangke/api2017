@@ -522,7 +522,8 @@ function _default_news($config,$uid=0){
 function wechat_api_save_account($user_info,$role='wechat_user')
 {
     if(!(isset($user_info['nickname']) && !empty($user_info['nickname']))) {
-        Drupal::logger('wechat_api_save_account')->warning('No nickname from wx user_info to save account.');
+        \Drupal::logger('wechat_api_save_account')->warning('No nickname to save account.');
+        \Drupal::logger(__FUNCTION__)->warning('<pre>'.print_r($user_info,1));
         return false;
     }
     //add user & update profile.
