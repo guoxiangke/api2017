@@ -527,7 +527,8 @@ function lyapi_get_meta()
             //每次运行只保存一个!
             if (save_lymeta($code, $tid, $title, $body, $date)) break;
         } else {
-            \Drupal::logger(__FUNCTION__)->notice('error get $code=>' . $code . '$title=>' . $title . '$date=>' . $date . '$tid=>' . $tid);
+            if(strpos($code, 'lts') == false) //lts except!!!
+                \Drupal::logger(__FUNCTION__)->notice('error get $code=>' . $code . '$title=>' . $title . '$date=>' . $date . '$tid=>' . $tid);
         }
     }
 
