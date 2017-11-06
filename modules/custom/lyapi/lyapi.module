@@ -491,7 +491,7 @@ function lyapi_get_meta()
             continue;
         }
         if ($today_has_program && lyapi_get_meta_nid($tid, $date)) continue;
-
+        if(strpos($code, 'lts') !== false)  continue; //lts except!!!
         $url = 'http://txly2.net/' . $code;
         //https://github.com/sunra/php-simple-html-dom-parser/issues/41
         //https://stackoverflow.com/questions/42685814/file-get-contents-stream-does-not-support-seeking-when-was-php-behavior-abo
@@ -527,8 +527,7 @@ function lyapi_get_meta()
             //每次运行只保存一个!
             if (save_lymeta($code, $tid, $title, $body, $date)) break;
         } else {
-            if(strpos($code, 'lts') == false) //lts except!!!
-                \Drupal::logger(__FUNCTION__)->notice('error get $code=>' . $code . '$title=>' . $title . '$date=>' . $date . '$tid=>' . $tid);
+            \Drupal::logger(__FUNCTION__)->notice('error get $code=>' . $code . '$title=>' . $title . '$date=>' . $date . '$tid=>' . $tid);
         }
     }
 
