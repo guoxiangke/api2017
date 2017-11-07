@@ -17,7 +17,7 @@ class SsoController extends ControllerBase
 	{
 		$openid = \Drupal::request()->query->get('openid');
 		$access_token = \Drupal::request()->query->get('token');
-        $destination = \Drupal::request()->query->get('dest');
+    $destination = \Drupal::request()->query->get('dest');
 		/* @var $account User */
 		$account = user_load_by_name($openid);
 		if (!$account) {
@@ -25,15 +25,19 @@ class SsoController extends ControllerBase
 			$weObj = _mp_service_init_wechat($uid);
 //			$user_info = $weObj->getUserInfo($openid);
 			$user_info = $weObj->getOauthUserinfo($access_token, $openid);
-			$account = wechat_api_save_account($user_info);
-			user_login_finalize($account);
-			drupal_set_message('登记会员成功,左上角关闭本页,回复编码获取资源吧!','status');
-			\Drupal::logger('SSO login & create account')->notice($account->id().'login success');
+			if($user_info['subscribe']==0){
+				drupal_set_message('您还没有关注微信：永不止息,不可使用回复编码获取资源!','error');	
+			}else{
+				$account = wechat_api_save_account($user_info);
+				user_login_finalize($account);
+				drupal_set_message('登记会员成功,左上角关闭本页,回复编码获取资源吧!','status');
+				\Drupal::logger('SSO login & create account')->notice($account->id().'login success');
+			}
 		}else {
 			user_login_finalize($account);
 			\Drupal::logger('SSO login')->notice($account->id().' : login success');
 		}
-        $url = Url::fromUri('internal:/'.$destination);
+    $url = Url::fromUri('internal:/'.$destination);
 		return new RedirectResponse($url->toString());//Url::fromRoute('<front>')->toString()
 	}
 }
