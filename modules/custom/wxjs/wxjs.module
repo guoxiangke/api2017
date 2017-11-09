@@ -74,7 +74,7 @@ function wxjs_preprocess_page(&$variables)
                 $profile = \Drupal::entityTypeManager()->getStorage('profile')
                     ->loadByUser($account, $profile_type);
                 if($profile){
-                    $headimgurl = $profile->get('field_mp_accounts_hd_head_img')->value;
+                    $headimgurl = $profile->get('field_mp_accounts_hd_head_img')->value .'?type=1.jpg';
                     $shareData['imgUrl'] = str_replace('http://', 'https://', $headimgurl);
                 }
             }
