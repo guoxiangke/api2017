@@ -34,6 +34,9 @@ p{
 .logo img{
 	max-height: 32px;
 }
+.region-content{
+	padding-bottom: 50px;
+}
 
 
 /*http://api.localhost/taxonomy/term/354*/
@@ -79,6 +82,10 @@ p{
     padding: 5px 0;
     border-bottom: 1px dotted #f0f0f0;
     color: #888888;
+}
+
+.field--type-text-long img{
+	width: 100%;
 }
 
 .flex-row{
