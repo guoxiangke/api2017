@@ -93,3 +93,38 @@ function ybzx_preprocess_taxonomy_term(&$variables) {
 	//if pid == wechat-comments!!!
 	//list sub items node
 }
+
+
+
+/**
+ * Implements hook_preprocess_HOOK() for node.html.twig.
+ * @see bartik_preprocess_node
+ * @see template_preprocess_node
+ */
+function ybzx_preprocess_node(&$variables) {
+	$variables['node'] = $variables['elements']['#node'];
+	/** @var \Drupal\node\NodeInterface $node */
+	$node = $variables['node'];
+	if($node->bundle()=='lymeta'){
+//		dpm($node->getType());
+		$tid = $node->get('field_lymeta_tid')->getString();
+		$term = Term::load($tid);//		entity_load()
+		$code = $term->get('field_term_lylist_code')->getString();//ee
+		$date = date('ymd',$node->getCreatedTime());//20170421
+
+		$https = 'https://';
+		$cdnlink = $https . 'lywxaudio.yongbuzhixi.com';
+		$tmp_path = '/' . date('Y',time()) . '/' . $code . '/' . $code;
+		$path = $tmp_path . $date . '.mp3';// /2016/rt/rt161127.mp3
+		$musicurl = $cdnlink . $path . upyun_get_token($path);//depends on lyapi.module
+		$variables['audio'] = $musicurl;
+	}
+	//fix bug todo: delete!!!
+	if($node->bundle()=='article'){
+		$vid = $node->get('field_article_video')->getString();
+		if(stripos($vid,'vid') !== false){
+    		$node->set('field_article_video', '');
+    		$node->save();
+		}
+	}
+}
