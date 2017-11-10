@@ -31,6 +31,9 @@ p{
 .field--name-comment-body{
 	text-align: justify;
 }
+.logo img{
+	max-height: 32px;
+}
 
 
 /*http://api.localhost/taxonomy/term/354*/
