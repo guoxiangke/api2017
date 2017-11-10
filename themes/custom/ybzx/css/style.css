@@ -109,6 +109,9 @@ p{
 ul.links>li.comment-forbidden{
 	display: none;
 }
+#edit-preview{
+	display: none;
+}
 #edit-comment-body-0-format {
     display: none;
 }
