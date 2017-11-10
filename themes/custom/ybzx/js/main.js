@@ -14,7 +14,7 @@
   $(document).ready(function(){
 		$('.data-open').click(function(e){
   		$(this).toggleClass("data-close");
-  		$(this).parents('.wcn-indent-p').find('.sub-articles').toggle( "fast" );
+  		$(this).parent('div').next('.sub-articles').toggle( "fast" );
   	})
   });
 })(jQuery);
