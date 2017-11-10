@@ -725,6 +725,7 @@ function wechat_api_user_view(array &$build, UserInterface $account, EntityViewD
 function mp_getwxcontent($link, $weObj=NULL)
 {
 //	$link = 'http://mp.weixin.qq.com/s/NjVh2b8woG5Fng5lckJdgw';
+    $link = str_replace('http://', 'https://', $link);
     $arrContextOptions = array(
         "ssl" => array(
             "verify_peer"      => false,
@@ -785,13 +786,14 @@ function mp_getwxcontent($link, $weObj=NULL)
 
         preg_match('/ori_head_img_url = "(.+)"/', $ori_html, $matchs);
         $ori_head_img_url = $matchs[1];//http://wx.qlogo.cn/mmhead/Q3auHgzwzM61GZDBsZt7uZVk3iacQ5YUsWS2hTrSXs0Vul6NYU3Hh3A/0
+        $ori_head_img_url = str_replace('http://', 'https://', $ori_head_img_url);
         $user->set('field_user_picture_url', $ori_head_img_url);
         $user->save();
         
         preg_match('/msg_link = "(.+)"/', $ori_html, $matchs);
         $msg_link = str_replace('\x26amp;','&',$matchs[1]);
         $qr_link =  str_replace('s?','mp/qrcode?scene=10000005&size=102&',$msg_link);
-
+        $qr_link = str_replace('http://', 'https://', $qr_link);
         // $field_mp_accounts_qrcode = 'https://mp.weixin.qq.com/mp/qrcode?scene=10000005&size=502&__biz=' . $fakeid;//https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=MjM5MTA4MzQ0MA==
         $wxid = $html->find('.profile_meta_value', 0)->plaintext;//shenghuowuguojie
         $intro = $html->find('.profile_meta_value', -1)->plaintext;
@@ -831,10 +833,12 @@ function mp_getwxcontent($link, $weObj=NULL)
     preg_match('/\?vid=\S[^"|^&|^+]+/', $ori_html, $matchs);//?vid=s0354348eo8
     if (isset($matchs[0])) {
         $video_url = str_replace('?vid=', '', $matchs[0]);
+        $video_url = str_replace('http://', 'https://', $video_url);
     }
 
     if ($html->find('mpvoice', 0)) {
         $voice_url = 'http://res.wx.qq.com/voice/getvoice?mediaid=' . $html->find('mpvoice', 0)->voice_encode_fileid;
+        $voice_url = str_replace('http://', 'https://', $voice_url);
     }
 
     $body = $html->find('#js_content', 0)->outertext;
@@ -935,6 +939,7 @@ function mp_getwxcontent($link, $weObj=NULL)
     if($author==$field_user_name) $author='';
     preg_match('/var msg_cdn_url = "(\S+)"/', $ori_html, $matchs);
     $head_img_url = $matchs[1];
+    $head_img_url = str_replace('http://', 'https://', $head_img_url);
     $node->set('field_image_url', $head_img_url);//原文标题
 
     /* @var  $weObj Wechat */
