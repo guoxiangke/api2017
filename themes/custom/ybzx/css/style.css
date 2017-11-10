@@ -1,0 +1,165 @@
+/**
+ * Place your custom styles here.
+ */
+a {
+    color: #555;
+}
+a:hover,
+a:focus {
+    color: black;
+    text-decoration: underline
+}
+.region-content a{
+	text-decoration: underline;
+}
+body {
+	margin: 0;
+	font-family: Helvetica, Arial, "Hiragino Sans GB", sans-serif;
+	font-size: 14px;
+	line-height: 2em;
+	color: #555555;
+	background-color: white;
+}
+h1,.h1,
+h2,.h2{
+	font-size: 24px;
+}
+p{
+	margin-bottom: 20px;
+	text-align: justify;
+}
+.field--name-comment-body{
+	text-align: justify;
+}
+
+
+/*http://api.localhost/taxonomy/term/354*/
+.wechat_comments-indent{
+	padding-left: 0;
+	list-style: none;
+}
+.wechat_comments-indent>li{
+	font-weight: bolder;
+	padding-top: 10px;
+}
+.wechat_comments-indent>li>ul>li{
+	font-weight: normal;
+	padding-top: 0px;
+}
+.wcn-indent-p .wechat_comments-indent{
+	padding-left: 1.5em;
+}
+.wcn-indent-p .wechat_comments-indent li{
+	padding: 15px 0; 
+	border-bottom:1px solid #f0f0f0;
+  color:#888888;
+}
+
+.data-open::after {
+		margin-left: 3px;
+    content: "▶";
+    font-size: 12px;
+}
+.data-close::after {
+	  margin-left: 3px;
+    content: "▼";
+    font-size: 12px;
+    color: rgb(0, 0, 0);
+}
+.sub-articles{
+	display: none;
+}
+.sub-articles p{
+	padding-left: 1em;
+}
+.wcn-indent-p .wechat_comments-indent ol li {
+    padding: 5px 0;
+    border-bottom: 1px dotted #f0f0f0;
+    color: #888888;
+}
+
+.flex-row{
+  display: flex;
+  flex-direction: row;
+}
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
+.flex-space-between{
+  justify-content: space-between;
+}
+.flex-row.flex-center{
+  justify-content: center;
+}
+.flex-row.justity-start{
+  justify-content: flex-start;
+}
+
+
+
+/*comments*/
+.comment-form .field--name-subject, 
+.comment-form .field--name-comment-body label {
+    display: none;
+}
+ul.links>li.comment-forbidden{
+	display: none;
+}
+#edit-comment-body-0-format {
+    display: none;
+}
+.comment-wrapper  h2.title{
+	display: none;
+}
+.ybzx-comments-main{
+	margin-top: 30px;
+}
+.js-comment h3,
+.indented .comment__time,
+.indented .comment-reply,
+.comment-forbidden{
+	display: none;
+}
+.js-comment img{
+	max-width: 40px;
+	overflow: hidden;
+	border-radius: 50%;
+}
+.indented .js-comment img{
+	max-width: 30px;
+	border-radius: 0;
+}
+.indented{
+	margin-left: 50px;
+}
+.comment__author a{
+	text-decoration: none;
+	color: #000;
+}
+
+.ybzx-comment{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.ybzx-c-body{
+	margin-left: 15px;
+}
+.ybzx-c-body p{
+	margin: 0;
+}
+.ybzx-comment .comment__time,
+.ybzx-comment .links{
+	color: #999ca0;
+	font-size: 12px;
+}
+.ybzx-comment .links{
+	color: #000;
+}
+
+
+/* /mpaccounts */
+.view-mp-accounts img{
+    max-width: 50px;
+}
