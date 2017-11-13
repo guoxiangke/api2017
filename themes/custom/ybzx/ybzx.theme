@@ -128,3 +128,8 @@ function ybzx_preprocess_node(&$variables) {
 		}
 	}
 }
+
+function ybzx_preprocess(&$variables, $hook)
+{
+    $variables['base_path'] = base_path();
+}

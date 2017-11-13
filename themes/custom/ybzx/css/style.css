@@ -9,20 +9,11 @@ a:focus {
     color: black;
     text-decoration: underline
 }
-.region-content a{
-	text-decoration: underline;
-}
-.region-content h1 a,
-.region-content h2 a,
-.region-content h3 a,
-.region-content h4 a,
-.region-content h5 a{
-	text-decoration: none;
-}
+
 body {
 	margin: 0;
-	font-family: "Microsoft YaHei", "Microsoft JhengHei","STHeiti", Arial, Helvetica, sans-serif;
-	font-size: 14px;
+	font-family: Georgia,"Times New Roman",Times,"Microsoft YaHei", "Microsoft JhengHei","STHeiti", Arial, Helvetica, sans-serif;
+	font-size: 16px;
 	line-height: 2em;
 	color: #555555;
 	background-color: white;
@@ -65,6 +56,9 @@ a.logo img{
 a.navbar-btn{
 	margin-bottom: 0; 
 }
+.navbar .logo{
+	padding-right: 5px;
+}
 /*moile menu*/
 ul.menu.navbar-nav li{
 	border-bottom: 1px dotted #ddd;
@@ -72,7 +66,10 @@ ul.menu.navbar-nav li{
 ul.menu.navbar-nav li:last-child{
 	border-bottom: none;
 }
-
+/*h1*/
+h1.page-header {
+    font-family: Georgia,"Times New Roman",Times,"Kai","Kaiti SC","KaiTi","BiauKai","楷体","楷体_GB2312",serif;
+}
 .select-wrapper .shs-container select,
 .input-sm{
 	height: 30px;
