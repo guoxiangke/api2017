@@ -14,18 +14,29 @@ a:focus {
 }
 body {
 	margin: 0;
-	font-family: Helvetica, Arial, "Hiragino Sans GB", sans-serif;
+	font-family: "Microsoft YaHei", "Microsoft JhengHei","STHeiti", Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	line-height: 2em;
 	color: #555555;
 	background-color: white;
 }
-h1,.h1,
-h2,.h2{
+h1,.h1{
 	font-size: 24px;
 }
+h2,.h2{
+	font-size: 20px;
+}
+h3,.h3{
+	font-size: 18px;
+}
+h4,.h4{
+	font-size: 16px;
+}
+h5,.h5{
+	font-size: 14px;
+}
 p{
-	margin-bottom: 20px;
+	/*margin-bottom: 20px;*/
 	text-align: justify;
 }
 .field--name-comment-body{
@@ -39,6 +50,20 @@ p{
 }
 
 
+.select-wrapper .shs-container select,
+.input-sm{
+	height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.select-wrapper,.shs-container{
+	width: auto;
+}
+.shs-widget-container {
+	margin-right: 6px;
+}
 /*http://api.localhost/taxonomy/term/354*/
 .wechat_comments-indent{
 	padding-left: 0;
