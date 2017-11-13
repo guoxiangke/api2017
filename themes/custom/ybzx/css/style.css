@@ -221,3 +221,9 @@ ul.links>li.comment-forbidden{
 .view-mp-accounts img{
     max-width: 50px;
 }
+
+
+/*mp3 player*/
+.audiofield audio{
+	width: 100%;
+}
