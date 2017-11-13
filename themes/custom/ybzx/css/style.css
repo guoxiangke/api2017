@@ -227,3 +227,15 @@ ul.links>li.comment-forbidden{
 .audiofield audio{
 	width: 100%;
 }
+/*tags*/
+.field__items .field--item{
+	font-size: 12px;
+	padding: 0 15px;
+	display: inline-block;
+	border-radius:5px;
+	background-color:#1AAD16;
+}
+.field__items .field--item a{
+	color:#fff;	
+	letter-spacing:2px;
+}
