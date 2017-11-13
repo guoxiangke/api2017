@@ -55,7 +55,7 @@
 
 {% if label_hidden %}
   {% for item in items %}
-    <iframe id='video_top_audio' frameborder="0" width="100%" height="72px" src="//waveplayer.cdn.bcebos.com/player.html?url={{ item.content }}&tiny=0&auto=0" allowfullscreen></iframe>
+    <iframe id='video_top_audio' frameborder="0" width="100%" height="72px" src="//waveplayer.cdn.bcebos.com/nocors.html?url={{ item.content }}&tiny=0&auto=0" allowfullscreen></iframe>
     {# <div{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</div> #}
   {% endfor %}
 {% endif %}
