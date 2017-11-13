@@ -12,6 +12,13 @@ a:focus {
 .region-content a{
 	text-decoration: underline;
 }
+.region-content h1 a,
+.region-content h2 a,
+.region-content h3 a,
+.region-content h4 a,
+.region-content h5 a{
+	text-decoration: none;
+}
 body {
 	margin: 0;
 	font-family: "Microsoft YaHei", "Microsoft JhengHei","STHeiti", Arial, Helvetica, sans-serif;
@@ -42,13 +49,29 @@ p{
 .field--name-comment-body{
 	text-align: justify;
 }
-.logo img{
-	max-height: 32px;
-}
+
 .region-content{
 	padding-bottom: 50px;
 }
-
+/*logo*/
+.navbar-header .region-navigation{
+  line-height: 50px;
+}
+a.logo img{
+	vertical-align: middle;
+	display: inline-block;
+	max-height: 32px;
+}
+a.navbar-btn{
+	margin-bottom: 0; 
+}
+/*moile menu*/
+ul.menu.navbar-nav li{
+	border-bottom: 1px dotted #ddd;
+}
+ul.menu.navbar-nav li:last-child{
+	border-bottom: none;
+}
 
 .select-wrapper .shs-container select,
 .input-sm{
