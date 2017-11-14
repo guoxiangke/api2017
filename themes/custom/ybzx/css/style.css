@@ -246,7 +246,6 @@ ul.links>li.comment-forbidden{
 .full .ybzx-node-submit {
 	position: fixed;
   left: 0;
-  right: 0;
   bottom: 0;
   padding: 5px;
   z-index: 1000;
@@ -256,6 +255,13 @@ ul.links>li.comment-forbidden{
 	text-align: center;
 	font-size: 12px;
 }
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) { 
+	.full .ybzx-node-submit {
+  	right: 0;
+	}
+}
+
 .teaser .ybzx-node-submit {
 	display: none;
 }
@@ -267,7 +273,7 @@ ul.links>li.comment-forbidden{
 	text-decoration: none;
 }
 .wechat-account-pic{
-	max-height: 35px;
+	max-height: 30px;
 	border-radius: 50%;
 }
 .ybzx-node-author-picture{
