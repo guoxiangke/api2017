@@ -89,7 +89,8 @@
     <div class="ybzx-node-submit well flex-row flex-space-between">
       <div class="ybzx-node-author-picture">{{ author_picture }}</div>
       <div{{ author_attributes.addClass('author') }}>
-        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        来自 {{ author_name }} {{ date }}
+        {#% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %#}
         {{ metadata }}
       </div>
     </div>
