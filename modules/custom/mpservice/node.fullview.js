@@ -16,7 +16,7 @@
       if($(this).find('img').length>0) {
         return;
       }
-      if($(this).text().length<=6)
+      if($(this).text().length<=2)
         $(this).remove()
     })
     $('.field--name-body p br').remove();
