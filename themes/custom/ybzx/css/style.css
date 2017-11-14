@@ -243,7 +243,7 @@ ul.links>li.comment-forbidden{
 }
 
 /**/
-.ybzx-node-submit {
+.full .ybzx-node-submit {
 	position: fixed;
   left: 0;
   bottom: 0;
@@ -253,6 +253,9 @@ ul.links>li.comment-forbidden{
 	border-left: none;
 	border-bottom: none; 
 	text-align: center;
+}
+.teaser .ybzx-node-submit {
+	display: none;
 }
 .ybzx-node-submit a{
 	text-decoration: underline;
