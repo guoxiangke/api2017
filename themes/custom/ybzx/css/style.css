@@ -9,7 +9,9 @@ a:focus {
     color: black;
     text-decoration: underline
 }
-
+.field--name-body a{
+	text-decoration: underline;
+}
 body {
 	margin: 0;
 	font-family: Georgia,"Times New Roman",Times,"Microsoft YaHei", "Microsoft JhengHei","STHeiti", Arial, Helvetica, sans-serif;
