@@ -247,12 +247,13 @@ ul.links>li.comment-forbidden{
 	position: fixed;
   left: 0;
   bottom: 0;
-  padding: 15px;
+  padding: 5px;
   z-index: 1000;
 	margin-bottom:0;
 	border-left: none;
 	border-bottom: none; 
 	text-align: center;
+	font-size: 12px;
 }
 .teaser .ybzx-node-submit {
 	display: none;
