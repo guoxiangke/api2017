@@ -158,6 +158,60 @@ class WxapiController extends ControllerBase {
 
 			$res[] = $node->id();
 		}
+		//每日亲近神
+		$url = 'http://www.hvsha-tpehoc.com/api/PortalIPS/vwInfoCategory/GetvwInfoByCategoryIDPage?CategoryID=2ed87021-5ac1-4fe8-860c-efb88331e859&page=1&pageSize=1';
+    $str = file_get_contents($url);
+    $str=json_decode($str);
+    $res=[];
+    foreach ($str->data as $key => $item) {
+      $time_str = $item->ShowTime; //2017-09-23 00:00:00
+      $created = strtotime($time_str);
+      // $date = date('Ymd',$created);
+      // $fields = ['status'=>1,'created'=>$created];//tid=514
+      // $nid = tools_wxapi_get_nid($fields,'article');
+      // if($nid){// load set save
+      //   // $node = Node::load($nid);
+      //   // if($node->body->summary !==$item->Description){
+      //   //   $node->body->value = $item->ContentNoHTML;
+      //   //   $node->body->summary = $item->Description;
+      //   //   $node->save();
+      //   // }
+      // }else
+      {//create the node!!!
+        $new_title = explode('》', $item->Title);
+        if(isset($new_title[1])) {
+          $new_title=$new_title[1];
+        }else{
+          $new_title=$item->Title;
+        }
+        $body = $item->Content;
+        $body = preg_replace('/style="(.*?)"/', '', $body);
+        $newNode = [
+          'type'             => 'article',
+          'created'          => $created,
+          'changed'          => $created,
+          'uid'              => 46, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
+          'title'            => $new_title,
+          // An array with taxonomy terms.
+          // 514
+          'field_tags' =>[514],
+          'field_article_wechat_term' => [240],
+          'field_article_audio'=>'http://www.hvsha-tpehoc.com'.$item->VideoUrl,
+          'body'             => [
+              'summary' => $item->Description,
+              'value'   => $body,
+              'format'  => 'full_html',
+          ],
+        ];
+        $node = Node::create($newNode);
+        $node->save();
+        // \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/grace/$date", "und");
+        \Drupal::logger('wxapi_cron_update_tp')->notice('Daily %nid created @title.',['%nid'=>$node->id(),'@title'=>$title]);
+        // dpm($node->id(),$newNode);
+      }
+      break;
+    }
+		//end
 		return new JsonResponse($res);
 	}
 	public function getWxPost(Request $request){
