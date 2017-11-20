@@ -373,13 +373,13 @@ function wechat_api_wxresources_event_alter(Wechat $weObj)
             if (is_string($event['key'])) {
                 $keyword = $event['key'];
                 $resources = \Drupal::moduleHandler()->invokeAll('wxresources_alter', array($keyword, $weObj));
-                ga_push_add_event(array(
-                    'eventCategory'        => $resources['ga_data']['category'],
-                    'eventAction'          => $resources['ga_data']['action'],
-                    'eventLabel'           => 'event_menu_click',
-                    'eventValue'           => 0,
-                    // 'nonInteraction'       => FALSE,
-                ));
+                // ga_push_add_event(array(
+                //     'eventCategory'        => $resources['ga_data']['category'],
+                //     'eventAction'          => $resources['ga_data']['action'],
+                //     'eventLabel'           => 'event_menu_click',
+                //     'eventValue'           => 0,
+                //     // 'nonInteraction'       => FALSE,
+                // ));
             }
             break;
         case 'WifiConnected':
