@@ -317,7 +317,8 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
     if($is_lywx){
         //金句
         if($keyword=='金句'){
-            $jpg = '@/sites/default/files/jinju/'.date('W').'.jpg';
+            $file_path = DRUPAL_ROOT.'/sites/default/files/jinju/';
+            $jpg = '@'.$file_path.date('W').'.jpg';
             $resources = [
                 'keyword' => $keyword,
                 'type'    => 'image',
