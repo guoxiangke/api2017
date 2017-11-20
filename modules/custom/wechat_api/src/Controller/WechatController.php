@@ -104,9 +104,10 @@ class WechatController extends ControllerBase
 				break;
 			case 'image':
 				$cached_resources_keyword = 'wxresources_' .$weObj->uid.'_'. $resources['keyword'];
+		    \Drupal::logger('$cached_resources_keyword')->notice('<pre>'.var_export($cached_resources_keyword,1));
 		    if ($cache = \Drupal::cache()->get($cached_resources_keyword)) {
 		        $return = $cache->data;
-		        \Drupal::logger($cached_resources_keyword)->notice('<pre>'.var_export($return,1));
+		        \Drupal::logger('$return2')->notice('<pre>'.var_export($return,1));
 		    } else {
 		        set_time_limit(0);
 	        	$return = $weObj->uploadMedia($resources['obj'],'image');
