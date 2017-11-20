@@ -314,6 +314,24 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
         }
     }
 
+    if($is_lywx){
+        //金句
+        if($keyword=='金句'){
+            $jpg = '@/sites/default/files/jinju/'.data('W').'.jpg';
+            $resources = [
+                'keyword' => $keyword,
+                'type'    => 'image',
+                'expire'  => -1,
+                'obj'     => array('media'=>$jpg),
+                'ga_data' => array(
+                    'category' => 'lyapi_ju',
+                    'action'   => 'get',
+                ),
+            ];
+            return $resources;
+        }
+    }
+
     if($is_lywx)
     if (preg_match('/\D+/', $keyword)){ //非数字
 //        $weObj->transfer_customer_service()->reply();

@@ -102,6 +102,15 @@ class WechatController extends ControllerBase
 				$new = $resources['obj'];
 				$weObj->news($new);
 				break;
+			case 'image':
+        set_time_limit(0);
+        $return = $weObj->uploadMedia($resources['obj'],'image');//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
+        if(isset($return['media_id'])){
+          $weObj->image($return['media_id'])->reply();
+        }else{
+          $weObj->text("活动火爆，系统繁忙，请再试一次！[握手]")->reply();
+        }
+				break;
 			case 'ga':
 				// do nothings only for google analytics
 				break;
