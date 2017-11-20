@@ -105,7 +105,8 @@ class WechatController extends ControllerBase
 			case 'image':
         set_time_limit(0);
         $return = $weObj->uploadMedia($resources['obj'],'image');//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
-        // \Drupal::logger('$return')->notice('<pre>'.var_export($return,1));
+				\Drupal::logger('$resources')->notice('<pre>'.var_export($resources,1));
+        \Drupal::logger('$return')->notice('<pre>'.var_export($return,1));
         if(isset($return['media_id'])){
           $weObj->image($return['media_id'])->reply();
         }else{
