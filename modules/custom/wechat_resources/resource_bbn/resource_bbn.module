@@ -50,7 +50,7 @@ function resource_bbn_wxresources_alter($keyword,Wechat $weObj=NULL){
 function mp_bbn_response($keyword,$appname) {
 	$change_keyword = $keyword;
 	//TODO::dependcy!!!
-	$json = file_get_contents('http://bbn.yongbuzhixi.com/cron/bbn/json/'.date('Ym').'/'. date('Ymd') . '.json');
+	$json = file_get_contents('https://bbn.yongbuzhixi.com/cron/bbn/json/'.date('Ym').'/'. date('Ymd') . '.json');
 	$json = json_decode($json);
 	require_once('bbn.inc');
 	if($keyword == '400'){
