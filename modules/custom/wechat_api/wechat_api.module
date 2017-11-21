@@ -868,8 +868,8 @@ function mp_getwxcontent($link, $weObj=NULL)
     $field_user_name = $html->find('#post-user', 0)->plaintext;
 //	$node->field_sourcex[LANGUAGE_NONE][0]['value'] = $field_user_name;//文章来源
     preg_match('/var ct = "(\S+)"/', $ori_html, $matchs);
-    $ct = $matchs[1];
-    $created=$ct+8*3600;
+    $created = $matchs[1];
+    // $created=$ct+8*3600;
 
     $_tmp_array = [
         'type'    => 'article',
