@@ -24,8 +24,9 @@ function wxapi_cron() {
     $query->addField('t', 'uid');
     // $query->condition('t.bundle', 'wechat_account_data');
     $query->condition('t.uid', $subquery_result, 'NOT IN');
-    $query->range(0, 500);
+    $query->range(0, 1000);
     $uids = array_keys($query->execute()->fetchAllAssoc('uid'));
+
     foreach ($uids as $uid) {
         $user = User::load($uid);
         $profile_type = 'wechat_account_data';
@@ -33,7 +34,7 @@ function wxapi_cron() {
         $profile = \Drupal::entityTypeManager()->getStorage('profile')
             ->loadByUser($user, $profile_type);
         if ($profile && $profile->get('field_mp_accounts_hd_head_img')->value!=$user->get('field_user_picture_url')->value) {
-            // \Drupal::logger('wxapi_cron')->notice($uid);
+            \Drupal::logger('wxapi_cron')->notice($uid);
             $user->set('field_user_picture_url', $profile->get('field_mp_accounts_hd_head_img')->value);
             $user->save();
             \Drupal::logger('wxapi_account_cron')->notice($uid);
@@ -46,6 +47,9 @@ function wxapi_cron() {
               \Drupal::logger('wxapi_cron')->notice($uid);
               $user->set('field_user_picture_url', $profile->get('field_wxuser_headimgurl')->value);
               $user->save();
+          }else{
+            // \Drupal::logger('wxapi_cron_delete')->notice($uid);
+            // $user->delete();
           }
         }
     }
