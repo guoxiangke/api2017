@@ -3,10 +3,12 @@
 function mpservice_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $node, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
 	if($view_mode=='full'){
 		$build['#attached']['library'][] = 'mpservice/drupal.node.fullview';
-
-		if($node->get('field_video_url')->value)
-			$build['#attached']['drupalSettings']['node']['video'] = $node->get('field_video_url')->value;
-		if($node->get('field_article_audio')->value)
-			$build['#attached']['drupalSettings']['node']['audio'] = $node->get('field_article_audio')->value;
+		
+		if($node->bundle()=='article'){
+			if($node->get('field_video_url')->value)
+				$build['#attached']['drupalSettings']['node']['video'] = $node->get('field_video_url')->value;
+			if($node->get('field_article_audio')->value)
+				$build['#attached']['drupalSettings']['node']['audio'] = $node->get('field_article_audio')->value;
+		}
 	}
 }
