@@ -1,16 +1,15 @@
-langcode: zh-hans
+langcode: en
 status: true
 dependencies:
   module:
     - node
-id: node.field_article_video
-field_name: field_article_video
+id: node.field_wx_nid
+field_name: field_wx_nid
 entity_type: node
-type: string
+type: integer
 settings:
-  max_length: 255
-  is_ascii: false
-  case_sensitive: false
+  unsigned: false
+  size: normal
 module: core
 locked: false
 cardinality: 1

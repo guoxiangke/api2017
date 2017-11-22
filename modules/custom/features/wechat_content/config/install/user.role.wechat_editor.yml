@@ -1,7 +1,7 @@
-langcode: en
+langcode: zh-hans
 status: true
 dependencies: {  }
 id: wechat_editor
-label: 'Wechat editor'
+label: 微信小蜜蜂
 weight: 6
 is_admin: null

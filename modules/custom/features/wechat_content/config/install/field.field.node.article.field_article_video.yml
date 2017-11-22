@@ -1,4 +1,4 @@
-langcode: en
+langcode: zh-hans
 status: true
 dependencies:
   config:
@@ -8,8 +8,8 @@ id: node.article.field_article_video
 field_name: field_article_video
 entity_type: node
 bundle: article
-label: 视频链接
-description: 最多一个视频，总是在文章上面
+label: QQ视频vid
+description: qq视频ID，自动从图文抓取
 required: false
 translatable: false
 default_value: {  }

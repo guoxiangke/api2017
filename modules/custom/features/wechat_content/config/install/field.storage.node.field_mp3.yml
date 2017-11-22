@@ -1,17 +1,19 @@
-langcode: zh-hans
+langcode: en
 status: true
 dependencies:
   module:
+    - file
     - node
-id: node.field_article_video
-field_name: field_article_video
+id: node.field_mp3
+field_name: field_mp3
 entity_type: node
-type: string
+type: file
 settings:
-  max_length: 255
-  is_ascii: false
-  case_sensitive: false
-module: core
+  display_field: false
+  display_default: false
+  uri_scheme: public
+  target_type: file
+module: file
 locked: false
 cardinality: 1
 translatable: true

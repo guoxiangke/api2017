@@ -1,14 +1,14 @@
-langcode: zh-hans
+langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_article_link
+    - field.storage.node.field_image_url
     - node.type.article
-id: node.article.field_article_link
-field_name: field_article_link
+id: node.article.field_image_url
+field_name: field_image_url
 entity_type: node
 bundle: article
-label: 原文链接
+label: 图片链接URL
 description: ''
 required: false
 translatable: false

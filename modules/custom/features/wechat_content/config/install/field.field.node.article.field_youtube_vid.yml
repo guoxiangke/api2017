@@ -1,17 +1,17 @@
-langcode: zh-hans
+langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_article_link
+    - field.storage.node.field_youtube_vid
     - node.type.article
-id: node.article.field_article_link
-field_name: field_article_link
+id: node.article.field_youtube_vid
+field_name: field_youtube_vid
 entity_type: node
 bundle: article
-label: 原文链接
+label: youtube_vid
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

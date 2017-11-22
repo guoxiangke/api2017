@@ -1,4 +1,4 @@
-langcode: en
+langcode: zh-hans
 status: true
 dependencies:
   config:
@@ -8,8 +8,8 @@ id: node.article.field_article_audio
 field_name: field_article_audio
 entity_type: node
 bundle: article
-label: 音频链接
-description: 最多有一个音频，总是在页面最上面
+label: 音频链接URL
+description: ''
 required: false
 translatable: false
 default_value: {  }

@@ -1,4 +1,4 @@
-langcode: en
+langcode: zh-hans
 status: true
 dependencies:
   config:
@@ -24,6 +24,7 @@ mode: rss
 content:
   links:
     weight: 100
+    region: content
 hidden:
   body: true
   comment: true
@@ -36,3 +37,4 @@ hidden:
   field_aticle_title: true
   field_image: true
   field_tags: true
+  langcode: true

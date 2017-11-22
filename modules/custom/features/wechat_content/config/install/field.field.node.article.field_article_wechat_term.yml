@@ -1,4 +1,4 @@
-langcode: en
+langcode: zh-hans
 status: true
 dependencies:
   config:
@@ -9,8 +9,8 @@ id: node.article.field_article_wechat_term
 field_name: field_article_wechat_term
 entity_type: node
 bundle: article
-label: 关联公众号文章分类
-description: '默认自己的term，自己选择子分类，子分类has term image'
+label: 文章分类
+description: 务必填写
 required: false
 translatable: false
 default_value: {  }

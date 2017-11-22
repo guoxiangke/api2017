@@ -1,4 +1,4 @@
-langcode: en
+langcode: zh-hans
 status: true
 dependencies:
   config:
@@ -21,6 +21,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_mp_accounts_ghid:
     weight: 3
     settings:
@@ -28,6 +29,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_mp_accounts_hd_head_img:
     weight: 5
     settings:
@@ -35,6 +37,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_mp_accounts_id:
     weight: 6
     settings:
@@ -42,6 +45,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_mp_accounts_intro:
     weight: 7
     settings:
@@ -49,6 +53,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
   field_mp_accounts_qrcode:
     weight: 8
     settings:
@@ -56,4 +61,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+    region: content
 hidden: {  }
