@@ -5,7 +5,6 @@ use Drupal\Core\Url;
 
 
 // [
-// 	'field_fytv_video_id'=>45053,
 // 	'status'=>1,  // NodeInterface::PUBLISHED
 //  'promote'=>1
 //  'sticky'=>1
