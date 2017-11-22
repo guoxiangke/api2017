@@ -891,8 +891,8 @@ function mp_getwxcontent($link, $weObj=NULL)
         $date = $matchs[0];
         $time_str = substr($date, 0,4).'-'.substr($date, 4,2).'-'.substr($date, 6,2)." 00:00:00";
         $created = strtotime($time_str);
-        $fields = ['status'=>1,'created'=>$created];
-        $nid = tools_wxapi_get_nid($fields,'grace');
+        $fields = ['status'=>1,'created'=>$created,'field_tags'=>369];//'uid'=>46,
+        $nid = tools_wxapi_get_nid($fields,'article');
         if($nid){
             $node = Node::load($nid);
             $node->field_article_audio->value = $voice_url;
@@ -902,28 +902,19 @@ function mp_getwxcontent($link, $weObj=NULL)
                 'type'    => 'text',//kf_create_session //news //music
                 'expire'  => REQUEST_TIME - 1,//expires soon.
                 //REQUEST_TIME + 43200,//expires later+43200.
+                'obj'     => ['text' => $node->getTitle() . "发布成功！谢谢！[握手]https://api.yongbuzhixi.com/node/$nid"]
+            ];
+            return $resources;
+        }else{
+            $resources = [
+                'keyword' => '_publish_node',
+                'type'    => 'text',//kf_create_session //news //music
+                'expire'  => REQUEST_TIME - 1,//expires soon.
+                //REQUEST_TIME + 43200,//expires later+43200.
                 'obj'     => ['text' => $node->getTitle() . "发布成功！谢谢！[握手]"]
             ];
             return $resources;
         }
-        // dpm($date);
-		// $node->type = 'grace';
-		// $node->promote = 1;
-		// get title
-		// $search =  array('&nbsp;','〔恩典365〕','(附文字版)','/','【恩典365】');
-		// $replace =  array(' ','','','','',);
-		// $title = str_replace($search, $replace, $ori_title);
-		// get $body
-		$begin = strpos($body, '我们天天一起活在神的爱和恩典里面。') + strlen('我们天天一起活在神的爱和恩典里面。');
-		if(!$begin){
-			watchdog('ybread', 'no 365', array(), WATCHDOG_NOTICE, 'link');
-			return 'error!';
-		}
-		$end = strpos($body, '影像及音乐版权均属天声传播协会所有');
-		$body = substr($body,$begin,$end-$begin);
-  
-        $_tmp_array['field_tags'] = [369];
-        $_tmp_array['body']['value'] = $body;
 	}
 
     $copyright = 0;
