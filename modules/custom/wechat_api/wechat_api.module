@@ -885,7 +885,7 @@ function mp_getwxcontent($link, $weObj=NULL)
             'format'  => 'full_html',
         ],
     ];
-	if(strpos($ori_title, '恩典365')!==FALSE){
+    if(strpos($ori_title, '恩典365')!==FALSE){
         // $ori_title = '20170925《恩典365》恩典：承认人生是神掌权';
         preg_match('/\d{8}/', $ori_title, $matchs);
         $date = $matchs[0];
@@ -916,6 +916,12 @@ function mp_getwxcontent($link, $weObj=NULL)
             return $resources;
         }
 	}
+    if(strpos($ori_title, '曼曼成长')!==FALSE){
+        $_tmp_array['field_tags'] = [533];
+        //https://api.yongbuzhixi.com/taxonomy/term/533 曼曼成长记
+        $_tmp_array['field_article_wechat_term'] = [513];
+        //https://api.yongbuzhixi.com/taxonomy/term/513 高广方正面管教
+    }
 
     $copyright = 0;
     $author=trim($html->find('.rich_media_meta_text', 1)->plaintext);
