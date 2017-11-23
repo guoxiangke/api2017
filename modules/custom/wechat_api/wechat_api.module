@@ -829,8 +829,8 @@ function mp_getwxcontent($link, $weObj=NULL)
         ];
         if(strpos($ori_title, '恩典365')!==FALSE){
             $node = Node::load($entity_id);
-            $node->field_tags->value = 369;//恩典365
-            $node->field_article_wechat_term->value = 240;//恩典365基督之家 
+            $node->field_tags = [369];//恩典365
+            $node->field_article_wechat_term = [240];//恩典365基督之家 
             $node->save();
             $resources = [
                 'keyword' => '_update_node',
