@@ -820,13 +820,25 @@ function mp_getwxcontent($link, $weObj=NULL)
 //	get recently article ori title to check!
     if ($entity_id = _check_if_article_exsits($title)) {
         $resources = [
-            'keyword' => '_test',
+            'keyword' => '_already_exsits',
             'type'    => 'text',//kf_create_session //news //music
             'expire'  => REQUEST_TIME - 43200,//expires soon.
             //REQUEST_TIME + 43200,//expires later+43200.
 //			TODO:: {{ path('entity.user.canonical', {'user': user.id}) }}
             'obj'     => ['text' => "啊喔，本文章已发布过！谢谢！[握手]\nhttp://api.yongbuzhixi.com/node/$entity_id"]
         ];
+        if(strpos($ori_title, '恩典365')!==FALSE){
+            $node = Node::load($entity_id);
+            $node->field_tags->value = 369;//恩典365
+            $node->field_article_wechat_term->value = 240;//恩典365基督之家 
+            $node->save();
+            $resources = [
+                'keyword' => '_update_node',
+                'type'    => 'text',
+                'expire'  => REQUEST_TIME - 1,
+                'obj'     => ['text' => $node->getTitle() . "更新成功！谢谢！[握手]https://api.yongbuzhixi.com/node/$entity_id"]
+            ];
+        }
         return $resources;
     }
 
