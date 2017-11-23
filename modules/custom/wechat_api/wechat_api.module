@@ -825,7 +825,7 @@ function mp_getwxcontent($link, $weObj=NULL)
             'expire'  => REQUEST_TIME - 43200,//expires soon.
             //REQUEST_TIME + 43200,//expires later+43200.
 //			TODO:: {{ path('entity.user.canonical', {'user': user.id}) }}
-            'obj'     => ['text' => "<a href='http://api.yongbuzhixi.com/node/" . $entity_id . "'>啊喔，本文章已发布过！</a>谢谢！[握手]"]
+            'obj'     => ['text' => "啊喔，本文章已发布过！谢谢！[握手]\nhttp://api.yongbuzhixi.com/node/$entity_id"]
         ];
         return $resources;
     }
