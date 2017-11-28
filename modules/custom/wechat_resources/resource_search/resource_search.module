@@ -58,6 +58,7 @@ function resource_search_wxresources_alter($keyword, Wechat $weObj = NULL) {
         $count = 7;
         $query = db_select('node_field_data', 'p')
           ->fields('p',array('nid','title'))
+          ->orderBy('created', 'DESC')
           ->condition('title', '%' . db_like($search_word) . '%', 'LIKE')
           ->range(0, $count);
 
