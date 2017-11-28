@@ -55,8 +55,6 @@ function resource_search_wxresources_alter($keyword, Wechat $weObj = NULL) {
         return $resources;
     }
     if ($check_word == 88 && $search_word) {
-        $search_word='365';
-        $uid = 1;
         $count = 7;
         $query = db_select('node_field_data', 'p')
           ->fields('p',array('nid','title'))
