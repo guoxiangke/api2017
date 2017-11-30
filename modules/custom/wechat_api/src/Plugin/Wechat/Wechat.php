@@ -1192,6 +1192,7 @@ class Wechat
    */
   protected function setCache($cachename,$value,$expired){
     //TODO: set cache implementation
+    return \Drupal::cache()->set($cachename, $value, $expired);
     return false;
   }
 
@@ -1202,6 +1203,7 @@ class Wechat
    */
   protected function getCache($cachename){
     //TODO: get cache implementation
+    return \Drupal::cache()->get($cachename);
     return false;
   }
 
