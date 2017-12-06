@@ -144,6 +144,7 @@ class WxapiController extends ControllerBase {
 				}
         $body = $item->Content;
         $body = preg_replace('/style="(.*?)"/', '', strip_tags($body,'<span><p><ul><li><ol><br><section>')) . '<br/>' . $item->Description;
+        $vid = 14253+date('z')-339;//change by time & year!!!
 				$newNode = [
           'type'             => 'article',
           'created'          => $created,
@@ -153,6 +154,7 @@ class WxapiController extends ControllerBase {
           // An array with taxonomy terms.
           'field_tags' =>[369],//恩典365
           'field_article_wechat_term' => [240],//恩典365基督之家 
+          'field_video_url' => 'http://liberum.tw.svc.litv.tv/tpehoc/video/'.$vid.'_400K.mp4',
           'body'             => [
               'summary' => $item->Description,
               'value'   => $body,
