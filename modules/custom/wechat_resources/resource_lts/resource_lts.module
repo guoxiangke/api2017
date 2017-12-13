@@ -17,7 +17,7 @@ $s3 = new S3Client([
   'region'  => 'ap-southeast-1',
 	'credentials' => $credentials
 ]);
-$GLOBALS["s3"] = $s3;
+// $GLOBALS["s3"] = $s3;
 /**
  * hook_rescources_info
  */
@@ -160,7 +160,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 		// watchdog('mp_lts', $link, array(), WATCHDOG_NOTICE, 'link');
 		// $temp = @get_headers($link);
 		// watchdog('mp_lts', '<pre>'.print_r($temp, 1), array(), WATCHDOG_NOTICE, 'link');
-		global $s3;
+		// global $s3;
 		$isExists = $s3->doesObjectExist($bucket, $filename);
 		if(!$isExists){//远程暂无!!!
 			$resources = [
