@@ -6,8 +6,18 @@
  * Time: 10:14 AM
  */
 use Drupal\wechat_api\Plugin\Wechat\Wechat;
-
-
+use Aws\S3\S3Client;
+$credentials = [
+  'key' => \Drupal::config('s3fs.settings')->get('access_key'),
+  'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
+];
+// Instantiate an Amazon S3 client.
+$s3 = new S3Client([
+  'version' => 'latest',
+  'region'  => 'ap-southeast-1',
+	'credentials' => $credentials
+]);
+$GLOBALS["s3"] = $s3;
 /**
  * hook_rescources_info
  */
@@ -138,18 +148,21 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 		return $resources;
 	}
 	if($count==='0'){//获取目录概括+//获取pdf
-		$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
+		$filename = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
 		// $cdn = 'http://lywxlts.yongbuzhixi.com';
-		$cdn = 'http://lylts.s3.yongbuzhixi.com';
-		$etime = time()+864000; // 授权十天后过期
-		$key = 'ly729';   // token 防盗链密钥
-		$path = '/'.$link; // 图片相对路径
+		$bucket='lylts.s3.yongbuzhixi.com';
+		$cdn = 'http://'.$bucket;
+		// $etime = time()+864000; // 授权十天后过期
+		// $key = 'ly729';   // token 防盗链密钥
+		$link = '/'.$filename; // 图片相对路径
 		// $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-		$link = $cdn . $path ;//.'?_upt='.$sign;
+		$http_link = $cdn . $link ;//.'?_upt='.$sign;
 		// watchdog('mp_lts', $link, array(), WATCHDOG_NOTICE, 'link');
-		$temp = @get_headers($link);
+		// $temp = @get_headers($link);
 		// watchdog('mp_lts', '<pre>'.print_r($temp, 1), array(), WATCHDOG_NOTICE, 'link');
-		if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
+		global $s3;
+		$isExists = $s3->doesObjectExist($bucket, $filename);
+		if(!$isExists){//远程暂无!!!
 			$resources = [
 				'keyword' => $keyword,
 				'type' => 'text',
