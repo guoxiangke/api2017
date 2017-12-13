@@ -7,16 +7,6 @@
  */
 use Drupal\wechat_api\Plugin\Wechat\Wechat;
 use Aws\S3\S3Client;
-$credentials = [
-  'key' => \Drupal::config('s3fs.settings')->get('access_key'),
-  'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
-];
-// Instantiate an Amazon S3 client.
-$s3 = new S3Client([
-  'version' => 'latest',
-  'region'  => 'ap-southeast-1',
-	'credentials' => $credentials
-]);
 // $GLOBALS["s3"] = $s3;
 /**
  * hook_rescources_info
@@ -161,6 +151,16 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 		// $temp = @get_headers($link);
 		// watchdog('mp_lts', '<pre>'.print_r($temp, 1), array(), WATCHDOG_NOTICE, 'link');
 		// global $s3;
+		$credentials = [
+		  'key' => \Drupal::config('s3fs.settings')->get('access_key'),
+		  'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
+		];
+		// Instantiate an Amazon S3 client.
+		$s3 = new S3Client([
+		  'version' => 'latest',
+		  'region'  => 'ap-southeast-1',
+			'credentials' => $credentials
+		]);
 		$isExists = $s3->doesObjectExist($bucket, $filename);
 		if(!$isExists){//远程暂无!!!
 			$resources = [
