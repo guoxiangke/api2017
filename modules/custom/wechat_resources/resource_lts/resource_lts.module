@@ -6,6 +6,9 @@
  * Time: 10:14 AM
  */
 use Drupal\wechat_api\Plugin\Wechat\Wechat;
+if (!class_exists('\Aws\S3\S3Client')) {
+	include_once 'libraries/awssdk2/aws-autoloader.php';
+}
 use Aws\S3\S3Client;
 // $GLOBALS["s3"] = $s3;
 /**
