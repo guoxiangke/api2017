@@ -10,7 +10,17 @@ if (!class_exists('\Aws\S3\S3Client')) {
 	include_once 'libraries/awssdk2/aws-autoloader.php';
 }
 use Aws\S3\S3Client;
-// $GLOBALS["s3"] = $s3;
+$credentials = [
+  'key' => \Drupal::config('s3fs.settings')->get('access_key'),
+  'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
+];
+// Instantiate an Amazon S3 client.
+$s3 = new S3Client([
+  'version' => 'latest',
+  'region'  => 'ap-southeast-1',
+	'credentials' => $credentials
+]);
+$GLOBALS["s3"] = $s3;
 /**
  * hook_rescources_info
  */
@@ -147,23 +157,13 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 		$cdn = 'http://'.$bucket;
 		// $etime = time()+864000; // 授权十天后过期
 		// $key = 'ly729';   // token 防盗链密钥
-		$link = '/'.$filename; // 图片相对路径
+		// $link = $filename; // 图片相对路径
 		// $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-		$http_link = $cdn . $link ;//.'?_upt='.$sign;
+		$link = $cdn .'/'. $filename ;//.'?_upt='.$sign;
 		// watchdog('mp_lts', $link, array(), WATCHDOG_NOTICE, 'link');
 		// $temp = @get_headers($link);
 		// watchdog('mp_lts', '<pre>'.print_r($temp, 1), array(), WATCHDOG_NOTICE, 'link');
-		// global $s3;
-		$credentials = [
-		  'key' => \Drupal::config('s3fs.settings')->get('access_key'),
-		  'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
-		];
-		// Instantiate an Amazon S3 client.
-		$s3 = new S3Client([
-		  'version' => 'latest',
-		  'region'  => 'ap-southeast-1',
-			'credentials' => $credentials
-		]);
+		global $s3;
 		$isExists = $s3->doesObjectExist($bucket, $filename);
 		if(!$isExists){//远程暂无!!!
 			$resources = [
