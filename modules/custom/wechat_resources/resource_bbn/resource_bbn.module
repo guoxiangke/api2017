@@ -55,7 +55,7 @@ function mp_bbn_response($keyword,$appname) {
 	require_once('bbn.inc');
 	if($keyword == '400'){
 		$bbn_audio_menu = '▶圣经广播网节目单
-    ----------------------------------------------';
+    ---------------------';
 		foreach ($json as $key => $value) {
 			$bbn_audio_menu = $bbn_audio_menu ."\n".'【'.$value->keyword.'】'.$value->title;
 		}
