@@ -50,7 +50,7 @@ function resource_bbn_wxresources_alter($keyword,Wechat $weObj=NULL){
 function mp_bbn_response($keyword,$appname) {
 	$change_keyword = $keyword;
 	//TODO::dependcy!!!
-	$json = file_get_contents('https://bbn.yongbuzhixi.com/cron/bbn/json/'.date('Ym').'/'. date('Ymd') . '.json');
+	$json = file_get_contents('http://bbn.s3.yongbuzhixi.com/json/'.date('Y').'/'.date('md').'.json');
 	$json = json_decode($json);
 	require_once('bbn.inc');
 	if($keyword == '400'){
@@ -69,18 +69,28 @@ function mp_bbn_response($keyword,$appname) {
 		);
 		return $resources;
 	}
-	if(isset($json->$keyword->upyun)){
+	$keyword_id = 0;
+	$do_next=false;
+	foreach ($json as $key => $value) {
+		if($value->keyword==$keyword){
+			$do_next=true;
+			$keyword_id = $key;
+			break;
+		} 
+	}
+	if($do_next){
 		// $bbn = mp_get_bbn($keyword);
-		$objectKey = $json->$keyword->upyun;
-		$cdn = 'http://bbn2016.yongbuzhixi.com';
-		$musicurl = $cdn . $objectKey;
+		// $objectKey = $json->$keyword->upyun;
+		// $cdn = 'http://bbn2016.yongbuzhixi.com';
+		// bbn.s3.yongbuzhixi.com/bbn/2017/401/171219.mp3
+		$musicurl = 'http://bbn.s3.yongbuzhixi.com/bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
 		// $title = $bbn[$keyword]['title'];
-		$title = '【'.$keyword.'】'.$json->$keyword->title;
+		$title = '【'.$keyword.'】'.$json[$keyword_id]->title;
 		$desc = '点击▶️收听 '.$appname.' 每日更新';//公众号:'.variable_get('mp_config_appname_'.$uid, "永不止息").'
 		$resources= array(
 			'type'	=>	'music',
 			'cache' =>  REQUEST_TIME+43200,
-			'upyun_path' => $objectKey,
+			// 'upyun_path' => $objectKey,
 			'ga_data'   =>  array(
 				'category'        => 'bbn',
 				'action'          => $title,
