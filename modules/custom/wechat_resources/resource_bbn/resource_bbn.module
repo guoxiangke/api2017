@@ -57,7 +57,7 @@ function mp_bbn_response($keyword,$appname) {
 		$bbn_audio_menu = '▶圣经广播网节目单
     ----------------------------------------------';
 		foreach ($json as $key => $value) {
-			$bbn_audio_menu = $bbn_audio_menu ."\n".'【'.$key.'】'.$value->title;
+			$bbn_audio_menu = $bbn_audio_menu ."\n".'【'.$value->keyword.'】'.$value->title;
 		}
 		$resources = array(
 			'keyword'      =>  $keyword,
