@@ -106,7 +106,7 @@ function mp_bbn_response($keyword,$appname) {
 		// 	$resources['key_'.$change_keyword]['custommessage'] = "弟兄姊妹，平安，圣经广播网4开头节目于每早11点更新，请11点后点击播放即可，谢谢代祷推荐给亲朋好友\n永不止息，需要有你[握手]";
 		//  }
 	}else{
-		$text = "【$keyword 】今日无节目或节目还没有加速，小永努力中，请稍后再试！\n永不止息，需要有你[握手]\n请回复【400】收听其他节目，";
+		$text = "【$keyword 】今日无节目或节目还没有加速，小永努力中，请稍后再试！\n永不止息，需要有你[握手]\n请回复【400】收听其他节目\n微信赞助支持：https://www.yongbuzhixi.com/wxdonate";
 		$resources = array(
 			'keyword'      =>  $keyword,
 			'type'	=>	'text',
