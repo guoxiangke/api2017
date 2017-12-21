@@ -1,6 +1,23 @@
 <?php
 use Drupal\wechat_api\Plugin\Wechat\Wechat;
 
+if (!class_exists('\Aws\S3\S3Client')) {
+	include_once 'libraries/awssdk2/aws-autoloader.php';
+}
+use Aws\S3\S3Client;
+$credentials = [
+  'key' => \Drupal::config('s3fs.settings')->get('access_key'),
+  'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
+];
+// Instantiate an Amazon S3 client.
+$s3 = new S3Client([
+  'version' => 'latest',	
+  'signature'=> 'v4',
+	'endpoint' => 'http://bbn.s3.yongbuzhixi.com',
+	'bucket_endpoint' => true,
+  'region'  => 'ap-southeast-1',
+	'credentials' => $credentials
+]);
 /**
  * Created by PhpStorm.
  * User: dale.guo
@@ -83,7 +100,15 @@ function mp_bbn_response($keyword,$appname) {
 		// $objectKey = $json->$keyword->upyun;
 		// $cdn = 'http://bbn2016.yongbuzhixi.com';
 		// bbn.s3.yongbuzhixi.com/bbn/2017/401/171219.mp3
-		$musicurl = 'http://bbn.s3.yongbuzhixi.com/bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
+		$key = 'bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
+		$cmd = $s3Client->getCommand('GetObject', [
+		    'Bucket' => 'bbn.s3.yongbuzhixi.com',
+		    'Key'    => $key
+		]);
+		$request = $s3Client->createPresignedRequest($cmd, '+30 minutes');
+		// Get the actual presigned-url
+		$musicurl = (string) $request->getUri();
+		// $musicurl = $presignedUrl;//'http://bbn.s3.yongbuzhixi.com/bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
 		// $title = $bbn[$keyword]['title'];
 		$title = '【'.$keyword.'】'.$json[$keyword_id]->title;
 		$desc = '点击▶️收听 '.$appname.' 每日更新';//公众号:'.variable_get('mp_config_appname_'.$uid, "永不止息").'
