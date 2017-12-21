@@ -107,7 +107,7 @@ function mp_bbn_response($keyword,$appname) {
 		]);
 		$request = $s3->createPresignedRequest($cmd, '+30 minutes');
 		// Get the actual presigned-url
-		$musicurl = (string) $request->getUri();
+		$musicurl = (string) $request->getUri().'&suff=1.mp3';
 		\Drupal::logger('musicurl')->notice($musicurl);
 		// $musicurl = $presignedUrl;
 		// $musicurl = $presignedUrl;//'http://bbn.s3.yongbuzhixi.com/bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
