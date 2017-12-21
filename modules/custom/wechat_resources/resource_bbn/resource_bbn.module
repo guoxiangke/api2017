@@ -1,26 +1,23 @@
 <?php
 use Drupal\wechat_api\Plugin\Wechat\Wechat;
-global $bbns3;
+
 if (!class_exists('\Aws\S3\S3Client')) {
 	include_once 'libraries/awssdk2/aws-autoloader.php';
 }
 use Aws\S3\S3Client;
-
-if(!$bbns3){
-	$credentials = [
-	  'key' => \Drupal::config('s3fs.settings')->get('access_key'),
-	  'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
-	];
-	// Instantiate an Amazon S3 client.
-	$GLOBALS["bbns3"] = new S3Client([
-	  'version' => 'latest',	
-	  'signature'=> 'v4',
-		'endpoint' => 'http://bbn.s3.yongbuzhixi.com',
-		'bucket_endpoint' => true,
-	  'region'  => 'ap-southeast-1',
-		'credentials' => $credentials
-	]);
-}
+$credentials = [
+  'key' => \Drupal::config('s3fs.settings')->get('access_key'),
+  'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
+];
+// Instantiate an Amazon S3 client.
+$GLOBALS["bbns3"] = new S3Client([
+  'version' => 'latest',	
+  'signature'=> 'v4',
+	'endpoint' => 'http://bbn.s3.yongbuzhixi.com',
+	'bucket_endpoint' => true,
+  'region'  => 'ap-southeast-1',
+	'credentials' => $credentials
+]);
 /**
  * Created by PhpStorm.
  * User: dale.guo
