@@ -1,23 +1,26 @@
 <?php
 use Drupal\wechat_api\Plugin\Wechat\Wechat;
-
+global $bbns3;
 if (!class_exists('\Aws\S3\S3Client')) {
 	include_once 'libraries/awssdk2/aws-autoloader.php';
 }
 use Aws\S3\S3Client;
-$credentials = [
-  'key' => \Drupal::config('s3fs.settings')->get('access_key'),
-  'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
-];
-// Instantiate an Amazon S3 client.
-$s3Client = new S3Client([
-  'version' => 'latest',	
-  'signature'=> 'v4',
-	'endpoint' => 'http://bbn.s3.yongbuzhixi.com',
-	'bucket_endpoint' => true,
-  'region'  => 'ap-southeast-1',
-	'credentials' => $credentials
-]);
+
+if(!$bbns3){
+	$credentials = [
+	  'key' => \Drupal::config('s3fs.settings')->get('access_key'),
+	  'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
+	];
+	// Instantiate an Amazon S3 client.
+	$GLOBALS["bbns3"] = new S3Client([
+	  'version' => 'latest',	
+	  'signature'=> 'v4',
+		'endpoint' => 'http://bbn.s3.yongbuzhixi.com',
+		'bucket_endpoint' => true,
+	  'region'  => 'ap-southeast-1',
+		'credentials' => $credentials
+	]);
+}
 /**
  * Created by PhpStorm.
  * User: dale.guo
@@ -101,11 +104,12 @@ function mp_bbn_response($keyword,$appname) {
 		// $cdn = 'http://bbn2016.yongbuzhixi.com';
 		// bbn.s3.yongbuzhixi.com/bbn/2017/401/171219.mp3
 		$key = 'bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
-		$cmd = $s3Client->getCommand('GetObject', [
+		global $bbns3;
+		$cmd = $bbns3->getCommand('GetObject', [
 		    'Bucket' => 'bbn.s3.yongbuzhixi.com',
 		    'Key'    => $key
 		]);
-		$request = $s3Client->createPresignedRequest($cmd, '+30 minutes');
+		$request = $bbns3->createPresignedRequest($cmd, '+30 minutes');
 		// Get the actual presigned-url
 		$musicurl = (string) $request->getUri();
 		// $musicurl = $presignedUrl;//'http://bbn.s3.yongbuzhixi.com/bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
