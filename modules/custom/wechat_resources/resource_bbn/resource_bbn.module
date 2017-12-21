@@ -91,6 +91,7 @@ function mp_bbn_response($keyword,$appname) {
 			'key' => \Drupal::config('s3fs.settings')->get('access_key'),
 			'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
 		];
+		\Drupal::logger('do_next')->notice($key);
 		// Instantiate an Amazon S3 client.
 		$s3 = new S3Client([
 			'version' => 'latest',
@@ -106,8 +107,9 @@ function mp_bbn_response($keyword,$appname) {
 		]);
 		$request = $s3->createPresignedRequest($cmd, '+30 minutes');
 		// Get the actual presigned-url
-		$presignedUrl = (string) $request->getUri();
-		$musicurl = $presignedUrl;
+		$musicurl = (string) $request->getUri();
+		\Drupal::logger('musicurl')->notice($musicurl);
+		// $musicurl = $presignedUrl;
 		// $musicurl = $presignedUrl;//'http://bbn.s3.yongbuzhixi.com/bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
 		// $title = $bbn[$keyword]['title'];
 		$title = '【'.$keyword.'】'.$json[$keyword_id]->title;
