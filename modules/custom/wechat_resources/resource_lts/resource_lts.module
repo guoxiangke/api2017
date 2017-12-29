@@ -139,7 +139,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 	}
 	if($count==='0'){//获取目录概括+//获取pdf
 		$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
-		$cdn = 'http://lywxlts.yongbuzhixi.com';
+		$cdn = 'http://lts33.yongbuzhixi.com';
 		$etime = time()+864000; // 授权十天后过期
 		$key = 'ly729';   // token 防盗链密钥
 		$path = '/'.$link; // 图片相对路径
@@ -188,7 +188,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 	$rep = str_pad($count, 2,'0',STR_PAD_LEFT);
 	$link = 'new/'.$level.'/'.$mav['title'].'/ma'.$mav['prefex'].$rep.'.mp3';
 	$path = '/'.$link; // 图片相对路径
-	$cdn = 'http://lywxlts.yongbuzhixi.com/';
+	$cdn = 'http://lts33.yongbuzhixi.com/';
 	$link = $cdn . ($link);//.'?_upt='.$sign;
 	// $temp = @get_headers($link);
 	// if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
