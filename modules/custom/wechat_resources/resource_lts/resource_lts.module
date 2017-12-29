@@ -6,21 +6,8 @@
  * Time: 10:14 AM
  */
 use Drupal\wechat_api\Plugin\Wechat\Wechat;
-if (!class_exists('\Aws\S3\S3Client')) {
-	include_once 'libraries/awssdk2/aws-autoloader.php';
-}
-use Aws\S3\S3Client;
-$credentials = [
-  'key' => \Drupal::config('s3fs.settings')->get('access_key'),
-  'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
-];
-// Instantiate an Amazon S3 client.
-$s3 = new S3Client([
-  'version' => 'latest',
-  'region'  => 'ap-southeast-1',
-	'credentials' => $credentials
-]);
-$GLOBALS["s3"] = $s3;
+
+
 /**
  * hook_rescources_info
  */
@@ -151,21 +138,17 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 		return $resources;
 	}
 	if($count==='0'){//获取目录概括+//获取pdf
-		$filename = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
-		// $cdn = 'http://lywxlts.yongbuzhixi.com';
-		$bucket='lylts.s3.yongbuzhixi.com';
-		$cdn = 'http://'.$bucket;
-		// $etime = time()+864000; // 授权十天后过期
-		// $key = 'ly729';   // token 防盗链密钥
-		// $link = $filename; // 图片相对路径
-		// $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-		$link = $cdn .'/'. $filename ;//.'?_upt='.$sign;
+		$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
+		$cdn = 'http://lywxlts.yongbuzhixi.com';
+		$etime = time()+864000; // 授权十天后过期
+		$key = 'ly729';   // token 防盗链密钥
+		$path = '/'.$link; // 图片相对路径
+		$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+		$link = $cdn . $path .'?_upt='.$sign;
 		// watchdog('mp_lts', $link, array(), WATCHDOG_NOTICE, 'link');
-		// $temp = @get_headers($link);
+		$temp = @get_headers($link);
 		// watchdog('mp_lts', '<pre>'.print_r($temp, 1), array(), WATCHDOG_NOTICE, 'link');
-		global $s3;
-		$isExists = $s3->doesObjectExist($bucket, $filename);
-		if(!$isExists){//远程暂无!!!
+		if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
 			$resources = [
 				'keyword' => $keyword,
 				'type' => 'text',
@@ -184,8 +167,8 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 			'keyword' => $keyword,
 			'type' => 'text',
 			'expire' => REQUEST_TIME + 43200,//-1 never expires.
-			'obj' => [//<a href='http://pdfviewer.cdn.bcebos.com/web/viewer.html?pdf=".$link."'>》点此查看讲义</a>\n
-				'text' =>  '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课\n属于".($mav['level']=='基础课程'?'启航课程':$mav['level'])."\n授课老师：".$mav['author']."\n每日获取同步【#".$index."】\n<a href='".$link."'>》点此下载查看讲义</a>",
+			'obj' => [
+				'text' =>  '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课\n属于".($mav['level']=='基础课程'?'启航课程':$mav['level'])."\n授课老师：".$mav['author']."\n<a href='http://pdfviewer.cdn.bcebos.com/web/viewer.html?pdf=".$link."'>》点此查看讲义</a>\n每日获取同步【#".$index."】\n<a href='".$link."'>》备用讲义链接</a>",
 			],
 			'ga_data'   =>  array(
 				'category'        => 'lts33',
@@ -205,8 +188,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 	$rep = str_pad($count, 2,'0',STR_PAD_LEFT);
 	$link = 'new/'.$level.'/'.$mav['title'].'/ma'.$mav['prefex'].$rep.'.mp3';
 	$path = '/'.$link; // 图片相对路径
-	// $cdn = 'http://lywxlts.yongbuzhixi.com/';
-	$cdn = 'http://lylts.s3.yongbuzhixi.com/';
+	$cdn = 'http://lywxlts.yongbuzhixi.com/';
 	$link = $cdn . ($link);//.'?_upt='.$sign;
 	// $temp = @get_headers($link);
 	// if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
@@ -222,7 +204,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 		'keyword' => $keyword,
 		'type' => 'music',
 		'expire' => $expire,//-1 never expires.
-		// 'upyun_path' =>  $path,
+		'upyun_path' =>  $path,
 		'obj' => [
 			'title' =>  '【'.$keyword.'】'.$mav['title'].'-'.$rep,
 			'desc'  =>  "点击▶️收听".$update.$appname." 良院".str_replace('课程', '', ($level=='基础课程'?'启航':$level)),
