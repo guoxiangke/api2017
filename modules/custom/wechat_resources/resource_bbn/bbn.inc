@@ -13,24 +13,24 @@ function bbn_audio_list(){
 		'title'				=>	'中信之声',
 		'description'	=>	'打开心锁，尽情倾诉，对你的日常生活必定带来很多的帮助和启发',
 	);
-	$bbn['402'] = array(
-		'code'				=>	'C0SWS2',
-		'day'					=>	1,
-		'title'				=>	'主日崇拜（一）',
-		'description'	=>	'洛杉矶国语浸信会',
-	);
-	$bbn['403'] = array(
-		'code'				=>	'C0SWS4',
-		'day'					=>	1,
-		'title'				=>	'主日崇拜（二）',
-		'description'	=>	'美国马利兰中华圣经教会',
-	);
-	$bbn['404'] = array(
-		'code'				=>	'C0SBS',
-		'day'					=>	1,
-		'title'				=>	'主日查经',
-		'description'	=>	'黄子嘉牧师',
-	);
+//	$bbn['402'] = array(
+//		'code'				=>	'C0SWS2',
+//		'day'					=>	1,
+//		'title'				=>	'主日崇拜（一）',
+//		'description'	=>	'洛杉矶国语浸信会',
+//	);
+//	$bbn['403'] = array(
+//		'code'				=>	'C0SWS4',
+//		'day'					=>	1,
+//		'title'				=>	'主日崇拜（二）',
+//		'description'	=>	'美国马利兰中华圣经教会',
+//	);
+//	$bbn['404'] = array(
+//		'code'				=>	'C0SBS',
+//		'day'					=>	1,
+//		'title'				=>	'主日查经',
+//		'description'	=>	'黄子嘉牧师',
+//	);
 	$bbn['405'] = array(
 		'code'				=>	'C0CBS',
 		'day'					=>	5,
@@ -49,18 +49,18 @@ function bbn_audio_list(){
 		'title'				=>	'圣经导读',
 		'description'	=>	'查经性广播节目，将全本新旧约圣经，逐卷的带领听众朋友查考，适合给基督徒和慕道友',
 	);
-	$bbn['408'] = array(
-		'code'				=>	'C0BH',
-		'day'					=>	67,
-		'title'				=>	'圣经时光',
-		'description'	=>	'开路者国际传播协会',
-	);
-	$bbn['409'] = array(
-		'code'				=>	'C0BH',
-		'day'					=>	67,//1-7
-		'title'				=>	'圣经时光',
-		'description'	=>	'每周六播出近60分钟的讲座，并在星期天重播',
-	);
+//	$bbn['408'] = array(
+//		'code'				=>	'C0BH',
+//		'day'					=>	67,
+//		'title'				=>	'圣经时光',
+//		'description'	=>	'开路者国际传播协会',
+//	);
+//	$bbn['409'] = array(
+//		'code'				=>	'C0BH',
+//		'day'					=>	67,//1-7
+//		'title'				=>	'圣经时光',
+//		'description'	=>	'每周六播出近60分钟的讲座，并在星期天重播',
+//	);
 	$bbn['410'] = array(
 		'code'				=>	'C0CP',
 		'day'					=>	16,
@@ -97,30 +97,30 @@ function bbn_audio_list(){
 		'title'				=>	'家庭祭坛',
 		'description'	=>	'圣经广播网编辑',
 	);
-	$bbn['416'] = array(
-		'code'				=>	'C0BF',
-		'day'					=>	5,//1-5
-		'title'				=>	'幸福满家园',
-		'description'	=>	'远东广播公司',
-	);
+//	$bbn['416'] = array(
+//		'code'				=>	'C0BF',
+//		'day'					=>	5,//1-5
+//		'title'				=>	'幸福满家园',
+//		'description'	=>	'远东广播公司',
+//	);
 	$bbn['417'] = array(
 		'code'				=>	'C0WPC',
 		'day'					=>	5,//1-5
 		'title'				=>	'心底话',
 		'description'	=>	'赵亮 牧师',
 	);
-	$bbn['418'] = array(
-		'code'				=>	'C0JI',
-		'day'					=>	67,
-		'title'				=>	'快乐岛',
-		'description'	=>	'救恩之声广播中心，亚文阿姨',
-	);
-	$bbn['419'] = array(
-		'code'				=>	'C0RL',
-		'day'					=>	67,
-		'title'				=>	'更新生命讲座',
-		'description'	=>	'更新传道会,李定武 牧师',
-	);
+//	$bbn['418'] = array(
+//		'code'				=>	'C0JI',
+//		'day'					=>	67,
+//		'title'				=>	'快乐岛',
+//		'description'	=>	'救恩之声广播中心，亚文阿姨',
+//	);
+//	$bbn['419'] = array(
+//		'code'				=>	'C0RL',
+//		'day'					=>	67,
+//		'title'				=>	'更新生命讲座',
+//		'description'	=>	'更新传道会,李定武 牧师',
+//	);
 	$bbn['420'] = array(
 		'code'				=>	'C0WS',
 		'day'					=>	1,
@@ -145,12 +145,12 @@ function bbn_audio_list(){
 		'title'				=>	'灵泉心语',
 		'description'	=>	'开路者国际传播协会',
 	);
-	$bbn['424'] = array(
-		'code'				=>	'C0IOS',
-		'day'					=>	67,
-		'title'				=>	'灵言蜜语',
-		'description'	=>	'圣经广播网',
-	);
+//	$bbn['424'] = array(
+//		'code'				=>	'C0IOS',
+//		'day'					=>	67,
+//		'title'				=>	'灵言蜜语',
+//		'description'	=>	'圣经广播网',
+//	);
 	$bbn['425'] = array(
 		'code'				=>	'C0PW',
 		'day'					=>	16,
@@ -163,12 +163,12 @@ function bbn_audio_list(){
 		'title'				=>	'生命旋律',
 		'description'	=>	'开路者国际传播协会',
 	);
-	$bbn['427'] = array(
-		'code'				=>	'C0IFL',
-		'day'					=>	5,
-		'title'				=>	'生活的透视',
-		'description'	=>	'美国Insight for Living(Rev.Chuck Swindoll); 向天 牧师',
-	);
+//	$bbn['427'] = array(
+//		'code'				=>	'C0IFL',
+//		'day'					=>	5,
+//		'title'				=>	'生活的透视',
+//		'description'	=>	'美国Insight for Living(Rev.Chuck Swindoll); 向天 牧师',
+//	);
 	$bbn['428'] = array(
 		'code'				=>	'C0VOTL',
 		'day'					=>	7,
