@@ -53,7 +53,7 @@ function resource_bbn_wxresources_alter($keyword,Wechat $weObj=NULL){
 function mp_bbn_response($keyword,$appname) {
 	$change_keyword = $keyword;
 	//TODO::dependcy!!!
-	$json = file_get_contents('http://bbn.s3.yongbuzhixi.com/json/'.date('Y').'/'.date('md').'.json');
+	$json = file_get_contents('http://bbn.yongbuzhixi.com/json/'.date('Y').'/'.date('md').'.json');
 	$json = json_decode($json);
 	require_once('bbn.inc');
 	if($keyword == '400'){
@@ -86,11 +86,11 @@ function mp_bbn_response($keyword,$appname) {
 		// $objectKey = $json->$keyword->upyun;
 		// $cdn = 'http://bbn2016.yongbuzhixi.com';
 		// bbn.s3.yongbuzhixi.com/bbn/2017/401/171219.mp3
-		$key = 'bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
-		$credentials = [
-			'key' => \Drupal::config('s3fs.settings')->get('access_key'),
-			'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
-		];
+		$key = '/bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
+//		$credentials = [
+//			'key' => \Drupal::config('s3fs.settings')->get('access_key'),
+//			'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
+//		];
 		// \Drupal::logger('do_next')->notice($key);
 		// // Instantiate an Amazon S3 client.
 		// $s3 = new S3Client([
@@ -110,7 +110,7 @@ function mp_bbn_response($keyword,$appname) {
 		// $musicurl = (string) $request->getUri();
 		// $musicurl = "http://url.cn/5RBTFPO";
 		// \Drupal::logger('musicurl')->notice($musicurl);
-		$musicurl = 'http://bbn.s3.yongbuzhixi.com/bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
+		$musicurl = 'http://bbn.yongbuzhixi.com/bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
 		// $title = $bbn[$keyword]['title'];
 		$title = '【'.$keyword.'】'.$json[$keyword_id]->title;
 		$desc = '点击▶️收听 '.$appname.' 每日更新';//公众号:'.variable_get('mp_config_appname_'.$uid, "永不止息").'
