@@ -168,7 +168,7 @@ function resource_lts_wxresources_alter($keyword,Wechat $weObj=NULL){
 			'type' => 'text',
 			'expire' => REQUEST_TIME + 43200,//-1 never expires.
 			'obj' => [
-				'text' =>  '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课\n属于".($mav['level']=='基础课程'?'启航课程':$mav['level'])."\n授课老师：".$mav['author']."\n<a href='http://pdfviewer.cdn.bcebos.com/web/viewer.html?pdf=".$link."'>》点此查看讲义</a>\n每日获取同步【#".$index."】\n<a href='".$link."'>》备用讲义链接</a>",
+				'text' =>  '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课\n属于".($mav['level']=='基础课程'?'启航课程':$mav['level'])."\n授课老师：".$mav['author']."\n<a href='http://pdfviewer.yongbuzhixi.com/web/viewer.html?pdf=".$link."'>》点此查看讲义</a>\n每日获取同步【#".$index."】\n<a href='".$link."'>》备用讲义链接</a>",
 			],
 			'ga_data'   =>  array(
 				'category'        => 'lts33',
