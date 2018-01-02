@@ -154,7 +154,7 @@ class WxapiController extends ControllerBase {
           // An array with taxonomy terms.
           'field_tags' =>[369],//恩典365
           'field_article_wechat_term' => [240],//恩典365基督之家 
-          'field_video_url' => 'http://liberum.tw.svc.litv.tv/tpehoc/video/'.$vid.'_400K.mp4',
+          'field_video_url' =>  'http://lts33.yongbuzhixi.com/tmp/grace/'.date('Y/Ymd.\mp4'),//http://lts33.yongbuzhixi.com/tmp/grace/2018/20180102.mp4
           'body'             => [
               'summary' => $item->Description,
               'value'   => $body,
