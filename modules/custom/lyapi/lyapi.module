@@ -180,12 +180,13 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
         $https = 'http://';
         $cdnlink = $https . 'lywxaudio.yongbuzhixi.com';
         $code = $lylist_code[$process_index];//ee
-        $tmp_path = '/' . date('Y', $time) . '/' . $code . '/' . $code;
 
         $has_program = FALSE;
         $tmp_offset = 0;
         do {
-            $date = date('ymd', $time - $offset * 86400);//161129
+            $tmp_time = $time - $offset * 86400;
+            $date = date('ymd', $tmp_time);//161129
+            $tmp_path = '/' . date('Y', $tmp_time) . '/' . $code . '/' . $code;
             $path = $tmp_path . $date . '.mp3';// /2016/rt/rt161127.mp3
             $upt = upyun_get_token($path);
             $uri = $cdnlink . $path;
