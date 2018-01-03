@@ -238,14 +238,18 @@ class WxapiController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    * @see statistics.php &statistics_get()
    */
-	public function getNodeStatistics($id){
+	public function getNodeStatistics($id,$uid){
 		\Drupal::service('statistics.storage.node')->recordView($id); //+1
 		$statistics = statistics_get($id);
 		$counts = 0;
 		if ($statistics) {
 			$counts = $statistics['totalcount'];
 		}
-		return new JsonResponse($counts);
+		//get statics && votes!
+		return new JsonResponse([
+			'statistics'=>$counts,
+			'votes'=>is_voted($id,$uid)
+		]);
 	}
 
 	public function postComment(Request $request){

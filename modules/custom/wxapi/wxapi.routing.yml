@@ -33,7 +33,7 @@ wxapi.graceupdate:
   requirements:
     _access: 'TRUE'
 wxapi.getnodestatistics:
-  path: '/wxapi/statistics/{id}'
+  path: '/wxapi/statistics/{id}/{uid}'
   methods: [GET]
   defaults:
     _controller: '\Drupal\wxapi\Controller\WxapiController::getNodeStatistics'
