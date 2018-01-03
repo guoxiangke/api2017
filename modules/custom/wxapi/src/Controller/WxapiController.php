@@ -143,7 +143,7 @@ class WxapiController extends ControllerBase {
 					$new_title=$item->Title;
 				}
         $body = $item->Content;
-        $body = preg_replace('/style="(.*?)"/', '', strip_tags($body,'<span><p><ul><li><ol><br><section>')) . '<br/>' . $item->Description;
+        $body = preg_replace('/style="(.*?)"/', '', strip_tags($body,'<span><p><ul><li><ol><section>')) . '<p>' . $item->Description .'</p>';
         $vid = 14253+date('z')-339;//change by time & year!!!
 				$newNode = [
           'type'             => 'article',
