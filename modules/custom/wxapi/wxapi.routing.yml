@@ -40,6 +40,14 @@ wxapi.getnodestatistics:
     _title: 'get getNodeStatistics'
   requirements:
     _access: 'TRUE'
+wxapi.setnodevoteusefull:
+  path: '/wxapi/vote/{id}/{uid}'
+  methods: [GET]
+  defaults:
+    _controller: '\Drupal\wxapi\Controller\WxapiController::setNodeUseful'
+    _title: 'get setNodeUseful'
+  requirements:
+    _access: 'TRUE'
 wxapi.postcomment:
   path: '/wxapi/postcomment'
   methods: [POST]

@@ -251,7 +251,9 @@ class WxapiController extends ControllerBase {
 			'votes'=>is_voted($id,$uid)
 		]);
 	}
-
+	public function setNodeUseful($id,$uid){
+		return new JsonResponse(save_vote($id,$uid));
+	}
 	public function postComment(Request $request){
 		$data = array();
     if ( 0 === strpos( $request->headers->get( 'Content-Type' ), 'application/json' ) ) {

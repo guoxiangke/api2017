@@ -8,3 +8,4 @@ dependencies:
   - wechat_api
   - simplehtmldom
   - statistics
+  - votingapi_widgets
