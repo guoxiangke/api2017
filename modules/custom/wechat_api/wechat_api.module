@@ -521,7 +521,7 @@ function _default_news($config,$uid=0){
  */
 function wechat_api_save_account($user_info,$role='wechat_user')
 {
-    if($user_info['subscribe']==0){ return false; }//用户退订！
+    if(isset($user_info['subscribe']) && $user_info['subscribe']==0){ return false; }//用户退订！
     if(!(isset($user_info['nickname']) && !empty($user_info['nickname']))) {
         \Drupal::logger('wechat_api_save_account')->warning('No nickname to save account.');
         \Drupal::logger(__FUNCTION__)->warning('<pre>'.print_r($user_info,1));
