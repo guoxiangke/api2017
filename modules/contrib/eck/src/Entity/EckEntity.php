@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\eck\Entity\EckEntity.
- */
-
 namespace Drupal\eck\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
@@ -26,7 +21,7 @@ class EckEntity extends ContentEntityBase implements EckEntityInterface {
    */
   public static function preCreate(EntityStorageInterface $storage_controller, array &$values) {
     parent::preCreate($storage_controller, $values);
-    $values += array('uid' => \Drupal::currentUser()->id());
+    $values += ['uid' => \Drupal::currentUser()->id()];
   }
 
   /**
@@ -85,38 +80,15 @@ class EckEntity extends ContentEntityBase implements EckEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
-    $config = \Drupal::config('eck.eck_entity_type.' . $entity_type->id());
-    // The primary key field.
-    $fields['id'] = BaseFieldDefinition::create('integer')
-      ->setLabel(t('Entity ID'))
-      ->setDescription(t('The ID of the eck entity.'))
-      ->setReadOnly(TRUE)
-      ->setSetting('unasigned', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Standard field, universal unique id.
-    $fields['uuid'] = BaseFieldDefinition::create('uuid')
-      ->setLabel(t('UUID'))
-      ->setDescription(t('The UUID of the entity.'))
-      ->setReadOnly(TRUE);
+  public static function baseFieldDefinitions(EntityTypeInterface $entityType) {
+    $fields = parent::baseFieldDefinitions($entityType);
+    $config = \Drupal::config("eck.eck_entity_type.{$entityType->id()}");
 
     $fields['type'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Type'))
       ->setDescription(t('The entity type.'))
-      ->setSetting('target_type', $entity_type->id() . '_type')
+      ->setSetting('target_type', "{$entityType->id()}_type")
       ->setReadOnly(TRUE);
-
-    $fields['langcode'] = BaseFieldDefinition::create('language')
-      ->setLabel(t('Language'))
-      ->setDescription(t('The language code of the entity.'))
-      ->setTranslatable(TRUE)
-      ->setDisplayOptions('view', ['type' => 'hidden',])
-      ->setDisplayOptions('form', [
-        'type' => 'language_select',
-        'weight' => 2,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
 
     // Title field for the entity.
     if ($config->get('title')) {
@@ -125,7 +97,6 @@ class EckEntity extends ContentEntityBase implements EckEntityInterface {
         ->setDescription(t('The title of the entity.'))
         ->setRequired(TRUE)
         ->setTranslatable(TRUE)
-        ->setDefaultValue('')
         ->setSetting('max_length', 255)
         ->setDisplayOptions('view', [
             'label' => 'hidden',
@@ -193,7 +164,7 @@ class EckEntity extends ContentEntityBase implements EckEntityInterface {
         ->setLabel(t('Changed'))
         ->setDescription(t('The time that the entity was last edited.'))
         ->setTranslatable(TRUE)
-        ->setDisplayConfigurable('view', TRUE);;
+        ->setDisplayConfigurable('view', TRUE);
     }
 
     return $fields;

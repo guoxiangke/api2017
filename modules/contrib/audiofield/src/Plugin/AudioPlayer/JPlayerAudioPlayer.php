@@ -64,6 +64,7 @@ class JPlayerAudioPlayer extends AudioFieldPluginBase {
           'filetype' => $renderInfo->filetype,
           'fid' => $renderInfo->id,
           'autoplay' => $settings['audio_player_autoplay'],
+          'lazyload' => $settings['audio_player_lazyload'],
         ];
       }
     }
@@ -98,6 +99,7 @@ class JPlayerAudioPlayer extends AudioFieldPluginBase {
             // JPlayer expects this as a 0 - 1 value.
             'volume' => ($settings['audio_player_initial_volume'] / 10),
             'autoplay' => $settings['audio_player_autoplay'],
+            'lazyload' => $settings['audio_player_lazyload'],
           ];
 
           // Store the unique id for the template.
@@ -120,6 +122,7 @@ class JPlayerAudioPlayer extends AudioFieldPluginBase {
           'files' => [],
           'filetypes' => [],
           'autoplay' => $settings['audio_player_autoplay'],
+          'lazyload' => $settings['audio_player_lazyload'],
         ];
 
         // Format files for output.

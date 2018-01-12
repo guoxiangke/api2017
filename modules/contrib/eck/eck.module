@@ -47,8 +47,7 @@ function eck_entity_type_build(array &$entity_types) {
     $eck_entity_type = $entity_types['eck_entity_type'];
 
     // Get the existing ECK types.
-    $entity_manager = \Drupal::entityManager();
-    $eck_types = $entity_manager->createHandlerInstance(
+    $eck_types = \Drupal::entityTypeManager()->createHandlerInstance(
       $eck_entity_type->getHandlerClass('storage'),
       $eck_entity_type
     )->loadMultiple();
@@ -109,7 +108,7 @@ function eck_entity_type_build(array &$entity_types) {
         $definition = array(
           'id' => $eck_type->id,
           'label' => $eck_type->label,
-          'bundle_label' => t('%eck_type type', array('%eck_type' => $eck_type->label)),
+          'bundle_label' => t('@eck_type type', array('@eck_type' => $eck_type->label)),
           'base_table' => $eck_type->id,
           'data_table' => $eck_type->id . '_field_data',
           'links' => array(
@@ -120,6 +119,8 @@ function eck_entity_type_build(array &$entity_types) {
           'bundle_entity_type' => $eck_type->id . '_type',
           'field_ui_base_route' => 'entity.' . $eck_type->id . '_type.edit_form',
           'permission_granularity' => 'bundle',
+          'group' => 'content',
+          'group_label' => t('Content'),
         );
         // Merge the definitions.
         $definition = array_merge($definition, $base_definition);
@@ -129,9 +130,11 @@ function eck_entity_type_build(array &$entity_types) {
         // Definitions for the entity types bundle.
         $bundle_definition = array(
           'id' => $eck_type->id . '_type',
-          'label' => t('%entity_type type', array('%entity_type' => $eck_type->label)),
+          'label' => t('@entity_type type', array('@entity_type' => $eck_type->label)),
           'bundle_of' => $eck_type->id,
           'config_prefix' => 'eck_type.' . $eck_type->id,
+          'group' => 'configuration',
+          'group_label' => t('Configuration'),
           'links' => array(
             'edit-form' => '/admin/structure/eck/entity/' . $eck_type->id . '/types/manage/{' . $eck_type->id . '_type}/edit',
             'delete-form' => '/admin/structure/eck/entity/' . $eck_type->id . '/types/manage/{' . $eck_type->id . '_type}/delete',
@@ -168,8 +171,9 @@ function eck_menu_local_actions_alter(&$local_actions) {
    */
   foreach ($eck_types as $name => $type) {
     $local_actions['eck.bundle.' . $type->id() . '.add'] = $defaults + [
+      'id' => 'eck.bundle.' . $type->id() . '.add',
       'route_name' => 'eck.entity.' . $type->id() . '_type.add',
-      'title' => 'Add ' . $type->label() . ' bundle',
+      'title' => t('Add @label bundle', array('@label' => $type->label())),
       'appears_on' => [
         'eck.entity.' . $type->id() . '_type.list',
       ],
@@ -178,7 +182,8 @@ function eck_menu_local_actions_alter(&$local_actions) {
     if ($eckBundleInfo->entityTypeHasBundles($type->id())) {
       $bundle_machine_names = $eckBundleInfo->getEntityTypeBundleMachineNames($type->id());
       $local_actions['eck.' . $type->id() . '.add'] = $defaults + [
-        'title' => 'Add ' . $type->label(),
+        'id' => 'eck.' . $type->id() . '.add',
+        'title' => t('Add @label', array('@label' => $type->label())),
         'appears_on' => [
           'eck.entity.' . $type->id() . '.list',
         ],

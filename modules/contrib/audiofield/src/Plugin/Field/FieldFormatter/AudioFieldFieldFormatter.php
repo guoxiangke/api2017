@@ -7,7 +7,6 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Field\FormatterBase;
-use Drupal\Core\Render\Markup;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -216,6 +215,33 @@ class AudioFieldFieldFormatter extends FormatterBase implements ContainerFactory
         ],
       ],
     ];
+    // Settings for autoplay.
+    $elements['audio_player_lazyload'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Lazy Load audio'),
+      '#description' => $this->t("This setting causes audio not to be loaded until it is played."),
+      '#default_value' => $this->getSetting('audio_player_lazyload'),
+      '#states' => [
+        'visible' => [
+          [':input[name="fields[' . $fieldname . '][settings_edit_form][settings][audio_player]"]' => ['value' => 'audiojs_audio_player']],
+          [':input[name="fields[' . $fieldname . '][settings_edit_form][settings][audio_player]"]' => ['value' => 'default_mp3_player']],
+          [':input[name="fields[' . $fieldname . '][settings_edit_form][settings][audio_player]"]' => ['value' => 'jplayer_audio_player']],
+          [':input[name="fields[' . $fieldname . '][settings_edit_form][settings][audio_player]"]' => ['value' => 'mediaelement_audio_player']],
+          [':input[name="fields[' . $fieldname . '][settings_edit_form][settings][audio_player]"]' => ['value' => 'projekktor_audio_player']],
+        ],
+      ],
+    ];
+    // Settings for download button.
+    $elements['download_button'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display download button on player'),
+      '#default_value' => $this->getSetting('download_button'),
+      '#states' => [
+        'visible' => [
+          [':input[name="fields[' . $fieldname . '][settings_edit_form][settings][audio_player]"]' => ['value' => 'default_mp3_player']],
+        ],
+      ],
+    ];
     // Setting for optional download link.
     $elements['download_link'] = [
       '#type' => 'checkbox',
@@ -236,7 +262,9 @@ class AudioFieldFieldFormatter extends FormatterBase implements ContainerFactory
 
     // Show which player we are currently using for the field.
     $summary = [
-      Markup::create('Selected player: <strong>' . $plugin_definitions[$settings['audio_player']]['title'] . '</strong>'),
+      $this->t('Selected player: <strong>@player</strong>', [
+        '@player' => $plugin_definitions[$settings['audio_player']]['title'],
+      ]),
     ];
     // If this is jPlayer, add those settings.
     if ($settings['audio_player'] == 'jplayer_audio_player') {
@@ -254,16 +282,24 @@ class AudioFieldFieldFormatter extends FormatterBase implements ContainerFactory
           }
         }
       }
-      $summary[] = Markup::create('Skin: <strong>' . $theme . '</strong>');
+      $summary[] = $this->t('Skin: <strong>@theme</strong>', [
+        '@theme' => $theme,
+      ]);
     }
     // If this is wavesurfer, add those settings.
     elseif ($settings['audio_player'] == 'wavesurfer_audio_player') {
-      $summary[] = Markup::create('Combine files into single player? <strong>' . ($settings['audio_player_wavesurfer_combine_files'] ? 'Yes' : 'No') . '</strong>');
+      $summary[] = $this->t('Combine files into single player? <strong>@combine</strong>', [
+        '@combine' => ($settings['audio_player_wavesurfer_combine_files'] ? 'Yes' : 'No'),
+      ]);
     }
     // If this is wordpress, add those settings.
     elseif ($settings['audio_player'] == 'wordpress_audio_player') {
-      $summary[] = Markup::create('Combine files into single player? <strong>' . ($settings['audio_player_wordpress_combine_files'] ? 'Yes' : 'No') . '</strong>');
-      $summary[] = Markup::create('Animate player? <strong>' . ($settings['audio_player_wordpress_animation'] ? 'Yes' : 'No') . '</strong>');
+      $summary[] = $this->t('Combine files into single player? <strong>@combine</strong>', [
+        '@combine' => ($settings['audio_player_wordpress_combine_files'] ? 'Yes' : 'No'),
+      ]);
+      $summary[] = $this->t('Animate player? <strong>@animate</strong>', [
+        '@animate' => ($settings['audio_player_wordpress_animation'] ? 'Yes' : 'No'),
+      ]);
     }
     // If this is soundmanager, add those settings.
     elseif ($settings['audio_player'] == 'soundmanager_audio_player') {
@@ -273,7 +309,9 @@ class AudioFieldFieldFormatter extends FormatterBase implements ContainerFactory
         'barui' => 'Bar UI',
         'inlineplayer' => 'Inline Player',
       ];
-      $summary[] = Markup::create('Skin: <strong>' . $skins[$settings['audio_player_soundmanager_theme']] . '</strong>');
+      $summary[] = $this->t('Skin: <strong>@skin</strong>', [
+        '@skin' => $skins[$settings['audio_player_soundmanager_theme']],
+      ]);
     }
 
     // Show combined settings for multiple players.
@@ -286,7 +324,9 @@ class AudioFieldFieldFormatter extends FormatterBase implements ContainerFactory
       'wordpress_audio_player',
     ])) {
       // Display volume.
-      $summary[] = Markup::create('Initial volume: <strong>' . $settings['audio_player_initial_volume'] . ' out of 10</strong>');
+      $summary[] = $this->t('Initial volume: <strong>@volume out of 10</strong>', [
+        '@volume' => $settings['audio_player_initial_volume'],
+      ]);
     }
 
     // Display autoplay.
@@ -299,17 +339,39 @@ class AudioFieldFieldFormatter extends FormatterBase implements ContainerFactory
       'wavesurfer_audio_player',
       'wordpress_audio_player',
     ])) {
-      $summary[] = Markup::create('Autoplay: <strong>' . ($settings['audio_player_autoplay'] ? 'Yes' : 'No') . '</strong>');
+      $summary[] = $this->t('Autoplay: <strong>@autoplay</strong>', [
+        '@autoplay' => ($settings['audio_player_autoplay'] ? 'Yes' : 'No'),
+      ]);
+    }
+
+    // Display lazy load.
+    if (in_array($settings['audio_player'], [
+      'audiojs_audio_player',
+      'default_mp3_player',
+      'jplayer_audio_player',
+      'mediaelement_audio_player',
+      'projekktor_audio_player',
+    ])) {
+      $summary[] = $this->t('Lazy Load: <strong>@lazyload</strong>', [
+        '@lazyload' => ($settings['audio_player_lazyload'] ? 'Yes' : 'No'),
+      ]);
     }
 
     // Check to make sure the library is installed.
     $player = $this->audioPlayerManager->createInstance($settings['audio_player']);
     if (!$player->checkInstalled()) {
-      $summary[] = Markup::create('<strong style="color:red;">' . t('Error: this player library is currently not installed. Please select another player or reinstall the library.') . '</strong>');
+      $summary[] = $this->t('<strong style="color:red;">Error: this player library is currently not installed. Please select another player or reinstall the library.</strong>');
     }
 
+    // Show whether or not we are displaying download buttons.
+    $summary[] = $this->t('Display download button: <strong>@display_link</strong>', [
+      '@display_link' => ($settings['download_button'] ? 'Yes' : 'No'),
+    ]);
+
     // Show whether or not we are displaying direct downloads.
-    $summary[] = Markup::create('Display download link: <strong>' . ($settings['download_link'] ? 'Yes' : 'No') . '</strong>');
+    $summary[] = $this->t('Display download link: <strong>@display_link</strong>', [
+      '@display_link' => ($settings['download_link'] ? 'Yes' : 'No'),
+    ]);
 
     return $summary;
   }
@@ -327,6 +389,8 @@ class AudioFieldFieldFormatter extends FormatterBase implements ContainerFactory
       'audio_player_soundmanager_theme' => 'default',
       'audio_player_initial_volume' => 8,
       'audio_player_autoplay' => FALSE,
+      'audio_player_lazyload' => FALSE,
+      'download_button' => FALSE,
       'download_link' => FALSE,
     ] + parent::defaultSettings();
   }

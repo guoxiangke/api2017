@@ -31,6 +31,7 @@
       wmode: 'window',
       useStateClassSkin: true,
       autoBlur: false,
+      preload: settings.lazyload,
       smoothPlayBar: true,
       keyEnabled: true,
       remainingDuration: false,
@@ -57,6 +58,7 @@
         wmode: 'window',
         useStateClassSkin: true,
         autoBlur: false,
+        preload: settings.lazyload,
         smoothPlayBar: true,
         keyEnabled: true,
         volume: settings.volume
@@ -88,6 +90,7 @@
         swfPath: '/libraries/jplayer/dist/jplayer',
         wmode: 'window',
         keyEnabled: true,
+        preload: settings.lazyload,
         supplied: file.filetype
       });
     });

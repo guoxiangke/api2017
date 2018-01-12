@@ -15,7 +15,7 @@
 <div class="audiofield">
   <div id="{{ settings.id }}" class="audiofield-audiojs-frame">
     <div class="audiofield-audiojs">
-      <audio preload="auto" {% if settings.audio_player_autoplay == 1 %} autoplay="autoplay" {% endif %}></audio>
+      <audio preload="{% if settings.audio_player_lazyload == 1 %}none{% else %}auto{% endif %}" {% if settings.audio_player_autoplay == 1 %} autoplay="autoplay" {% endif %}></audio>
       <div class="play-pauseZ">
         <p class="playZ"></p>
         <p class="pauseZ"></p>
