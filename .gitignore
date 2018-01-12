@@ -69,3 +69,16 @@ MP_verify_TneROHDiBDphZRvS.txt
 MP_verify_Z2TjrnKOg0sW35OI.txt
 auto.sh
 sftp-config.json
+
+libraries/audiojs/
+libraries/aws.phar
+libraries/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer/CSS/
+libraries/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer/URI/4.9.3,3478238e680361cd87bf880f5b3cc50a1e7abc6c,1.ser
+libraries/jplayer/
+libraries/mediaelement/
+libraries/soundmanager/
+libraries/wavesurfer/
+libraries/wordpress-audio/
+modules/contrib/inline_entity_form/
+sites/default/development.services.yml
+modules/contrib/similarterms
