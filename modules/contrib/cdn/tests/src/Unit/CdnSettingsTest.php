@@ -3,6 +3,7 @@
 namespace Drupal\Tests\cdn\Unit;
 
 use Drupal\cdn\CdnSettings;
+use Drupal\Core\Config\ConfigValueException;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -165,7 +166,11 @@ class CdnSettingsTest extends UnitTestCase {
           'png' => 'static.example.com',
           'zip' => 'downloads.example.com',
         ],
-        ['[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:42', 'static.example.com', 'downloads.example.com'],
+        [
+          '[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:42',
+          'static.example.com',
+          'downloads.example.com',
+        ],
       ],
       'complex containing two simple mappings, without fallback' => [
         [
@@ -241,10 +246,9 @@ class CdnSettingsTest extends UnitTestCase {
 
   /**
    * @covers ::getLookupTable
-   * @expectedException \AssertionError
-   * @expectedExceptionMessage It does not make sense to provide an 'extensions' condition as well as a negated 'extensions' condition.
    */
   public function testSimpleMappingWithConditionsAndNegatedConditions() {
+    $this->setExpectedException(\AssertionError::class, "It does not make sense to provide an 'extensions' condition as well as a negated 'extensions' condition.");
     $this->createCdnSettings([
       'status' => TRUE,
       'mapping' => [
@@ -254,18 +258,17 @@ class CdnSettingsTest extends UnitTestCase {
           'extensions' => ['foo', 'bar'],
           'not' => [
             'extensions' => ['baz', 'qux'],
-          ]
-        ]
+          ],
+        ],
       ],
     ])->getLookupTable();
   }
 
   /**
    * @covers ::getLookupTable
-   * @expectedException \AssertionError
-   * @expectedExceptionMessage The nested mapping 1 includes negated conditions, which is not allowed for complex mappings: the fallback_domain already serves this purpose.
    */
   public function testComplexDomainWithNegatedConditions() {
+    $this->setExpectedException(\AssertionError::class, "The nested mapping 1 includes negated conditions, which is not allowed for complex mappings: the fallback_domain already serves this purpose.");
     $this->createCdnSettings([
       'status' => TRUE,
       'mapping' => [
@@ -277,7 +280,7 @@ class CdnSettingsTest extends UnitTestCase {
             'domain' => 'foo.example.com',
             'conditions' => [
               'extensions' => ['png'],
-            ]
+            ],
           ],
           1 => [
             'type' => 'simple',
@@ -285,8 +288,8 @@ class CdnSettingsTest extends UnitTestCase {
             'conditions' => [
               'not' => [
                 'extensions' => ['png'],
-              ]
-            ]
+              ],
+            ],
           ],
         ],
       ],
@@ -295,10 +298,9 @@ class CdnSettingsTest extends UnitTestCase {
 
   /**
    * @covers ::getLookupTable
-   * @expectedException \AssertionError
-   * @expectedExceptionMessage The provided domain http://cdn.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.
    */
   public function testAbsoluteUrlAsSimpleDomain() {
+    $this->setExpectedException(\AssertionError::class, "The provided domain http://cdn.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.");
     $this->createCdnSettings([
       'status' => TRUE,
       'mapping' => [
@@ -310,10 +312,9 @@ class CdnSettingsTest extends UnitTestCase {
 
   /**
    * @covers ::getLookupTable
-   * @expectedException \AssertionError
-   * @expectedExceptionMessage The provided domain //cdn.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.
    */
   public function testProtocolRelativeUrlAsSimpleDomain() {
+    $this->setExpectedException(\AssertionError::class, "The provided domain //cdn.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.");
     $this->createCdnSettings([
       'status' => TRUE,
       'mapping' => [
@@ -325,10 +326,9 @@ class CdnSettingsTest extends UnitTestCase {
 
   /**
    * @covers ::getLookupTable
-   * @expectedException \AssertionError
-   * @expectedExceptionMessage The provided fallback domain http://cdn.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.
    */
   public function testAbsoluteUrlAsComplexFallbackDomain() {
+    $this->setExpectedException(\AssertionError::class, "The provided fallback domain http://cdn.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.");
     $this->createCdnSettings([
       'status' => TRUE,
       'mapping' => [
@@ -340,10 +340,9 @@ class CdnSettingsTest extends UnitTestCase {
 
   /**
    * @covers ::getLookupTable
-   * @expectedException \AssertionError
-   * @expectedExceptionMessage The provided fallback domain //cdn.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.
    */
   public function testProtocolRelativeUrlAsComplexFallbackDomain() {
+    $this->setExpectedException(\AssertionError::class, "The provided fallback domain //cdn.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.");
     $this->createCdnSettings([
       'status' => TRUE,
       'mapping' => [
@@ -355,10 +354,9 @@ class CdnSettingsTest extends UnitTestCase {
 
   /**
    * @covers ::getLookupTable
-   * @expectedException \AssertionError
-   * @expectedExceptionMessage The provided domain http://foo.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.
    */
   public function testAbsoluteUrlAsAutobalancedDomain() {
+    $this->setExpectedException(\AssertionError::class, "The provided domain http://foo.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.");
     $this->createCdnSettings([
       'status' => TRUE,
       'mapping' => [
@@ -378,10 +376,9 @@ class CdnSettingsTest extends UnitTestCase {
 
   /**
    * @covers ::getLookupTable
-   * @expectedException \AssertionError
-   * @expectedExceptionMessage The provided domain //foo.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.
    */
   public function testProtocolRelativeUrlAsAutobalancedDomain() {
+    $this->setExpectedException(\AssertionError::class, "The provided domain //foo.example.com is not valid. Provide a host like 'cdn.com' or 'cdn.example.com'. IP addresses and ports are also allowed.");
     $this->createCdnSettings([
       'status' => TRUE,
       'mapping' => [
@@ -401,10 +398,9 @@ class CdnSettingsTest extends UnitTestCase {
 
   /**
    * @covers ::getLookupTable
-   * @expectedException \Drupal\Core\Config\ConfigValueException
-   * @expectedExceptionMessage It does not make sense to apply auto-balancing to all files, regardless of extension.
    */
   public function testAutobalancedWithoutConditions() {
+    $this->setExpectedException(ConfigValueException::class, "It does not make sense to apply auto-balancing to all files, regardless of extension.");
     $this->createCdnSettings([
       'status' => TRUE,
       'mapping' => [
@@ -420,10 +416,9 @@ class CdnSettingsTest extends UnitTestCase {
 
   /**
    * @covers ::getLookupTable
-   * @expectedException \AssertionError
-   * @expectedExceptionMessage The nested mapping 0 includes no conditions, which is not allowed for complex mappings.
    */
   public function testComplexMappingWithoutConditions() {
+    $this->setExpectedException(\AssertionError::class, "The nested mapping 0 includes no conditions, which is not allowed for complex mappings.");
     $this->createCdnSettings([
       'status' => TRUE,
       'mapping' => [

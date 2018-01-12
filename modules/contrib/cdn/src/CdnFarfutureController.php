@@ -95,7 +95,7 @@ class CdnFarfutureController implements ContainerInjectionInterface {
       // Finally, it's also marked as "immutable", which helps avoid
       // revalidation, see:
       // - https://bitsup.blogspot.be/2016/05/cache-control-immutable.html
-      // - https://tools.ietf.org/html/draft-mcmanus-immutable-00
+      // - https://tools.ietf.org/html/rfc8246
       'Cache-Control' => 'max-age=290304000, no-transform, public, immutable',
       // Set a far future Expires header. The maximum UNIX timestamp is
       // somewhere in 2038. Set it to a date in 2037, just to be safe.
@@ -109,7 +109,11 @@ class CdnFarfutureController implements ContainerInjectionInterface {
       'Last-Modified' => 'Wed, 20 Jan 1988 04:20:42 GMT',
     ];
 
-    $response = new BinaryFileResponse(substr($root_relative_file_url, 1), 200, $farfuture_headers, TRUE, NULL, FALSE, FALSE);
+    // A relative URL for a file contains '%20' instead of spaces. A relative
+    // file path contains spaces.
+    $relative_file_path = rawurldecode($root_relative_file_url);
+
+    $response = new BinaryFileResponse(substr($relative_file_path, 1), 200, $farfuture_headers, TRUE, NULL, FALSE, FALSE);
     $response->isNotModified($request);
     return $response;
   }
