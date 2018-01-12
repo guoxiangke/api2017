@@ -788,7 +788,7 @@ $databases['default']['default'] = array (
   'username' => 'drupal',
   'password' => 'drupal',
   'prefix' => 'api_',
-  'host' => db,
+  'host' => mysql,
   'port' => '3306',
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
@@ -806,3 +806,4 @@ $settings['trusted_host_patterns'] = array(
   '^api\.aws\.yongbuzhixi\.com$',
   '^api\.staging\.yongbuzhixi\.com$'
 );
+$settings['update_free_access'] = TRUE;
