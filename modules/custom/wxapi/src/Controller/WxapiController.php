@@ -174,7 +174,7 @@ class WxapiController extends ControllerBase {
 				$node->save();
 	      \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/grace365/$date", "und");
 				\Drupal::logger('wxapi_cron_update_tp')->notice('Grace %nid created @title.',['%nid'=>$node->id(),'@title'=>$new_title]);
-				$res[] = $node->id();
+		    $res[]=['nid'=>$node->id(),'title'=>$newNode['title']];
 			}
 		}
 		//每日亲近神
@@ -185,7 +185,11 @@ class WxapiController extends ControllerBase {
     foreach ($str->data as $key => $item) {
       $time_str = $item->ShowTime; //2017-09-23 00:00:00
       $created = strtotime($time_str);
-      {//create the node!!!
+
+			$date = date('Ymd',$created);
+			$fields = ['status'=>1,'created'=>$created,'field_tags'=>514];//'uid'=>46,
+			$nid = tools_wxapi_get_nid($fields,'article');
+      if(!$nid){//create the node!!!
         $new_title = explode('》', $item->Title);
         if(isset($new_title[1])) {
           $new_title=$new_title[1];
@@ -216,10 +220,56 @@ class WxapiController extends ControllerBase {
         // \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/grace/$date", "und");
         \Drupal::logger('wxapi_cron_update_tp')->notice('Daily %nid created @title.',['%nid'=>$node->id(),'@title'=>$new_title]);
         // dpm($node->id(),$newNode);
+		    $res[]=['nid'=>$node->id(),'title'=>$newNode['title']];
       }
       break;
     }
-		//end
+		//每日亲近神 end
+		//inhim cron begin only for 2018!!!
+	  if(date('Y')=='2018'){
+	  	$today_id = date('z');//0-365 15
+	    $status=0;
+	    // if($i>$today_id) break;
+	    $created = strtotime('2018-01-01 00:00:00');
+	    $created += $today_id * 86400;
+	    $date = date("md",$created);
+	    // $fields = ['status'=>$status,'created'=>$created];//tid=514
+			$fields = ['status'=>1,'created'=>$created,'field_tags'=>594];//'uid'=>46,
+			$nid = tools_wxapi_get_nid($fields,'article');
+      if(!$nid){
+		    $newNode = [
+		      'type'             => 'article',
+		      'created'          => $created,
+		      'changed'          => $created,
+		      'uid'              => 268, // https://api.yongbuzhixi.com/user/268
+		      'title'            => date('md在天父怀中',$created),
+	        'body'             => [
+	            'summary' => date('在天父怀中：n月d日 ',$created),
+	            'value'   => date('在天父怀中：n月d日 ',$created).'暂无内容，欢迎听写，评论在下方，祝福他人，永不止息，感恩有你！',
+	            'format'  => 'full_html',
+	        ],
+		      // An array with taxonomy terms.
+		      'field_tags' =>[594],
+		      'field_article_album_term' => [597],
+		      'field_article_audio'=>'http://inhim.yongbuzhixi.com/2013Daily_13'.$date.'.mp3'
+		      //'http://www.wxbible.net/wxapi/data/wxbible/audios/%E6%AF%8F%E6%97%A5%E7%81%B5%E4%BF%AE/%E5%9C%A8%E5%A4%A9%E7%88%B6%E6%80%80%E4%B8%AD/'.$date.'.mp3',
+		    ];
+		    $node = Node::create($newNode);
+		    $node->save();
+		    \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/inhim/$date", "und");
+		    \Drupal::logger('wxapi_cron_update_inhim')->notice('Daily %nid created @title.',['%nid'=>$node->id(),'@title'=>$newNode['title']]);
+		    $res[]=['nid'=>$node->id(),'title'=>$newNode['title']];
+		    // dpm($node->id(),$newNode);
+		    // break;
+	    }else{
+	    	//published it!!!
+				$node = Node::load($nid);
+				$node->status=1;
+				$node->created = $node->created->value + 80400;
+				$node->save();
+	    }
+	  }
+		//inhim cron end
 		return new JsonResponse($res);
 	}
 	public function getWxPost(Request $request){
