@@ -54,7 +54,7 @@ function wxjs_preprocess_page(&$variables)
     if (is_array($title)) $title = $title['#markup'];
     $shareData = array(
         'title'  => $title . '|主内公众云-永不止息',
-        'desc'   => '主内公众云-永不止息,需要有你!欢迎搜索关注公众号:永不止息',//\Drupal::config('system.site')->get('slogan')
+        'desc'   => '朋友，分享给您一篇我喜欢的内容',//\Drupal::config('system.site')->get('slogan')
         'link'   => "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]",
         'imgUrl' => 'https://wx.yongbuzhixi.com/sites/all/themes/jstheme/logo.png',//theme_get_setting('logo.url')
     );
