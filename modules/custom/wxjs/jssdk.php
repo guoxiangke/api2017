@@ -109,8 +109,7 @@ class JSSDK {
     // $config = \Drupal::service('config.factory')->getEditable('wxjs.settings');
     // $config->set('tokens',  $content);
     // $config->save(); //TODO delete!!!
-    $value = \Drupal::cache()->set($cache_key, $cache_value, 7000);
-    \Drupal::logger('set_cache_ticket')->notice($cache_key . print_r($cache_value,1));
+    $value = \Drupal::cache()->set($cache_key, $cache_value, REQUEST_TIME + 7000);
     return $value;
   }
 }
