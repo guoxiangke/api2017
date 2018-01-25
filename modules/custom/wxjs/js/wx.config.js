@@ -1,7 +1,7 @@
 (function($) {
   jQuery(document).ready(function ($) {
     wx.config({
-      debug: false,
+      debug: true,
       appId:  drupalSettings.wxjs.signPackage.appId,
       timestamp:  drupalSettings.wxjs.signPackage.timestamp,
       nonceStr:  drupalSettings.wxjs.signPackage.nonceStr,
