@@ -12,7 +12,7 @@ class JSSDK {
     $jsapiTicket = $this->getJsApiTicket();
 
     // 注意 URL 一定要动态获取，不能 hardcode.
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443 || $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ? "https://" : "http://";
     $url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
     $timestamp = time();
@@ -20,7 +20,7 @@ class JSSDK {
 
     // 这里参数的顺序要按照 key 值 ASCII 码升序排序
     $string = "jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=$url";
-
+    
     $signature = sha1($string);
 
     $signPackage = array(
@@ -95,20 +95,15 @@ class JSSDK {
   }
 
   private function get_cache($cache_key) {
-    // $config = \Drupal::config('wxjs.settings');
-    // return $config->get('tokens'); //TODO delete!!!
     if ($cache = \Drupal::cache()->get($cache_key)) {
       $value =  $cache->data;
     }else{
       $value = false;
     }
-    \Drupal::logger('get_cache')->notice($cache_key . print_r($value,1));
     return $value;
   }
   private function set_cache($cache_key,$cache_value) {
-    // $config = \Drupal::service('config.factory')->getEditable('wxjs.settings');
-    // $config->set('tokens',  $content);
-    // $config->save(); //TODO delete!!!
+    // $config = \Drupal::service('config.factory')->getEditable('wxjs.settings')->delete();
     $value = \Drupal::cache()->set($cache_key, $cache_value, REQUEST_TIME + 7000);
     return $value;
   }
