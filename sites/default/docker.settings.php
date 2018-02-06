@@ -807,4 +807,4 @@ $settings['trusted_host_patterns'] = array(
   '^api\.staging\.yongbuzhixi\.com$'
 );
 #$settings['update_free_access'] = TRUE;
-$settings['file_private_path'] = '/var/www/html/site/default/files/private';
+$settings['file_private_path'] = '/var/www/html/sites/default/files/private';
