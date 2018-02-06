@@ -10,6 +10,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 
 class SsoController extends ControllerBase
 {
