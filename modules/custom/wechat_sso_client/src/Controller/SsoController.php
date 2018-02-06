@@ -24,19 +24,27 @@ class SsoController extends ControllerBase
 		if (!$account) {
 			$uid = 4;
 			$weObj = _mp_service_init_wechat($uid);
-//			$user_info = $weObj->getUserInfo($openid);
 			$user_info = $weObj->getOauthUserinfo($access_token, $openid);
-			if((isset($user_info['subscribe']) && $user_info['subscribe'] ==0)||!isset($user_info['subscribe'])){
-				\Drupal::logger('user_info1')->notice('<pre>'.print_r($user_info,1));
-				drupal_set_message('您还没有关注微信：永不止息,不可登陆，即将跳转关注!','error');	
-				return new TrustedRedirectResponse('http://dwz.cn/ybzx_fwh');
-			}else{
-				\Drupal::logger('user_info2')->notice('<pre>'.print_r($user_info,1));
-				$account = wechat_api_save_account($user_info);
-				user_login_finalize($account);
-				drupal_set_message('登记会员成功,左上角关闭本页,回复编码获取资源吧!','status');
-				\Drupal::logger('SSO login & create account')->notice($account->id().'login success');
-			}
+			// Array
+				// (
+				//     [openid] => oTjEws6E1mOsB09ylSPTE7UxsNG4
+				//     [nickname] => 神是我的避难所，是我的安慰
+				//     [sex] => 0
+				//     [language] => zh_CN
+				//     [city] => 
+				//     [province] => 
+				//     [country] => 
+				//     [headimgurl] => http://wx.qlogo.cn/mmopen/vi_32/AaJ9zOjFn4XuORBr24AzvoGNBLkOtZtaZOxL8HswiasUQPgUOsFO0Libk1cmyIY8CZJRHBce7umQQScVJZoqh4WA/132
+				//     [privilege] => Array
+				//         (
+				//         )
+
+				//     [unionid] => od0Q-xNSDY_x2jxxD4QTa859u5Gk
+			// )
+			$account = wechat_api_save_account($user_info);
+			user_login_finalize($account);
+			drupal_set_message('登录成功!','status');
+			\Drupal::logger('SSO login & create account')->notice($account->id().'login success');
 		}else {
 			user_login_finalize($account);
 			\Drupal::logger('SSO login')->notice($account->id().' : login success');
