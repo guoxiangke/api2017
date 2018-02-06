@@ -549,7 +549,7 @@ if ($settings['hash_salt']) {
  * See https://www.drupal.org/documentation/modules/file for more information
  * about securing private files.
  */
-$settings['file_private_path'] = '/var/www/private_files/api';
+$settings['file_private_path'] = '/var/www/html/site/default/private';
 
 /**
  * Session write interval:
@@ -806,4 +806,4 @@ $settings['trusted_host_patterns'] = array(
   '^api\.aws\.yongbuzhixi\.com$',
   '^api\.staging\.yongbuzhixi\.com$'
 );
-$settings['update_free_access'] = TRUE;
+#$settings['update_free_access'] = TRUE;
