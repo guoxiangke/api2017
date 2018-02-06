@@ -44,10 +44,10 @@ class SsoController extends ControllerBase
 			$account = wechat_api_save_account($user_info);
 			user_login_finalize($account);
 			drupal_set_message('登录成功!','status');
-			\Drupal::logger('SSO login & create account')->notice($account->id().'login success');
+			// \Drupal::logger('SSO login & create account')->notice($account->id().'login success');
 		}else {
 			user_login_finalize($account);
-			\Drupal::logger('SSO login')->notice($account->id().' : login success');
+			// \Drupal::logger('SSO login')->notice($account->id().' : login success');
 		}
     $url = Url::fromUri('internal:/'.$destination);
 		return new RedirectResponse($url->toString());//Url::fromRoute('<front>')->toString()
