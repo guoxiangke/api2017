@@ -7,9 +7,12 @@
             if(typeof(wx) != "undefined" && wx !== null){
                 wx.ready(function () {
                     if(!drupalSettings.user.uid){
-                        alert('即将跳转登录');
-                        var redirect_url = 'https://www.yongbuzhixi.com/wechat_login/1?sso=api&dest='+drupalSettings.path.currentPath;
-                        window.location.replace(redirect_url);
+                        // alert('即将跳转登录');
+                        $('a[href="/user/login"]').click(function(e){
+                            e.preventDefault();
+                            var redirect_url = 'https://www.yongbuzhixi.com/wechat_login/1?sso=api&dest='+drupalSettings.path.currentPath;
+                            window.location.replace(redirect_url);
+                        })
                     }
                 });
             }
