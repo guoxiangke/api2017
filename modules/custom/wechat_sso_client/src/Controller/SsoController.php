@@ -25,8 +25,9 @@ class SsoController extends ControllerBase
 			$weObj = _mp_service_init_wechat($uid);
 //			$user_info = $weObj->getUserInfo($openid);
 			$user_info = $weObj->getOauthUserinfo($access_token, $openid);
-			if($user_info['subscribe']==0){
-				drupal_set_message('您还没有关注微信：永不止息,不可使用回复编码获取资源!','error');	
+			if((isset($user_info['subscribe']) && $user_info['subscribe'] ==0)||!isset($user_info['subscribe'])){
+				drupal_set_message('您还没有关注微信：永不止息,不可登陆，即将跳转关注!','error');	
+				return new TrustedRedirectResponse('http://dwz.cn/ybzx_fwh');
 			}else{
 				$account = wechat_api_save_account($user_info);
 				user_login_finalize($account);
