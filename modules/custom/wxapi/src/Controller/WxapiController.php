@@ -198,6 +198,7 @@ class WxapiController extends ControllerBase {
         }
         $body = $item->Content;
         $body = preg_replace('/style="(.*?)"/', '', $body);
+
         $newNode = [
           'type'             => 'article',
           'created'          => $created,
@@ -208,7 +209,7 @@ class WxapiController extends ControllerBase {
           // 514
           'field_tags' =>[514],
           'field_article_wechat_term' => [240],
-          'field_article_audio'=>'http://www.hvsha-tpehoc.com'.str_replace('2018\01', date("Y/m"), $VideoUrl),
+          'field_article_audio'=>'http://www.hvsha-tpehoc.com'.$item->VideoUrl,
           'body'             => [
               'summary' => $item->Description,
               'value'   => $body,
