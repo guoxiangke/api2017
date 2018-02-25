@@ -93,6 +93,9 @@ function resource_77_wxresources_alter($keyword, Wechat $weObj = NULL) {
             $fid = $node->field_mp3->getValue()[0]['target_id'];
             $file = \Drupal\file\Entity\File::load($fid);
             $musicurl = file_create_url($file->getFileUri());
+            
+            $cdn_enabled = \Drupal::config('cdn.settings')->get('status');
+            if($cdn_enabled) $musicurl = 'https:' . $musicurl;
         }
 
         $resources = [
