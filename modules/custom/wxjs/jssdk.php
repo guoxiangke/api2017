@@ -44,7 +44,7 @@ class JSSDK {
   }
 
   private function getJsApiTicket() {
-    // jsapi_ticket 应该全局存储与更新，以下代码以写入到文件中做示例
+    // wxjsapi_ticket 应该全局存储与更新，以下代码以写入到文件中做示例
 
     $ticket = $this->get_cache('wxjsapi_ticket');
     if (!$ticket) {
@@ -54,7 +54,7 @@ class JSSDK {
       $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
       $res = json_decode($this->httpGet($url));
       if (is_object($res) && isset($res->ticket)) {
-        $this->set_cache('jsapi_ticket', $res->ticket);
+        $this->set_cache('wxjsapi_ticket', $res->ticket);
       }else{
         \Drupal::logger('jssdk')->error('getJsApiTicket error:<pre>'.print_r($res,1));
       }
