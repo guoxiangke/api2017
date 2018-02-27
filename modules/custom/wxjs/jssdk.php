@@ -12,8 +12,8 @@ class JSSDK {
     $jsapiTicket = $this->getJsApiTicket();
 
     // 注意 URL 一定要动态获取，不能 hardcode.
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443 || $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ? "https://" : "http://";
-    $url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    global $base_url;//DRUPAL!
+    $url = "$base_url$_SERVER[REQUEST_URI]";
 
     $timestamp = time();
     $nonceStr = $this->createNonceStr();
@@ -56,7 +56,7 @@ class JSSDK {
       if (is_object($res) && isset($res->ticket)) {
         $this->set_cache('jsapi_ticket', $res->ticket);
       }else{
-        //error~~~
+        \Drupal::logger('jssdk')->error('getJsApiTicket error:<pre>'.print_r($res,1));
       }
     }
 
@@ -71,9 +71,11 @@ class JSSDK {
       // $url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=$this->appId&corpsecret=$this->appSecret";
       $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appSecret";
       $res = json_decode($this->httpGet($url));
-      $access_token = $res->access_token;
-      if ($access_token) {
+      if (is_object($res) && isset($res->access_token)) {
+        $access_token = $res->access_token;
         $this->set_cache('wxjsapi_access_token',$access_token);
+      }else{
+        \Drupal::logger('jssdk')->error('getAccessToken error:<pre>'.print_r($res,1));
       }
     }
     return $access_token;
@@ -96,16 +98,23 @@ class JSSDK {
   }
 
   private function get_cache($cache_key) {
+    $value = false;
     if ($cache = \Drupal::cache()->get($cache_key)) {
       $value =  $cache->data;
-    }else{
-      $value = false;
     }
     return $value;
   }
   private function set_cache($cache_key,$cache_value) {
     // $config = \Drupal::service('config.factory')->getEditable('wxjs.settings')->delete();
-    $value = \Drupal::cache()->set($cache_key, $cache_value, REQUEST_TIME + 7000);
-    return $value;
+    \Drupal::cache()->set($cache_key, $cache_value, REQUEST_TIME + 7100, array('config:wxjs.jssdk'));
   }
 }
+
+// //0 return TRUE or false
+// //1 return string
+// function d8_dale_ishttps($get_string=0){
+//     $http_forwarded_proto = 'http';
+//     if(isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) $http_forwarded_proto = $_SERVER['HTTP_X_FORWARDED_PROTO'];
+//     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443 || $http_forwarded_proto == 'https') ? "https://" : "http://";
+//     return $get_string?$protocol:($protocol == 'https://'?true:false);
+// }

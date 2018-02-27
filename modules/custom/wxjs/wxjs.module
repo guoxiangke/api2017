@@ -15,28 +15,6 @@ use Drupal\user\Entity\User;
  */
 function wxjs_preprocess_page(&$variables)
 {
-
-//  use Drupal\node\Entity\Node;
-    // for($i=1026;$i<=1072;$i++){
-    //   $nid = $i;
-    //   $bid = 1024;
-    //   /* @var $node Node */
-    //   $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);;//Node::load($nid);
-    //   if($i==1066) dpm($node->id());
-    //   if($node && $node->id()){
-    //     if(!$node->isPromoted()){
-    //       continue;
-    //     }else{
-    //       $node->setPromoted(false);
-    //       $node->book=array('bid'=>$bid,'pid'=>$bid);
-    //       $node->save();
-    //       dpm($node->id() . ' update!');
-    //       break;
-    //     }
-    //   }
-    // }
-
-
 //  ksm($variables);
 //  $path = \Drupal::request()->getpathInfo();// /lymeta/im/20161207
     $path = \Drupal::service('path.current')->getPath();// node/1
@@ -52,11 +30,13 @@ function wxjs_preprocess_page(&$variables)
     $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
 
     if (is_array($title)) $title = $title['#markup'];
+    global $base_url;
+    //https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115
     $shareData = array(
         'title'  => $title . '|主内公众云-永不止息',
         'desc'   => '朋友，分享给您一篇我喜欢的内容',//\Drupal::config('system.site')->get('slogan')
         'link'   => "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]",
-        'imgUrl' => 'https://wx.yongbuzhixi.com/sites/all/themes/jstheme/logo.png',//theme_get_setting('logo.url')
+        'imgUrl' => $base_url.theme_get_setting('logo.url')
     );
     if ($arg[1] == 'node' && isset($arg[2]) && is_numeric($arg[2])) {
         $cached_data_keyword = 'wxjs_sharedata_node_' . $arg[2];
@@ -80,8 +60,30 @@ function wxjs_preprocess_page(&$variables)
             }
             $body = $node->body->getValue();
             $shareData['desc'] = isset($body[0]['summary']) ?$body[0]['summary']: $shareData['desc'];
+
+            //https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115
+            //分享给朋友 desc type＝'music/video/link' dataUrl=''    
+            $musicurl = false;  
+            
+            
+            if($node->hasField('field_article_audio') && !$node->field_article_audio->isEmpty()){
+                $musicurl = $node->field_article_audio->value;    
+            }elseif($node->hasField('field_mp3') && !$node->field_mp3->isEmpty()){
+                $fid = $node->field_mp3->getValue()[0]['target_id'];
+                $file = \Drupal\file\Entity\File::load($fid);
+                $musicurl = file_create_url($file->getFileUri());
+                
+                $cdn_enabled = \Drupal::config('cdn.settings')->get('status');
+                if($cdn_enabled) $musicurl = 'https:' . $musicurl;
+            }
+            if($musicurl){
+                $shareData['type'] = 'music';
+                $shareData['dataUrl'] = $musicurl;
+            }
             \Drupal::cache()->set($cached_data_keyword, $shareData, -1);
         }
+
+
     }
     $variables['#attached']['drupalSettings']['wxjs']['shareData'] = $shareData;
 

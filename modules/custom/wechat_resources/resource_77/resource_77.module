@@ -87,9 +87,9 @@ function resource_77_wxresources_alter($keyword, Wechat $weObj = NULL) {
         $nid = $nids[$index];
         $node = Node::load($nid);
         $expire = -1;
-        if(!$node->field_article_audio->isEmpty()){
+        if($node->hasField('field_article_audio') && !$node->field_article_audio->isEmpty()){
             $musicurl = $node->field_article_audio->value;    
-        }elseif(!$node->field_mp3->isEmpty()){
+        }elseif($node->hasField('field_mp3') && !$node->field_mp3->isEmpty()){
             $fid = $node->field_mp3->getValue()[0]['target_id'];
             $file = \Drupal\file\Entity\File::load($fid);
             $musicurl = file_create_url($file->getFileUri());
