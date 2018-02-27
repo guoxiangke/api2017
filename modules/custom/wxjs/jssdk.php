@@ -14,7 +14,7 @@ class JSSDK {
     // 注意 URL 一定要动态获取，不能 hardcode.
     global $base_url;//DRUPAL!
     $url = "$base_url$_SERVER[REQUEST_URI]";
-    \Drupal::logger('jssdk')->notice('URL:<pre>'.print_r($url,1));
+    // \Drupal::logger('jssdk')->notice('URL:<pre>'.print_r($url,1));
     $timestamp = time();
     $nonceStr = $this->createNonceStr();
 
