@@ -16,6 +16,9 @@
                         if($('link[href="/taxonomy/term/13"]').length==1){//cc空中辅导自动登录
                             var redirect_url = 'https://www.yongbuzhixi.com/wechat_login/1?sso=api&dest='+drupalSettings.path.currentPath;
                             window.location.replace(redirect_url);
+                        }
+                    }else{
+                        if($('link[href="/taxonomy/term/13"]').length==1){
                             //cc空中辅导页面清理
                             $('.breadcrumb').hide();
                             $('textarea').attr('rows',2);
