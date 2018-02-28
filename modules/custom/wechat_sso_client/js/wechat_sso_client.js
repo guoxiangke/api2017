@@ -5,7 +5,7 @@
     Drupal.behaviors.wechatssoclient = {
         attach: function (context, settings) {
             if(typeof(wx) != "undefined" && wx !== null){
-                wx.ready(function () {
+                wx.ready(function () {//在微信手机里
                     if(!drupalSettings.user.uid){
                         // alert('即将跳转登录');
                         $('a[href="/user/login"]').click(function(e){
@@ -18,11 +18,11 @@
                             window.location.replace(redirect_url);
                         }
                     }else{
-                        if($('link[href="/taxonomy/term/13"]').length==1){
-                            //cc空中辅导页面清理
+                        // if($('link[href="/taxonomy/term/13"]').length==1){
+                            //cc空中辅导页面清理 
                             $('.breadcrumb').hide();
-                            $('textarea').attr('rows',2);
-                        }
+                            $('.field--name-comment-body textarea').attr('rows',2);
+                        // }
                     }
                 });
             }
