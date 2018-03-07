@@ -806,5 +806,5 @@ $settings['trusted_host_patterns'] = array(
   '^api\.aws\.yongbuzhixi\.com$',
   '^api\.staging\.yongbuzhixi\.com$'
 );
-#$settings['update_free_access'] = TRUE;
+$settings['update_free_access'] = TRUE;
 $settings['file_private_path'] = '/var/www/html/sites/default/files/private';
