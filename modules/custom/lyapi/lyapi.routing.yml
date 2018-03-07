@@ -14,9 +14,9 @@ lyapi.get_meta_nid:
     _permission: 'access content'
 
 lyapi.create_meta_node:
-  path: '/lyapi/getmetanode'
+  path: '/lyapi/getmeta'
   defaults:
-    _controller: '\Drupal\lyapi\Controller\LyapiController::getMetaNode'
+    _controller: '\Drupal\lyapi\Controller\LyapiController::getMeta'
   requirements:
     _permission: 'access content'
 

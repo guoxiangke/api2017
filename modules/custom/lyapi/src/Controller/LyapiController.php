@@ -37,7 +37,7 @@ class LyapiController extends ControllerBase {
 	 * Cron get lymeta node from txly2.net/cc
 	 * @return JsonResponse
 	 */
-	public function getMetaNode() {
+	public function getMeta() {
 		lyapi_get_meta();
 		return new JsonResponse([]);
 	}

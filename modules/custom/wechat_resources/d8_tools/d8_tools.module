@@ -39,6 +39,27 @@ function tools_wxapi_get_nids($fields,$bundle='grace',$count=1,$uid=0){
         return [];
     }
 }
+//copy of tools_wxapi_get_nids
+function tools_wxapi_get_entity_ids($fields,$bundle='grace',$type='node',$count=1,$uid=0,$order="DESC"){
+    $query = \Drupal::entityQuery($type);
+    $query->condition('type', $bundle);
+    if($uid) $query->condition('uid', $uid);
+    foreach($fields as $key => $value) {
+        $query->condition($key, $value);
+    }
+    $query->sort('id', $order);
+    if($count>0) $query->range(0, $count);
+
+//  https://www.sitepoint.com/drupal-8-version-entityfieldquery/
+//  https://lakshminp.com/using-entity-api-drupal-8
+//  ->condition('field_tags.entity.name', 'cats');
+    $entity_ids = $query->execute();
+    if (count($entity_ids)) {
+      return array_values($entity_ids);
+    } else {
+        return [];
+    }
+}
 
 function tools_wechat_api_get_news($nids){
     $news=[];
