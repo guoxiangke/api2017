@@ -38,7 +38,7 @@ function wxjs_preprocess_page(&$variables)
         'link'   => "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]",
         'imgUrl' => $base_url.theme_get_setting('logo.url')
     );
-    if ($arg[1] == 'node' && isset($arg[2]) && is_numeric($arg[2])) {
+    if (isset($variables['node']) && $arg[1] == 'node' && isset($arg[2]) && is_numeric($arg[2])) {
         $cached_data_keyword = 'wxjs_sharedata_node_' . $arg[2];
         if ($cache = \Drupal::cache()->get($cached_data_keyword)) {
             $shareData = $cache->data;
