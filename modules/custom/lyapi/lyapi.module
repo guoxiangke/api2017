@@ -577,7 +577,6 @@ function lyapi_cron_migrate_lymeta(){
     $entity_id = save_lymeta($tid, $body, $date);
     if($entity_id) {
         $node->delete();
-        \Drupal::logger(__FUNCTION__)->notice("$nid-$title-$entity_id");
         return $nid;
     } 
     //3.delete
