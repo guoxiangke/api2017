@@ -32,11 +32,14 @@ function wxjs_preprocess_page(&$variables)
     if (is_array($title)) $title = $title['#markup'];
     global $base_url;
     //https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115
+    $imgUrl =  $base_url.theme_get_setting('logo.url');
+    $cdn_enabled = \Drupal::config('cdn.settings')->get('status');
+    if($cdn_enabled) $imgUrl = 'https:' . theme_get_setting('logo.url');
     $shareData = array(
         'title'  => $title . '|主内公众云-永不止息',
         'desc'   => '朋友，分享给您一篇我喜欢的内容',//\Drupal::config('system.site')->get('slogan')
         'link'   => "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]",
-        'imgUrl' => $base_url.theme_get_setting('logo.url')
+        'imgUrl' => $imgUrl
     );
     if (isset($variables['node']) && $arg[1] == 'node' && isset($arg[2]) && is_numeric($arg[2])) {
         $cached_data_keyword = 'wxjs_sharedata_node_' . $arg[2];
