@@ -210,7 +210,7 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
         } while (!$has_program && $tmp_offset < 7);//上下范围7天
 
         if (!$has_program) {
-            \Drupal::logger('Error')->notice('txly2.net has error with files!');
+            \Drupal::logger('Error')->notice("$process_index上下范围7天内无节目:$code");
             return array(
                 'type'    => 'text',
                 'ga_data' => array(
@@ -553,8 +553,8 @@ function lyapi_get_meta()
         $date = '';
         if (is_array($dates) && $counts = count($dates) - 1) $date = $dates[$counts];
         if (is_numeric($date)) {
-            //每次运行只保存一个!
-            save_lymeta($tid, $body, $date);//if () break;
+            //每次运行只保存一个!//
+            if (save_lymeta($tid, $body, $date)) break;
         } else {
             \Drupal::logger(__FUNCTION__)->notice('error get $code=>' . $code . '$title=>' . $title . '$date=>' . $date . '$tid=>' . $tid);
         }
@@ -574,11 +574,16 @@ function lyapi_cron_migrate_lymeta(){
     $body = $node->body->value;
     $date = date('Ymd',$node->created->value);
     //2.save as a lymeta entity!
-    if(save_lymeta($tid, $body, $date))
+    $entity_id = save_lymeta($tid, $body, $date);
+    if($entity_id) {
         $node->delete();
-    \Drupal::logger(__FUNCTION__)->notice($nid.$title);
+        \Drupal::logger(__FUNCTION__)->notice("$nid-$title-$entity_id");
+        return $nid;
+    } 
     //3.delete
+    return FALSE;
 }
+
 //get entity id
 //delete lyapi_get_meta_nid
 function lyapi_get_meta_entity_id($tid, $date){
@@ -603,7 +608,10 @@ function save_lymeta($tid, $body, $date = NULL)
 {
     if (!$date) $date = date('Ymd');
     //check if exsits ,don't save!
-    if (!lyapi_get_meta_entity_id($tid, $date)) {
+    $entity_id = lyapi_get_meta_entity_id($tid, $date);
+    if ($entity_id && isset($entity_id[0])) {
+        return $entity_id[0];
+    }else{
         $created = strtotime($date.' 00:00:00');
         $data = array(
           'type' => 'lyprogram', 
@@ -618,9 +626,8 @@ function save_lymeta($tid, $body, $date = NULL)
         $entity->save();
         // \Drupal::logger(__FUNCTION__)->notice($body);
         //https://gist.github.com/facine/35bb291811c146b6fc9e#file-create_node-php
-        return TRUE;
+        return $entity->id();
     }
-    return FALSE;
 }
 
 /**
