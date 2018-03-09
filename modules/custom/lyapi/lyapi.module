@@ -482,7 +482,6 @@ function lyapi_get_meta()
     //https://api.drupal.org/api/drupal/core!modules!taxonomy!src!TermStorage.php/function/TermStorage%3A%3AloadTree/8.2.x
     $terms = $container->get('entity.manager')->getStorage('taxonomy_term')->loadTree($lylistvname, 0, NULL, TRUE);
     foreach ($terms as $term) {
-        lyapi_cron_migrate_lymeta();//TODO:: delete 2019 .after all migrated!!!
         /* @var $term Term */
         $code = $term->get('field_term_lylist_code')->value;//ee
         $title = $term->getName();
@@ -567,6 +566,7 @@ function lyapi_cron_migrate_lymeta(){
         'status'=>1,  // NodeInterface::PUBLISHED
     ];
     $nid = tools_wxapi_get_nid($fields,'lymeta');
+    if(!$nid) return;
     $node = Node::load($nid);
     // $code = $node;
     $tid = $node->get('field_lymeta_tid')->target_id;
