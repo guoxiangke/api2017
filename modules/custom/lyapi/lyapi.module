@@ -560,28 +560,6 @@ function lyapi_get_meta()
     }
 
 }
-function lyapi_cron_migrate_lymeta(){
-    //1.get one lymeta node
-    $fields = [
-        'status'=>1,  // NodeInterface::PUBLISHED
-    ];
-    $nid = tools_wxapi_get_nid($fields,'lymeta');
-    if(!$nid) return;
-    $node = Node::load($nid);
-    // $code = $node;
-    $tid = $node->get('field_lymeta_tid')->target_id;
-    $title = $node->getTitle();
-    $body = $node->body->value;
-    $date = date('Ymd',$node->created->value);
-    //2.save as a lymeta entity!
-    $entity_id = save_lymeta($tid, $body, $date);
-    if($entity_id) {
-        $node->delete();
-        return $nid;
-    } 
-    //3.delete
-    return FALSE;
-}
 
 //get entity id
 //delete lyapi_get_meta_nid
