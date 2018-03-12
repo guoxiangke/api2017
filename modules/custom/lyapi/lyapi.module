@@ -199,8 +199,9 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
                 $has_program = TRUE;
                 $entity_id = lyapi_get_meta_entity_id($lylist_tid[$process_index], date('Ymd', $time - $offset * 86400));
                 if($entity_id){
+                    \Drupal::logger('entity_id')->notice($entity_id);
                     $entity = \Drupal::entityTypeManager()->getStorage('lymeta')->load($entity_id);
-                    $body = $entity->get('title')->value;
+                    if($entity) $body = $entity->get('title')->value;
                 }
                 break;
             } else {
