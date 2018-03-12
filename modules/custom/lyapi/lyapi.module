@@ -197,10 +197,10 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
             $temp = get_headers($musicurl, 1);
             if ($temp[0] == 'HTTP/1.1 200 OK') {//远程有!!!
                 $has_program = TRUE;
-                $nid = lyapi_get_meta_nid($lylist_tid[$process_index],date('Ymd', $time - $offset * 86400));
-                if($nid){
-                    $node = Node::load($nid);
-                    $body = $node->body->value;
+                $entity_id = lyapi_get_meta_entity_id($lylist_tid[$process_index], date('Ymd', $time - $offset * 86400));
+                if($entity_id){
+                    $entity = \Drupal::entityTypeManager()->getStorage('lymeta')->load($entity_id);
+                    $body = $entity->get('title')->value;
                 }
                 break;
             } else {
@@ -288,7 +288,6 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
         if ($comment_entity_id) {
             $comment_data = [
                 'uid'                             => $weObj->getWxUid(),//TODO::date cc -7
-                'field_lylist_comment_lymeta_nid' => lyapi_get_meta_nid($comment_entity_id, date('Ymd')), // 当天的meta node id!
                 'field_name'                      => 'field_lylist_comment',
                 'entity_type'                     => 'taxonomy_term',//node
                 'entity_id'                       => $comment_entity_id,
@@ -299,6 +298,9 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
                 ),
                 'status'                          => CommentInterface::PUBLISHED,
             ];
+            if($entity_id = lyapi_get_meta_entity_id($comment_entity_id, date('Ymd'))){
+               $comment_data['field_lymeta_entity_id'] = $entity_id;
+            }
             $comment = Comment::create($comment_data);
             $comment->save();
             \Drupal::logger(__FUNCTION__)->notice('comment->save:' . $keyword);
@@ -375,25 +377,6 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
         return $resources;
     }
 }
-
-/**
- * check if the metadata NId exsits for give date!
- * @param $date 20161202
- * @param $term_name 空中辅导
- * @return nid
- */
-function lyapi_get_meta_nid($tid, $date)
-{//空中辅导
-    $bundle = 'lymeta';
-    $created = strtotime($date . ' 08:00:00 AM');
-    $fields = [
-        'status'=>1,
-        'field_lymeta_tid.entity.tid'=> $tid,
-        'created'=> $created
-    ];
-    return tools_wxapi_get_nid($fields,$bundle);
-}
-
 
 function ly_stream_menu()
 {

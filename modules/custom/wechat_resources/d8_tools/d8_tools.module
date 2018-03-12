@@ -39,6 +39,11 @@ function tools_wxapi_get_nids($fields,$bundle='grace',$count=1,$uid=0){
         return [];
     }
 }
+function tools_wxapi_get_entity_id($fields,$bundle='grace',$type='node',$uid=0){
+    $nids = tools_wxapi_get_entity_ids($fields,$bundle,$type,1,$uid);
+    if($nids) return $nids[0];
+    return NULL;
+}
 //copy of tools_wxapi_get_nids
 function tools_wxapi_get_entity_ids($fields,$bundle='grace',$type='node',$count=1,$uid=0,$order="DESC"){
     $query = \Drupal::entityQuery($type);
