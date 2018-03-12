@@ -555,7 +555,9 @@ function lyapi_get_meta_entity_id($tid, $date){
         'field_lyprogram_tid.entity.tid'=> $tid,
         'created'=> $created
     ];
-    return tools_wxapi_get_entity_ids($fields,$bundle,$type,1);
+    $array = tools_wxapi_get_entity_ids($fields,$bundle,$type,1);
+    if($array) return $array[0];
+    return false;
 }
 /**
  * // delete!!! @param $code ee
