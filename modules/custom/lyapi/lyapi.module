@@ -555,7 +555,7 @@ function lyapi_get_meta_entity_id($tid, $date){
         'field_lyprogram_tid.entity.tid'=> $tid,
         'created'=> $created
     ];
-    return tools_wxapi_get_entity_ids($fields,$bundle,$type);
+    return tools_wxapi_get_entity_ids($fields,$bundle,$type,1);
 }
 /**
  * // delete!!! @param $code ee
@@ -570,8 +570,8 @@ function save_lymeta($tid, $body, $date = NULL)
     if (!$date) $date = date('Ymd');
     //check if exsits ,don't save!
     $entity_id = lyapi_get_meta_entity_id($tid, $date);
-    if ($entity_id && isset($entity_id[0])) {
-        return $entity_id[0];
+    if ($entity_id) {
+        return $entity_id;
     }else{
         $created = strtotime($date.' 00:00:00');
         $data = array(
