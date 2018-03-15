@@ -10,11 +10,11 @@
                         // alert('即将跳转登录');
                         $('a[href="/user/login"]').click(function(e){
                             e.preventDefault();
-                            var redirect_url = 'https://www.yongbuzhixi.com/wechat_login/1?sso=api&dest='+drupalSettings.path.currentPath;
+                            var redirect_url = 'https://open.yongbuzhixi.com/user/wechat/login?sso=api&dest='+drupalSettings.path.currentPath;
                             window.location.replace(redirect_url);
                         })
                         if($('link[href="/taxonomy/term/13"]').length==1){//cc空中辅导自动登录
-                            var redirect_url = 'https://www.yongbuzhixi.com/wechat_login/1?sso=api&dest='+drupalSettings.path.currentPath;
+                            var redirect_url = 'https://open.yongbuzhixi.com/user/wechat/login?sso=api&dest='+drupalSettings.path.currentPath;
                             window.location.replace(redirect_url);
                         }
                     }else{
