@@ -534,13 +534,11 @@ function lyapi_get_meta()
         $dates = explode('-', $title_get);
         $date = '';
         if (is_array($dates)) $date = end($dates);
-        if (is_numeric($date)) {
-            //每次运行只保存一个!//
+        if($date != date('Ymd')) continue;
+        if (save_lymeta($tid, $body, $date)) {
             \Drupal::logger(__FUNCTION__)->notice('get ' . $code . '=> ' . $title . '=> ' . $date . '=> ' . $tid);
-            save_lymeta($tid, $body, $date);
-            // if (save_lymeta($tid, $body, $date)) break;
         } else {
-            \Drupal::logger(__FUNCTION__)->notice('get ' . $code . '=> ' . $title . '=> ' . $date . '=> ' . $tid);
+            \Drupal::logger(__FUNCTION__)->notice('error get ' . $code . '=> ' . $title . '=> ' . $date . '=> ' . $tid);
         }
     }
 
