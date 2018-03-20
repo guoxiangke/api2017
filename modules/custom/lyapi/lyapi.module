@@ -455,7 +455,7 @@ function ly_stream_menu()
 
 /**
  * add blow cron for auto get info for txly2.net/cc 凌晨1点1次/分 晚上8点2次\/=>/
- * * 1 * * * wget -O - http://api.yongbuzhixi.com/lyapi/getmeta >/dev/null 2>&1
+ * 0 1 * * * wget -O - http://api.yongbuzhixi.com/lyapi/getmeta >/dev/null 2>&1
  * *\/30 20 * * * wget -O - http://api.yongbuzhixi.com/lyapi/getmeta >/dev/null 2>&1
  */
 function lyapi_get_meta()
@@ -533,12 +533,14 @@ function lyapi_get_meta()
         $title_get = $html->find('.ss-title a', 1)->plaintext;
         $dates = explode('-', $title_get);
         $date = '';
-        if (is_array($dates) && $counts = count($dates) - 1) $date = $dates[$counts];
+        if (is_array($dates)) $date = end($dates);
         if (is_numeric($date)) {
             //每次运行只保存一个!//
-            if (save_lymeta($tid, $body, $date)) break;
+            \Drupal::logger(__FUNCTION__)->notice('get ' . $code . '=> ' . $title . '=> ' . $date . '=> ' . $tid);
+            save_lymeta($tid, $body, $date);
+            // if (save_lymeta($tid, $body, $date)) break;
         } else {
-            \Drupal::logger(__FUNCTION__)->notice('error get $code=>' . $code . '$title=>' . $title . '$date=>' . $date . '$tid=>' . $tid);
+            \Drupal::logger(__FUNCTION__)->notice('get ' . $code . '=> ' . $title . '=> ' . $date . '=> ' . $tid);
         }
     }
 
