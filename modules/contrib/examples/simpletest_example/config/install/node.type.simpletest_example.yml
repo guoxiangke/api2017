@@ -1,7 +1,9 @@
-uuid: 2be38cca-bd16-4301-bc06-6e62cc689a1f
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  enforced:
+    module:
+      - simpletest_example
 name: 'SimpleTest Example Node Type'
 type: simpletest_example
 description: 'A content type that exists so we can test it.'

@@ -1,23 +1,23 @@
-HOWTO: Drupal Examples For Developers Coding Standards
-=======================================================
+Developing with Coding Standards for Examples for Developers
+============================================================
 
 Examples uses mostly the same coding standards as Drupal core.
 
 If you see a discrepancy between the coding standards tools used by core and
 those used by Examples, please file an issue so that Examples can follow core.
 
-Examples uses the phpcs tool to allow for checking PHP coding standards. We also
-use eslint for JavaScript coding standards.
+Examples uses the `phpcs` tool to allow for checking PHP coding standards. We
+use the `drupal/coder` project for Drupal-specific coding standards.
 
-Examples has a `phpcs.xml.dist` file at the root of the project. This file
-specifies the current coding standards 'sniffs' which code in the project must
-pass.
+We also use `eslint` for JavaScript coding standards, and `csslint` for CSS.
 
-The `phpcs.xml.dist` file is used by a tool called PHP_CodeSniffer (`phpcs`).
+Examples has a `phpcs.xml.dist` file at the root of the project. phpcs uses this
+file to specify the current coding standards 'sniffs' which code in the project
+must pass.
 
 Contributors should install `phpcs` in their local Drupal installation, and then
 use that to run `phpcs` against Examples as part of their development and review
-process.
+process. (See details below on how to install and run this tool.)
 
 Contributors can also patch the `phpcs.xml.dist` file itself, in order to fix
 the codebase to pass a given rule or sniff. Patches which do this should be
@@ -30,18 +30,16 @@ Drupal-specific coding standards. We're currently locked to Coder version
 Installing phpcs
 ----------------
 
-Use Composer to add Drupal's Coder project to your root Drupal project. Coder
-contains the PHP_CodeSniffer rules we need, and also requires `phpcs`.
+Current versions of Drupal 8 core require phpcs and Coder as dev dependencies.
+That means they're already probably installed in your core vendor/ directory.
 
-Then tell `phpcs' where our Drupal-specific rules are.
+We need to tell `phpcs` to use the Drupal coding standard provided by Coder,
+because it isn't configured that way by default.
 
 Like this:
 
     $ cd my/drupal/root/
-    $ composer require drupal/coder 8.2.8
-    // Composer installs Coder, which requires PHP_CodeSniffer as well.
-    // Configure phpcs to use the Drupal standard rules...
-    $ ./vendor/bin/phpcs --config-set installed_paths /path/to/drupal/vendor/drupal/coder/coder_sniffer/
+    $ ./vendor/bin/phpcs --config-set installed_paths /full/path/to/drupal/vendor/drupal/coder/coder_sniffer/
     // phpcs now knows how to find the Drupal standard. You can test it:
     $ cd core
     $ ../vendor/bin/phpcs -e --standard=Drupal
@@ -53,8 +51,8 @@ Running phpcs
 Now you can run phpcs:
 
     $ cd modules/examples
-    $ ../../vendor/bin/phpcs -p -s
-    // phpcs uses Exampes' phpcs.xml.dist to verify coding standards.
+    $ ../../vendor/bin/phpcs -ps
+    // phpcs uses Examples' phpcs.xml.dist to verify coding standards.
     // -p shows you progress dots.
     // -s shows you sniff errors in the report.
 
