@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains youtube_queue.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function youtube_queue_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the youtube_queue module.
+    case 'help.page.youtube_queue':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Get youtube contents by queue') . '</p>';
+      return $output;
+
+    default:
+  }
+}
