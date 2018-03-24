@@ -137,6 +137,7 @@ function wechat_api_wxresources_alter($keyword, Wechat $weObj = NULL)
     $resources = NULL;
     $comment_check_keyword = '';
     if ($weObj) {
+        if($weObj->uid==268) return $resources;//TODO add switch!
         /** @var  $user User */
         $user = User::load($weObj->getWxUid());
         $user_roles = $user->getRoles();
