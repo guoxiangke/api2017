@@ -34,7 +34,6 @@ class YoutubeQueue extends QueueWorkerBase {
       return $request->getStatusCode()==200?TRUE:FALSE;
     }
     catch (RequestException $e) {
-      \Drupal::logger(__FUNCTION__.':'.__LINE__)->notice('<pre>'.print_r((array)$e,1));
       return FALSE;
     }
   }

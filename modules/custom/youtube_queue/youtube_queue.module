@@ -26,7 +26,7 @@ function youtube_queue_help($route_name, RouteMatchInterface $route_match) {
 
 
 /**
- * HOOK_node_presave
+ * Implements HOOK_node_presave
  */
 function youtube_queue_node_presave(Drupal\Core\Entity\EntityInterface $node){
 	if($node->id()) return;//Only for new created.
@@ -85,15 +85,40 @@ function youtube_queue_node_presave(Drupal\Core\Entity\EntityInterface $node){
 }
 
 /**
- * HOOK_node_delete
+ * Implements HOOK_node_delete
  * Delete album youtube sublist article 
  * && article youtube video of Upyun
  */
 function youtube_queue_node_delete(Drupal\Core\Entity\EntityInterface $node) {
+	if($node->bundle()=='article' && $node->hasField('field_youtube_vid') && !$node->get('field_youtube_vid')->isEmpty()){
+		//delete on upyun!
+		$field_youtube_vid = $node->get('field_youtube_vid')->getValue();
+    if(isset($field_youtube_vid[0]['value']) && $field_youtube_vid[0]['value']){
+      $vid = $field_youtube_vid[0]['value'];
+      lambda_delete_upyun_video($vid);
+    }
+	}
+
+	if($node->bundle()=='album' && $node->hasField('field_from_url') && !$node->get('field_from_url')->isEmpty()){
+		//delete all sub article & trigger hook_node_delete!
+		$field_nodes_reference = $node->field_nodes_reference->getValue();
+		foreach ($field_nodes_reference as $key => $node_reference) {
+			\Drupal::logger('field_nodes_reference')->notice($node_reference['target_id']);
+			$nids[] = $node_reference['target_id'];
+		}
+		entity_delete_multiple('node', $nids);//node_delete
+	}
 
 }
+
 /**
+ * @param string $url
+ * @param int $quality
+ * @param string $type
+ * @param int $uid
+ * @param bool $tid
  * wxapi_graceYoutube
+ * @return array|bool
  */
 function youtube_playlist_node_collect($url='https://www.youtube.com/watch?v=y4KJegd8inI&list=PLgFvTLP0QRDsUhs2GrsWS6eRUi4GwZtGQ',$quality=720,$type="grace",$uid=1,$tid=FALSE){
     //1.get html from serverless : post url to 
@@ -151,8 +176,27 @@ function youtube_playlist_node_collect($url='https://www.youtube.com/watch?v=y4K
         return $output;
     }
     catch (RequestException $e) {
-	    \Drupal::logger(__FUNCTION__.':'.__LINE__)->notice('<pre>'.print_r((array)$e,1));
       return FALSE;
     }
     // 2.str2html get dom
+}
+
+/**
+ * @param $vid
+ * lambda_delete_upyun_video
+ * @return bool
+ */
+function lambda_delete_upyun_video($vid){
+  try{
+      $request = \Drupal::httpClient()
+        ->post('https://l.yongbuzhixi.com/youtube/delete/mp4', [
+          'timeout' => 30,
+          'body' => '{"vid":"'.$vid.'"}'
+        ]);
+      \Drupal::logger('lambda_delete_upyun_video')->notice(json_decode($request->getBody())->message);
+      return $request->getStatusCode()==200?TRUE:FALSE;
+    }
+    catch (RequestException $e) {
+      return FALSE;
+    }
 }
