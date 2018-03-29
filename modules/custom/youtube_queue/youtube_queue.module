@@ -42,6 +42,7 @@ function youtube_queue_node_presave(Drupal\Core\Entity\EntityInterface $node){
    	  if(isset($field_youtube_quality[0]['value']) && $field_youtube_quality[0]['value']){
       	$quality = 360;
    	  }
+      $node->field_video_url->appendItem("http://ybzxvideo.b0.upaiyun.com/youtube/$vid.mp4");
       /** @var QueueFactory $queue_factory */
       $queue_factory = \Drupal::service('queue');
       /** @var QueueInterface $queue */
