@@ -19,7 +19,9 @@
       if($(this).text().length<=2)
         $(this).remove()
     })
-    $('.field--name-body p br').remove();
+    //思麦不删除 br
+    if(!drupalSettings.wxjs.shareData.imgUrl.includes("Q3auHgzwzM5Up4E4jqUnvPB21niaiabNKDWzsCT4XeJDJ5tDTs0K6sCw"))
+      $('.field--name-body p br').remove();
 
     //add video iframe
     if('video' in drupalSettings.node){
