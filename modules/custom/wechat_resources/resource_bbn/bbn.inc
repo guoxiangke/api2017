@@ -222,6 +222,7 @@ function bbn_audio_list(){
 
 function mp_get_bbn($keyword){
 	$bbns = bbn_audio_list();
+	if(!isset($bbns[$keyword])) return false;
 	$bbn = $bbns[$keyword];
 	$url_pre = 'http://bbnradio.org.edgesuite.net/BBNOnDemand/chinese/';
 	$weekday = date('N')-1;
@@ -255,57 +256,24 @@ function mp_get_bbn($keyword){
 			$code =str_replace('0', $weekday, $bbn['code']);
 			break;
 	}
-	return array($keyword=>array('musicurl'=>$url_pre.$code.'.m4a?q='.date('ymd'),'title'=>$bbns[$keyword]['title']));
+	$res = [
+			'keyword' => $keyword,
+			// 'musicurl' =>$url_pre.$code.'.m4a?q='.date('ymd'),
+			'title'=>$bbns[$keyword]['title']
+		];
+	return strpos("$code", "$weekday")===false?false:$res;
 }
 
 function bbn_audio_menu(){
-	// $rs = bbn_audio_list();
-
-	// $ss = '';
-	// foreach ($rs as $key => $value) {
-	// 	$ss .= '【'.$key.'】'.$value['title'].'('.$value['day'].')<br/>';
-	// }
-	// dvm($ss);
-
-	return '▶圣经广播网节目单
+	$rs = bbn_audio_list();
+	$ss = '';
+	foreach ($rs as $key => $value) {
+		$ss .= '【'.$key.'】'.$value['title'].'('.$value['day'].')<br/>';
+	}
+	return "▶圣经广播网节目单
 	----------------------------------------------
-	【401】中信之声(7)
-	【402】主日崇拜（一）(1)
-	【403】主日崇拜（二）(1)
-	【404】主日查经(1)
-	【405】儿童圣经故事(5)
-	【406】听听女人心(67)
-	【407】圣经导读(7)
-	【408】圣经时光(67)
-	【409】圣经时光(67)
-	【410】圣经讲坛(16)
-	【411】天人之间(67)
-	【412】天粮时光(5)
-	【413】安歇水边(5)
-	【414】家庭生活讲座(5)
-	【415】家庭祭坛(67)
-	【416】幸福满家园(5)
-	【417】心底话(5)
-	【418】快乐岛(67)
-	【419】更新生命讲座(67)
-	【420】每周一歌(7)
-	【421】每日箴言(7)
-	【422】每日读经(7)
-	【423】灵泉心语(16)
-	【424】灵言蜜语(67)
-	【425】牧者心声(16)
-	【426】生命旋律(7)
-	【427】生活的透视(5)
-	【428】真光之声(7)
-	【429】神奇创造(67)
-	【430】祷告良辰(7)
-	【431】英语世界(5)
-	【432】荒漠甘泉乐侣(5)
-	【433】认识圣经(5)
-	【434】讲道信息(7)
-	【435】赞美之道(5)
+	$ss
 	----------------------------------------------
 	周日:1，周末:67，周间:5
-	永不止息，需要有你[抱拳][调皮]';
-	// ---------Jesus Love You------------
+	永不止息，需要有你[抱拳][调皮]";
 }

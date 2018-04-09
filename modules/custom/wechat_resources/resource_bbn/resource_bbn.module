@@ -1,9 +1,5 @@
 <?php
 use Drupal\wechat_api\Plugin\Wechat\Wechat;
-// if (!class_exists('\Aws\S3\S3Client')) {
-// 	include_once 'libraries/awssdk2/aws-autoloader.php';
-// }
-// use Aws\S3\S3Client;
 /**
  * Created by PhpStorm.
  * User: dale.guo
@@ -36,11 +32,7 @@ function resource_bbn_wxresources_alter($keyword,Wechat $weObj=NULL){
 		if(!in_array('bbn',$wechat_resources)) return [];
 	}
 
-	//http://audio.yongbuzhixi.com/resources/365/2014/20140109.mp3
-	$cdnlink = 'http://wxresources.yongbuzhixi.com';
-	$check_word = substr($keyword, 0,3);
 	if(is_numeric($keyword) && ($keyword>=400 && $keyword<=435) ) {
-		// watchdog('mp_liangyou', '400', array(), WATCHDOG_NOTICE, 'link');
 		return mp_bbn_response($keyword,$appname);
 	}
 
@@ -48,76 +40,33 @@ function resource_bbn_wxresources_alter($keyword,Wechat $weObj=NULL){
 
 
 /**
- * $change_keyword = return key!
+ * 
  */
 function mp_bbn_response($keyword,$appname) {
-	$change_keyword = $keyword;
-	//TODO::dependcy!!!
-	$json = file_get_contents('http://bbn.yongbuzhixi.com/json/'.date('Y').'/'.date('md').'.json');
-	$json = json_decode($json);
 	require_once('bbn.inc');
 	if($keyword == '400'){
-		$bbn_audio_menu = '▶圣经广播网节目单
-    ---------------------';
-		foreach ($json as $key => $value) {
-			$bbn_audio_menu = $bbn_audio_menu ."\n".'【'.$value->keyword.'】'.$value->title;
-		}
 		$resources = array(
 			'keyword'      =>  $keyword,
 			'type'	=>	'text',
-			'cache' =>  REQUEST_TIME-1,
+			'cache' =>  -1,
 			'obj'		=> array(
-				'text'	=> $bbn_audio_menu
+				'text'	=> bbn_audio_menu()
 			)
 		);
 		return $resources;
 	}
-	$keyword_id = 0;
-	$do_next=false;
-	foreach ($json as $key => $value) {
-		if($value->keyword==$keyword){
-			$do_next=true;
-			$keyword_id = $key;
-			break;
-		} 
-	}
-	if($do_next){
-		// $bbn = mp_get_bbn($keyword);
-		// $objectKey = $json->$keyword->upyun;
-		// $cdn = 'http://bbn2016.yongbuzhixi.com';
-		// bbn.s3.yongbuzhixi.com/bbn/2017/401/171219.mp3
-		$key = '/bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
-//		$credentials = [
-//			'key' => \Drupal::config('s3fs.settings')->get('access_key'),
-//			'secret' => \Drupal::config('s3fs.settings')->get('secret_key'),
-//		];
-		// \Drupal::logger('do_next')->notice($key);
-		// // Instantiate an Amazon S3 client.
-		// $s3 = new S3Client([
-		// 	'version' => 'latest',
-		// 	'signature'=> 'v4',
-		// 	'endpoint' => 'http://bbn.s3.yongbuzhixi.com',
-		// 	'bucket_endpoint' => true,
-		// 	'region'  => 'ap-southeast-1',
-		// 	'credentials' => $credentials
-		// ]);
-		// $cmd = $s3->getCommand('GetObject', [
-		//     'Bucket' => 'bbn.s3.yongbuzhixi.com',
-		//     'Key'    => $key
-		// ]);
-		// $request = $s3->createPresignedRequest($cmd, '+30 minutes');
-		// // Get the actual presigned-url
-		// $musicurl = (string) $request->getUri();
-		// $musicurl = "http://url.cn/5RBTFPO";
-		// \Drupal::logger('musicurl')->notice($musicurl);
-		$musicurl = 'http://bbn.yongbuzhixi.com/bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
-		// $title = $bbn[$keyword]['title'];
-		$title = '【'.$keyword.'】'.$json[$keyword_id]->title;
-		$desc = '点击▶️收听 '.$appname.' 每日更新';//公众号:'.variable_get('mp_config_appname_'.$uid, "永不止息").'
+	$item = mp_get_bbn($keyword);
+	if($item){
+		$bucket = 'http://up.yongbuzhixi.com';
+		$bucket_pre = '/tmp/';
+		$upyun_path = $bucket_pre.'bbn/'.date('Y').'/'.$keyword.'/'.date('ymd').'.mp3';
+		$musicurl = $bucket.$upyun_path;
+		$title = '【'.$keyword.'】'.$item['title'];
+		$desc = '点击▶️收听 '.$appname.' 每日更新';
 		$resources= array(
 			'type'	=>	'music',
 			'cache' =>  REQUEST_TIME+43200,
-			// 'upyun_path' => $objectKey,
+			'upyun_path' => $upyun_path,
 			'ga_data'   =>  array(
 				'category'        => 'bbn',
 				'action'          => $title,
@@ -129,9 +78,6 @@ function mp_bbn_response($keyword,$appname) {
 				'hgmusicurl'	=>	$musicurl,
 			),
 		);
-		// if(date('G')<11) {
-		// 	$resources['key_'.$change_keyword]['custommessage'] = "弟兄姊妹，平安，圣经广播网4开头节目于每早11点更新，请11点后点击播放即可，谢谢代祷推荐给亲朋好友\n永不止息，需要有你[握手]";
-		//  }
 	}else{
 		$text = "【$keyword 】今日无节目或节目还没有加速，小永努力中，请稍后再试！\n永不止息，需要有你[握手]\n请回复【400】收听其他节目\n微信赞助支持：https://www.yongbuzhixi.com/wxdonate";
 		$resources = array(
