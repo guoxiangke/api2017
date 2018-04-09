@@ -31,7 +31,7 @@ function youtube_queue_help($route_name, RouteMatchInterface $route_match) {
 function youtube_queue_node_presave(Drupal\Core\Entity\EntityInterface $node){
 	if($node->id()) return;//Only for new created.
   /**
-   * For create a article with youtube_vid
+   * When create a article with field_youtube_vid, add to queue!
    */
   if($node->bundle()=='article' && $node->hasField('field_youtube_vid') && !$node->get('field_youtube_vid')->isEmpty()){
     $field_youtube_vid = $node->get('field_youtube_vid')->getValue();
@@ -42,7 +42,6 @@ function youtube_queue_node_presave(Drupal\Core\Entity\EntityInterface $node){
    	  if(isset($field_youtube_quality[0]['value']) && $field_youtube_quality[0]['value']){
       	$quality = 360;
    	  }
-      $node->field_video_url->appendItem("http://ybzxvideo.b0.upaiyun.com/youtube/$vid.mp4");
       /** @var QueueFactory $queue_factory */
       $queue_factory = \Drupal::service('queue');
       /** @var QueueInterface $queue */
@@ -159,16 +158,14 @@ function youtube_playlist_node_collect($url='https://www.youtube.com/watch?v=y4K
                 'type'             => $type,
                 'created'          => $created,
                 'changed'          => $created,
-                'uid'              => $uid, //恩典365基督之家 https://api.yongbuzhixi.com/user/46
+                'uid'              => $uid,
                 'title'            => $title,
-                // An array with taxonomy terms.http://ybzxvideo.b0.upaiyun.com/youtube/201801/Nl4ak6oCOHU.mp4
-                'field_video_url' => "http://ybzxvideo.b0.upaiyun.com/youtube/$youtube_vid.mp4",
                 'field_youtube_vid' => [$youtube_vid]
               ];
               if($tid) $newNode['field_tags'][] = ['target_id'=>$tid];
               if($quality==360) $newNode['field_youtube_quality'][] = ['value'=>TRUE];
               $node = Node::create($newNode);
-              $node->save();//trigger functionself!!!
+              $node->save();
               \Drupal::logger('wxapi_graceYoutube_getNode')->notice($node->id() . '=>' . $title);
               $output[]=$node->id();
             }
