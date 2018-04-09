@@ -268,7 +268,7 @@ function bbn_audio_menu(){
 	$rs = bbn_audio_list();
 	$ss = '';
 	foreach ($rs as $key => $value) {
-		$ss .= '【'.$key.'】'.$value['title'].'('.$value['day'].')<br/>';
+		$ss .= '【'.$key.'】'.$value['title'].'('.$value['day'].')'."\r\n";
 	}
 	return "▶圣经广播网节目单
 	----------------------------------------------
