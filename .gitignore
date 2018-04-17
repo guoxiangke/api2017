@@ -82,3 +82,4 @@ libraries/wordpress-audio/
 modules/contrib/inline_entity_form/
 sites/default/development.services.yml
 modules/contrib/similarterms
+sites/default/docker.settings.php
