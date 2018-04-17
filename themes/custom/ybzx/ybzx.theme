@@ -122,7 +122,7 @@ function ybzx_preprocess_node(&$variables) {
 	//fix bug todo: delete!!!
 	if($node->bundle()=='article'){
 		$vid = $node->get('field_article_video')->getString();
-		if(stripos($vid,'vid') !== false){
+		if(stripos($vid,'vid') !== false || stripos($vid,'youtube') !== false){
     		$node->set('field_article_video', '');
     		$node->save();
 		}
