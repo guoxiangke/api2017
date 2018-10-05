@@ -182,6 +182,11 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
         }//end lts33 641-645
         $https = 'http://';
         $cdnlink = $https . 'lywxaudio.yongbuzhixi.com';
+        $dataString = date('ymd');
+        $test = false;
+        if($dataString > 181007 || $dataString < 181013 || $app_name=='以琳婚恋家庭事工中心') {
+            $test = true;
+        }
         $code = $lylist_code[$process_index];//ee
 
         $has_program = FALSE;
@@ -190,6 +195,12 @@ function lyapi_wxresources_alter($keyword, Wechat $weObj = NULL)
             $tmp_time = $time - $offset * 86400;
             $date = date('ymd', $tmp_time);//161129
             $tmp_path = '/' . date('Y', $tmp_time) . '/' . $code . '/' . $code;
+            if($test) {
+                // $cdnlink = $https . 'lytx2.yongbuzhixi.com';
+                $cdnlink = $https . 'lywx2018.yongbuzhixi.com';
+                //http://lywx2018.yongbuzhixi.com/ly/audio/2018/dy/dy181005.mp3
+                $tmp_path = '/ly/audio/2018/' . date('Y', $tmp_time) . '/' . $code . '/' . $code;
+            }
             $path = $tmp_path . $date . '.mp3';// /2016/rt/rt161127.mp3
             $upt = upyun_get_token($path);
             $uri = $cdnlink . $path;

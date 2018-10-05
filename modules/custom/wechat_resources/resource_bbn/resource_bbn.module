@@ -79,7 +79,7 @@ function mp_bbn_response($keyword,$appname) {
 			),
 		);
 	}else{
-		$text = "【$keyword 】今日无节目或节目还没有加速，小永努力中，请稍后再试！\n永不止息，需要有你[握手]\n请回复【400】收听其他节目\n微信赞助支持：https://www.yongbuzhixi.com/wxdonate";
+		$text = "【$keyword 】今日无节目或节目还没有加速，小永努力中，请稍后再试！\n永不止息，需要有你[握手]\n请回复【400】收听其他节目\n微信赞助支持：https://wechat.yongbuzhixi.com/donate";
 		$resources = array(
 			'keyword'      =>  $keyword,
 			'type'	=>	'text',
